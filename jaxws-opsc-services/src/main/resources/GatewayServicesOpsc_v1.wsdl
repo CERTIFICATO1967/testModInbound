@@ -1,0 +1,587 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:head="http://telecomitalia.it/SOA/SOAP/SOAPHeader"
+	xmlns:tns="http://telecomitalia.it/SOA/TRCS/Gateway" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+	<wsdl:types>
+		<xsd:schema xmlns="http://www.w3.org/2001/XMLSchema"
+			xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://telecomitalia.it/SOA/TRCS/Gateway">
+			<xsd:import namespace="http://telecomitalia.it/SOA/SOAP/SOAPHeader"
+				schemaLocation="xsd/SOAPHeader_v1.1.xsd" />
+			<xsd:import namespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+				schemaLocation="xsd/DeleteSubscriber.xsd" />
+			<xsd:import namespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+				schemaLocation="xsd/NetworkReconfigure.xsd" />
+			<xsd:import namespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+				schemaLocation="xsd/ConvertSubscriber.xsd" />
+			<xsd:import namespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+				schemaLocation="xsd/RestoreSubscriber.xsd" />
+			<xsd:import namespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+				schemaLocation="xsd/SetSubscriberStatus.xsd" />
+			<xsd:import namespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+				schemaLocation="xsd/ChangeToc.xsd" />
+			<xsd:import namespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+				schemaLocation="xsd/ChangeNumber.xsd" />
+			<xsd:import namespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+				schemaLocation="xsd/PersonalDataManager.xsd" />
+			<xsd:import namespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+				schemaLocation="xsd/PersonalDataManagerX.xsd" />
+			<xsd:import namespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+				schemaLocation="xsd/MigrateSubscriber.xsd" />
+			<xsd:import
+				namespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+				schemaLocation="xsd/DeleteSubscriberX.xsd" />
+			<xsd:import
+				namespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+				schemaLocation="xsd/InstallSubscriberX.xsd" />
+			<xsd:import
+				namespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+				schemaLocation="xsd/MigrateSubscriberX.xsd" />
+			<xsd:import
+				namespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+				schemaLocation="xsd/RestoreSubscriberX.xsd" />
+			<xsd:import
+				namespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+				schemaLocation="xsd/SaleOperationX.xsd" />
+			<xsd:import
+				namespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+				schemaLocation="xsd/SetSubscriberStatusX.xsd" />				
+			<xsd:import namespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+				schemaLocation="xsd/PersonalCreditSwitch.xsd" />
+		</xsd:schema>
+	</wsdl:types>
+
+	<wsdl:message name="DeleteSubscriberRequestMsg">
+		<wsdl:part element="tns:DeleteSubscriberRequest" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="DeleteSubscriberResponseMsg">
+		<wsdl:part element="tns:DeleteSubscriberResponse" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+
+	<wsdl:message name="NetworkReconfigureRequestMsg">
+		<wsdl:part element="tns:NetworkReconfigureRequest" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="NetworkReconfigureResponseMsg">
+		<wsdl:part element="tns:NetworkReconfigureResponse" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	
+	<wsdl:message name="ConvertSubscriberRequestMsg">
+		<wsdl:part element="tns:ConvertSubscriberRequest" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="ConvertSubscriberResponseMsg">
+		<wsdl:part element="tns:ConvertSubscriberResponse" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+
+	<wsdl:message name="RestoreSubscriberRequestMsg">
+		<wsdl:part element="tns:RestoreSubscriberRequest" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="RestoreSubscriberResponseMsg">
+		<wsdl:part element="tns:RestoreSubscriberResponse" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+
+	<wsdl:message name="SetSubscriberStatusRequestMsg">
+		<wsdl:part element="tns:SetSubscriberStatusRequest" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="SetSubscriberStatusResponseMsg">
+		<wsdl:part element="tns:SetSubscriberStatusResponse" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+
+	<wsdl:message name="ChangeTocRequestMsg">
+		<wsdl:part element="tns:ChangeTocRequest" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="ChangeTocResponseMsg">
+		<wsdl:part element="tns:ChangeTocResponse" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+
+	<wsdl:message name="ChangeNumberRequestMsg">
+		<wsdl:part element="tns:ChangeNumberRequest" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="ChangeNumberResponseMsg">
+		<wsdl:part element="tns:ChangeNumberResponse" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+
+	<wsdl:message name="PersonalDataManagerRequestMsg">
+		<wsdl:part element="tns:PersonalDataManagerRequest" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="PersonalDataManagerResponseMsg">
+		<wsdl:part element="tns:PersonalDataManagerResponse" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+
+	<wsdl:message name="PersonalDataManagerXRequestMsg">
+		<wsdl:part element="tns:PersonalDataManagerXRequest" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="PersonalDataManagerXResponseMsg">
+		<wsdl:part element="tns:PersonalDataManagerXResponse" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	
+	<wsdl:message name="MigrateSubscriberRequestMsg">
+		<wsdl:part element="tns:MigrateSubscriberRequest" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="MigrateSubscriberResponseMsg">
+		<wsdl:part element="tns:MigrateSubscriberResponse" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	
+	<wsdl:message name="PersonalCreditSwitchRequestMsg">
+		<wsdl:part element="tns:PersonalCreditSwitchRequest" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="PersonalCreditSwitchResponseMsg">
+		<wsdl:part element="tns:PersonalCreditSwitchResponse" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	
+	<wsdl:message name="DeleteSubscriberXRequestMsg">
+		<wsdl:part element="tns:DeleteSubscriberXRequest"
+			name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="DeleteSubscriberXResponseMsg">
+		<wsdl:part element="tns:DeleteSubscriberXResponse"
+			name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="InstallSubscriberXRequestMsg">
+		<wsdl:part element="tns:InstallSubscriberXRequest"
+			name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="InstallSubscriberXResponseMsg">
+		<wsdl:part element="tns:InstallSubscriberXResponse"
+			name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="MigrateSubscriberXRequestMsg">
+		<wsdl:part element="tns:MigrateSubscriberXRequest"
+			name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="MigrateSubscriberXResponseMsg">
+		<wsdl:part element="tns:MigrateSubscriberXResponse"
+			name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="PersonalCreditSwitchXRequestMsg">
+		<wsdl:part element="tns:PersonalCreditSwitchXRequest"
+			name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="PersonalCreditSwitchXResponseMsg">
+		<wsdl:part element="tns:PersonalCreditSwitchXResponse"
+			name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="RestoreSubscriberXRequestMsg">
+		<wsdl:part element="tns:RestoreSubscriberXRequest"
+			name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="RestoreSubscriberXResponseMsg">
+		<wsdl:part element="tns:RestoreSubscriberXResponse"
+			name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="SaleOperationXRequestMsg">
+		<wsdl:part element="tns:SaleOperationXRequest"
+			name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="SaleOperationXResponseMsg">
+		<wsdl:part element="tns:SaleOperationXResponse"
+			name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="SetSubscriberStatusXRequestMsg">
+		<wsdl:part element="tns:SetSubscriberStatusXRequest"
+			name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="SetSubscriberStatusXResponseMsg">
+		<wsdl:part element="tns:SetSubscriberStatusXResponse"
+			name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+		
+	<wsdl:portType name="TrcsGatewayOpscPortType">
+
+		<wsdl:operation name="DeleteSubscriber">
+			<wsdl:input message="tns:DeleteSubscriberRequestMsg" />
+			<wsdl:output message="tns:DeleteSubscriberResponseMsg" />
+		</wsdl:operation>
+
+		<wsdl:operation name="NetworkReconfigure">
+			<wsdl:input message="tns:NetworkReconfigureRequestMsg" />
+			<wsdl:output message="tns:NetworkReconfigureResponseMsg" />
+		</wsdl:operation>
+
+		<wsdl:operation name="ConvertSubscriber">
+			<wsdl:input message="tns:ConvertSubscriberRequestMsg" />
+			<wsdl:output message="tns:ConvertSubscriberResponseMsg" />
+		</wsdl:operation>
+
+		<wsdl:operation name="RestoreSubscriber">
+			<wsdl:input message="tns:RestoreSubscriberRequestMsg" />
+			<wsdl:output message="tns:RestoreSubscriberResponseMsg" />
+		</wsdl:operation>
+
+		<wsdl:operation name="SetSubscriberStatus">
+			<wsdl:input message="tns:SetSubscriberStatusRequestMsg" />
+			<wsdl:output message="tns:SetSubscriberStatusResponseMsg" />
+		</wsdl:operation>
+
+		<wsdl:operation name="ChangeToc">
+			<wsdl:input message="tns:ChangeTocRequestMsg" />
+			<wsdl:output message="tns:ChangeTocResponseMsg" />
+		</wsdl:operation>
+
+		<wsdl:operation name="ChangeNumber">
+			<wsdl:input message="tns:ChangeNumberRequestMsg" />
+			<wsdl:output message="tns:ChangeNumberResponseMsg" />
+		</wsdl:operation>
+
+		<wsdl:operation name="PersonalDataManager">
+			<wsdl:input message="tns:PersonalDataManagerRequestMsg" />
+			<wsdl:output message="tns:PersonalDataManagerResponseMsg" />
+		</wsdl:operation>
+
+		<wsdl:operation name="PersonalDataManagerX">
+			<wsdl:input message="tns:PersonalDataManagerXRequestMsg" />
+			<wsdl:output message="tns:PersonalDataManagerXResponseMsg" />
+		</wsdl:operation>
+
+		<wsdl:operation name="MigrateSubscriber">
+			<wsdl:input message="tns:MigrateSubscriberRequestMsg" />
+			<wsdl:output message="tns:MigrateSubscriberResponseMsg" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="PersonalCreditSwitch">
+			<wsdl:input message="tns:PersonalCreditSwitchRequestMsg" />
+			<wsdl:output message="tns:PersonalCreditSwitchResponseMsg" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="DeleteSubscriberX">
+			<wsdl:input message="tns:DeleteSubscriberXRequestMsg" />
+			<wsdl:output message="tns:DeleteSubscriberXResponseMsg" />
+		</wsdl:operation>
+
+		<wsdl:operation name="InstallSubscriberX">
+			<wsdl:input message="tns:InstallSubscriberXRequestMsg" />
+			<wsdl:output
+				message="tns:InstallSubscriberXResponseMsg" />
+		</wsdl:operation>
+
+		<wsdl:operation name="MigrateSubscriberX">
+			<wsdl:input message="tns:MigrateSubscriberXRequestMsg" />
+			<wsdl:output
+				message="tns:MigrateSubscriberXResponseMsg" />
+		</wsdl:operation>
+
+		<wsdl:operation name="RestoreSubscriberX">
+			<wsdl:input message="tns:RestoreSubscriberXRequestMsg" />
+			<wsdl:output
+				message="tns:RestoreSubscriberXResponseMsg" />
+		</wsdl:operation>
+
+		<wsdl:operation name="SaleOperationX">
+			<wsdl:input message="tns:SaleOperationXRequestMsg" />
+			<wsdl:output
+				message="tns:SaleOperationXResponseMsg" />
+		</wsdl:operation>
+
+		<wsdl:operation name="SetSubscriberStatusX">
+			<wsdl:input message="tns:SetSubscriberStatusXRequestMsg" />
+			<wsdl:output
+				message="tns:SetSubscriberStatusXResponseMsg" />
+		</wsdl:operation>	
+		
+	</wsdl:portType>
+
+
+	<wsdl:binding name="TrcsGatewayOpscBinding" type="tns:TrcsGatewayOpscPortType">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+
+		<wsdl:operation name="DeleteSubscriber">
+			<soap:operation soapAction="DeleteSubscriber" style="document" />
+			<wsdl:input>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:DeleteSubscriberRequestMsg" part="Header"
+					use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:DeleteSubscriberResponseMsg" part="Header"
+					use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="NetworkReconfigure">
+			<soap:operation soapAction="NetworkReconfigure" style="document" />
+			<wsdl:input>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:NetworkReconfigureRequestMsg" part="Header"
+					use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:NetworkReconfigureResponseMsg" part="Header"
+					use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="ConvertSubscriber">
+			<soap:operation soapAction="ConvertSubscriber" style="document" />
+			<wsdl:input>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:ConvertSubscriberRequestMsg" part="Header"
+					use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:ConvertSubscriberResponseMsg" part="Header"
+					use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="RestoreSubscriber">
+			<soap:operation soapAction="RestoreSubscriber" style="document" />
+			<wsdl:input>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:RestoreSubscriberRequestMsg" part="Header"
+					use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:RestoreSubscriberResponseMsg" part="Header"
+					use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="SetSubscriberStatus">
+			<soap:operation soapAction="SetSubscriberStatus" style="document" />
+			<wsdl:input>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:SetSubscriberStatusRequestMsg" part="Header"
+					use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:SetSubscriberStatusResponseMsg" part="Header"
+					use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="ChangeToc">
+			<soap:operation soapAction="ChangeToc" style="document" />
+			<wsdl:input>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:ChangeTocRequestMsg" part="Header"
+					use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:ChangeTocResponseMsg" part="Header"
+					use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="ChangeNumber">
+			<soap:operation soapAction="ChangeNumber" style="document" />
+			<wsdl:input>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:ChangeNumberRequestMsg" part="Header"
+					use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:ChangeNumberResponseMsg" part="Header"
+					use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="PersonalDataManager">
+			<soap:operation soapAction="PersonalDataManager" style="document" />
+			<wsdl:input>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:PersonalDataManagerRequestMsg" part="Header"
+					use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:PersonalDataManagerResponseMsg" part="Header"
+					use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="PersonalDataManagerX">
+			<soap:operation soapAction="PersonalDataManagerX" style="document" />
+			<wsdl:input>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:PersonalDataManagerXRequestMsg" part="Header"
+					use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:PersonalDataManagerXResponseMsg" part="Header"
+					use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="MigrateSubscriber">
+			<soap:operation soapAction="MigrateSubscriber" style="document" />
+			<wsdl:input>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:MigrateSubscriberRequestMsg" part="Header"
+					use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:MigrateSubscriberResponseMsg" part="Header"
+					use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="PersonalCreditSwitch">
+			<soap:operation soapAction="PersonalCreditSwitch" style="document" />
+			<wsdl:input>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:PersonalCreditSwitchRequestMsg" part="Header"
+					use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:PersonalCreditSwitchResponseMsg" part="Header"
+					use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="DeleteSubscriberX">
+			<soap:operation soapAction="DeleteSubscriberX"
+				style="document" />
+			<wsdl:input>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:DeleteSubscriberXRequestMsg"
+					part="Header" use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="body" use="literal" />
+				<soap:header
+					message="tns:DeleteSubscriberXResponseMsg" part="Header"
+					use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="InstallSubscriberX">
+			<soap:operation soapAction="InstallSubscriberX"
+				style="document" />
+			<wsdl:input>
+				<soap:body parts="body" use="literal" />
+				<soap:header
+					message="tns:InstallSubscriberXRequestMsg" part="Header"
+					use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="body" use="literal" />
+				<soap:header
+					message="tns:InstallSubscriberXResponseMsg" part="Header"
+					use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="MigrateSubscriberX">
+			<soap:operation soapAction="MigrateSubscriberX"
+				style="document" />
+			<wsdl:input>
+				<soap:body parts="body" use="literal" />
+				<soap:header
+					message="tns:MigrateSubscriberXRequestMsg" part="Header"
+					use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="body" use="literal" />
+				<soap:header
+					message="tns:MigrateSubscriberXResponseMsg" part="Header"
+					use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="RestoreSubscriberX">
+			<soap:operation soapAction="RestoreSubscriberX"
+				style="document" />
+			<wsdl:input>
+				<soap:body parts="body" use="literal" />
+				<soap:header
+					message="tns:RestoreSubscriberXRequestMsg" part="Header"
+					use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="body" use="literal" />
+				<soap:header
+					message="tns:RestoreSubscriberXResponseMsg" part="Header"
+					use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="SaleOperationX">
+			<soap:operation soapAction="SaleOperationX"
+				style="document" />
+			<wsdl:input>
+				<soap:body parts="body" use="literal" />
+				<soap:header
+					message="tns:SaleOperationXRequestMsg" part="Header"
+					use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="body" use="literal" />
+				<soap:header
+					message="tns:SaleOperationXResponseMsg" part="Header"
+					use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="SetSubscriberStatusX">
+			<soap:operation soapAction="SetSubscriberStatusX"
+				style="document" />
+			<wsdl:input>
+				<soap:body parts="body" use="literal" />
+				<soap:header
+					message="tns:SetSubscriberStatusXRequestMsg" part="Header"
+					use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="body" use="literal" />
+				<soap:header
+					message="tns:SetSubscriberStatusXResponseMsg" part="Header"
+					use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+				
+	</wsdl:binding>
+
+	<wsdl:service name="TrcsGatewayOpsc">
+		<wsdl:port binding="tns:TrcsGatewayOpscBinding" name="TrcsGatewayOpscPort">
+			<soap:address location="http://..." />
+		</wsdl:port>
+	</wsdl:service>
+
+</wsdl:definitions>

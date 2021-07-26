@@ -1,0 +1,6 @@
+kafka:
+  bootstrap-servers: localhost:9092
+  auto-reset: earliest
+  consumer:
+    groupId: test-group
+    topics: test-1,test-2

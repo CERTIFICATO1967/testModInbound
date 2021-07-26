@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+	xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+	elementFormDefault="qualified" attributeFormDefault="unqualified"
+	jaxb:extensionBindingPrefixes="xjc" jaxb:version="2.1">
+	<xs:annotation>
+		<xs:appinfo>
+			<jaxb:globalBindings>
+				<xjc:serializable />
+			</jaxb:globalBindings>
+
+			<jaxb:bindings schemaLocation="xsd/GOLDRequest.xsd">
+				<jaxb:bindings
+					node="//xs:complexType[@name='PersonalDataManagerXIbData']//xs:element[@name='Operation']/xs:complexType/xs:attribute[@name='OperationType']/xs:simpleType">
+					<jaxb:typesafeEnumClass
+						name="PersonalDataOperationType" />
+				</jaxb:bindings>
+			</jaxb:bindings>
+
+			<jaxb:bindings schemaLocation="xsd/GOLDRequest.xsd">
+				<jaxb:bindings
+					node="//xs:complexType[@name='PersonalDataManagerXIbData']//xs:element[@name='Operation']//xs:element[@name='PersonalData']//xs:attribute[@name='OperationType']/xs:simpleType">
+					<jaxb:typesafeEnumClass
+						name="PersonalDataManagerOperationType" />
+				</jaxb:bindings>
+			</jaxb:bindings>
+
+			<jaxb:bindings schemaLocation="xsd/GOLDRequest.xsd">
+				<jaxb:bindings
+					node="//xs:complexType[@name='ChangeTOCIbData']//xs:element[@name='Operation']//xs:attribute[@name='OperationType']/xs:simpleType">
+					<jaxb:typesafeEnumClass
+						name="ChangeTocOperationType" />
+				</jaxb:bindings>
+			</jaxb:bindings>
+
+			<jaxb:bindings schemaLocation="xsd/GOLDRequest.xsd">
+				<jaxb:bindings
+					node="//xs:complexType[@name='ChangeNumberIbData']//xs:element[@name='Operation']//xs:attribute[@name='OperationType']/xs:simpleType">
+					<jaxb:typesafeEnumClass
+						name="ChangeNumberOperationType" />
+				</jaxb:bindings>
+			</jaxb:bindings>
+
+
+
+
+
+
+			<jaxb:bindings schemaLocation="xsd/GOLDRequest.xsd">
+				<jaxb:bindings
+					node="//xs:complexType[@name='PersonalDataManagerXIbData']//xs:attribute[@name='RequestType']/xs:simpleType">
+					<jaxb:typesafeEnumClass
+						name="PersonalDataManagerRequestType" />
+				</jaxb:bindings>
+			</jaxb:bindings>
+
+			<jaxb:bindings schemaLocation="xsd/GOLDRequest.xsd">
+				<jaxb:bindings
+					node="//xs:complexType[@name='ChangeNumberIbData']//xs:attribute[@name='RequestType']/xs:simpleType">
+					<jaxb:typesafeEnumClass
+						name="ChangeNumberRequestType" />
+				</jaxb:bindings>
+			</jaxb:bindings>
+
+			<jaxb:bindings schemaLocation="xsd/GOLDRequest.xsd">
+				<jaxb:bindings
+					node="//xs:complexType[@name='ChangeTOCIbData']//xs:attribute[@name='RequestType']/xs:simpleType">
+					<jaxb:typesafeEnumClass
+						name="ChangeTocRequestType" />
+				</jaxb:bindings>
+			</jaxb:bindings>
+
+			<jaxb:bindings schemaLocation="xsd/GOLDRequest.xsd">
+				<jaxb:bindings
+					node="//xs:complexType[@name='DeleteSubscriberXIbData']//xs:element[@name='Operation']/xs:complexType/xs:attribute[@name='OperationType']/xs:simpleType">
+					<jaxb:typesafeEnumClass
+						name="DeleteSubscriberXOperationType" />
+				</jaxb:bindings>
+			</jaxb:bindings>
+
+			<jaxb:bindings schemaLocation="xsd/GOLDRequest.xsd">
+				<jaxb:bindings
+					node="//xs:complexType[@name='InstallSubscriberXIbData']//xs:element[@name='Operation']//xs:attribute[@name='OperationType']/xs:simpleType">
+					<jaxb:typesafeEnumClass
+						name="InstallSubscriberXOperationType" />
+				</jaxb:bindings>
+			</jaxb:bindings>
+
+			<jaxb:bindings schemaLocation="xsd/GOLDRequest.xsd">
+				<jaxb:bindings
+					node="//xs:complexType[@name='MigrateSubscriberXIbData']//xs:element[@name='Operation']//xs:attribute[@name='OperationType']/xs:simpleType">
+					<jaxb:typesafeEnumClass
+						name="MigrateSubscriberXOperationType" />
+				</jaxb:bindings>
+			</jaxb:bindings>
+
+			<jaxb:bindings schemaLocation="xsd/GOLDRequest.xsd">
+				<jaxb:bindings
+					node="//xs:complexType[@name='RestoreSubscriberXIbData']//xs:element[@name='Operation']//xs:attribute[@name='OperationType']/xs:simpleType">
+					<jaxb:typesafeEnumClass
+						name="RestoreSubscriberXOperationType" />
+				</jaxb:bindings>
+			</jaxb:bindings>
+			
+			<jaxb:bindings schemaLocation="xsd/GOLDRequest.xsd">
+				<jaxb:bindings
+					node="//xs:complexType[@name='SaleOperationXIbData']//xs:element[@name='Operation']//xs:attribute[@name='OperationType']/xs:simpleType">
+					<jaxb:typesafeEnumClass
+						name="SaleOperationXOperationType" />
+				</jaxb:bindings>
+			</jaxb:bindings>
+
+
+
+		</xs:appinfo>
+	</xs:annotation>
+</xs:schema>
