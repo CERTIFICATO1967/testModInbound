@@ -4,3 +4,9 @@ kafka:
   consumer:
     groupId: test-group
     topics: test-1,test-2
+
+
+trcs:
+  gateway:
+    services:
+      opsc-provisionig: http://localhost:8095/gateway/opsc/provisioning

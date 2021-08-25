@@ -2,27 +2,57 @@ package it.telecomitalia.trcs.middleware.kafka.inbound;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
+import it.telecomitalia.trcs.middleware.kafka.inbound.command.TrcsInboundExecutor;
+import it.telecomitalia.trcs.middleware.kafka.inbound.command.TrcsInboundExecutorFactory;
+import it.telecomitalia.trcs.middleware.ws.client.OpscProvisioningClient;
+
 @Component
 class KafkaAdapterListeners{
 
 	private final Logger LOG = LoggerFactory.getLogger(KafkaAdapterListeners.class);
+	
+	@Autowired
+	OpscProvisioningClient opscProvisioningClient;
 
 	@KafkaListener(
 			topics = "#{'${kafka.consumer.topics}'.split(',')}",
 			//topics = "${kafka.consumer.topics}",
-			groupId ="${kafka.consumer.groupId}"
-			)
+			groupId ="${kafka.consumer.groupId}")
 	void listenerWithHeader(
 			@Payload String message,
-			@Headers MessageHeaders headers) {
+			@Headers MessageHeaders headers,
+			Acknowledgment ack) {
+		
 		LOG.info("Listener [{}] - part=[{}]", message, headers.get(KafkaHeaders.RECEIVED_PARTITION_ID));
+		
+		try {
+			byte[] value = (byte[])headers.get(TrcsKafkaHeader.eventType.name());
+			TrcsKafkaEventType eventType = TrcsKafkaEventType.getInstance(new String(value));
+			
+			
+			TrcsInboundExecutor executor = TrcsInboundExecutorFactory.createInstance(eventType);
+			
+			executor.execute(opscProvisioningClient, headers, message);
+			
+			LOG.info("ACKNOWLEDGE");
+			ack.acknowledge();
+			
+		} catch (Throwable t) {
+			t.printStackTrace();
+			
+			ack.nack(10000); //Imposta il Timeout per le retry
+			
+			throw t;
+		}
 	}
 
 	/*
