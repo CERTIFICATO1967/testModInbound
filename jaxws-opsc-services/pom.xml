@@ -25,6 +25,7 @@
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 		</exclusion>
 	</exclusions>
+	
         </dependency>
         
         <dependency>
@@ -41,10 +42,12 @@
 	
 <build>
     <plugins>    
+    <!-- 
     <plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>    
+			</plugin>
+			 -->    
 <plugin> 
     <groupId>org.jvnet.jaxb2.maven2</groupId>
     <artifactId>maven-jaxb2-plugin</artifactId>
