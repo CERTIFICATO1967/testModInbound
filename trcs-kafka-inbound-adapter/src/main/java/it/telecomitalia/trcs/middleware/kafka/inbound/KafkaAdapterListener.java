@@ -13,16 +13,14 @@ import org.springframework.stereotype.Component;
 
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.TrcsInboundExecutor;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.TrcsInboundExecutorFactory;
-import it.telecomitalia.trcs.middleware.ws.client.OpscProvisioningClient;
 
 @Component
 class KafkaAdapterListeners{
 
 	private final Logger LOG = LoggerFactory.getLogger(KafkaAdapterListeners.class);
-	
-	@Autowired
-	OpscProvisioningClient opscProvisioningClient;
 
+	@Autowired TrcsInboundExecutorFactory factory;
+	
 	@KafkaListener(
 			topics = "#{'${kafka.consumer.topics}'.split(',')}",
 			//topics = "${kafka.consumer.topics}",
@@ -39,9 +37,9 @@ class KafkaAdapterListeners{
 			TrcsKafkaEventType eventType = TrcsKafkaEventType.getInstance(new String(value));
 			
 			
-			TrcsInboundExecutor executor = TrcsInboundExecutorFactory.createInstance(eventType);
+			TrcsInboundExecutor executor = factory.createInstance(eventType);
 			
-			executor.execute(opscProvisioningClient, headers, message);
+			executor.execute(headers, message);
 			
 			LOG.info("ACKNOWLEDGE");
 			ack.acknowledge();

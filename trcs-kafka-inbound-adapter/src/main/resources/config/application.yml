@@ -4,6 +4,9 @@ kafka:
   consumer:
     groupId: test-group
     topics: test-1,test-2
+  reponses:
+    lineeMobili.responseCambioNumero.v1: test-response-1
+    lineeMobili.responseBloccoSbloccoNumero.v1: test-response-2
 
 
 trcs:

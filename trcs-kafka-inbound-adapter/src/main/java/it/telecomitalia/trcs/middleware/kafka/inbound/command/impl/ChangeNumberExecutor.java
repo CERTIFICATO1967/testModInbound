@@ -14,19 +14,25 @@ import it.telecomitalia.soa.trcs.gateway.ChangeNumberRequest;
 import it.telecomitalia.soa.trcs.gateway.ChangeNumberResponse;
 import it.telecomitalia.soa.trcs.gateway.OfferType;
 import it.telecomitalia.soa.trcs.gateway.SubscriptionType;
+import it.telecomitalia.trcs.middleware.kafka.inbound.ResponseTargets;
 import it.telecomitalia.trcs.middleware.kafka.inbound.TrcsKafkaHeader;
 import it.telecomitalia.trcs.middleware.kafka.inbound.builder.HeaderTypeBuilder;
-import it.telecomitalia.trcs.middleware.kafka.inbound.command.TrcsInboundExecutor;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.TrcsInboundExecutorException;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.dto.ChangeNumberRequestBean;
 import it.telecomitalia.trcs.middleware.ws.client.OpscProvisioningClient;
 
-public class ChangeNumberExecutor implements TrcsInboundExecutor {
+public class ChangeNumberExecutor extends AbstractExecutor {
 
 	private final Logger logger = LoggerFactory.getLogger(ChangeNumberExecutor.class);
 
+
+	public ChangeNumberExecutor(OpscProvisioningClient client, ResponseTargets responseTargets) {
+		super(client, responseTargets);
+	}
+
+	
 	@Override
-	public void execute(OpscProvisioningClient client, Map<String, Object> headers, String payload) {
+	public void execute(Map<String, Object> headers, String payload) {
 		
 		ObjectMapper objectMapper = new ObjectMapper();
 		
@@ -44,7 +50,7 @@ public class ChangeNumberExecutor implements TrcsInboundExecutor {
 
 			
 			// Invoca il servizio di cambio numero di GW
-			ChangeNumberResponse response = client.changeNumber(headerType, wsRequest);
+			ChangeNumberResponse response = this.getClient().changeNumber(headerType, wsRequest);
 
 			logger.info("ChangeNumber result=[{}]", response.getIbRetCode());
 			

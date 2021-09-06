@@ -12,5 +12,5 @@ import it.telecomitalia.trcs.middleware.ws.client.OpscProvisioningClient;
  */
 public interface TrcsInboundExecutor {
 
-	public void execute(OpscProvisioningClient client, Map<String, Object> headers, String payload);
+	public void execute(Map<String, Object> headers, String payload);
 }
