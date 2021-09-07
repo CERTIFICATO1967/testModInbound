@@ -8,6 +8,8 @@ import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 import it.telecomitalia.soa.soap.soapheader.HeaderType;
 import it.telecomitalia.soa.trcs.gateway.ChangeNumberRequest;
 import it.telecomitalia.soa.trcs.gateway.ChangeNumberResponse;
+import it.telecomitalia.soa.trcs.gateway.DeleteSubscriberXRequest;
+import it.telecomitalia.soa.trcs.gateway.DeleteSubscriberXResponse;
 import it.telecomitalia.soa.trcs.gateway.SetSubscriberStatusXRequest;
 import it.telecomitalia.soa.trcs.gateway.SetSubscriberStatusXResponse;
 
@@ -49,6 +51,18 @@ public class OpscProvisioningClient extends WebServiceGatewaySupport {
 				.marshalSendAndReceive(this.getDefaultUri(), request,
 						new SoapActionAndHeaderCallback(
 								"ChangeNumber", header));
+
+		return response;
+		
+	}
+	
+	public DeleteSubscriberXResponse deleteSubscriberX(HeaderType header, DeleteSubscriberXRequest request) {
+		log.info("Requesting delete subscriber X for [{}]", request.getIbData().getRequest().getClientKeys().getMSISDN());
+
+		DeleteSubscriberXResponse response = (DeleteSubscriberXResponse) getWebServiceTemplate()
+				.marshalSendAndReceive(this.getDefaultUri(), request,
+						new SoapActionAndHeaderCallback(
+								"DeleteSubscriberX", header));
 
 		return response;
 		
