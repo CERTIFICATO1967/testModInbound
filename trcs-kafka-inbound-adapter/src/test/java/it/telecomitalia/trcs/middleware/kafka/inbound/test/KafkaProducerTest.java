@@ -73,6 +73,8 @@ public class KafkaProducerTest {
     	bean.setDiscountRecover(true);
     	bean.setReason("setReason");
     	bean.setInfo("setInfo");
+    	bean.setPhoneNumberMnp("setPhoneNumberMnp");
+    	bean.setTypeOfCard("setTypeOfCard");
     	//bean.setBaseOffer("OB001");
     	//bean.setPhoneNumberOLO("3393214321");
     	//bean.setTypeOfCard("TOC-01");

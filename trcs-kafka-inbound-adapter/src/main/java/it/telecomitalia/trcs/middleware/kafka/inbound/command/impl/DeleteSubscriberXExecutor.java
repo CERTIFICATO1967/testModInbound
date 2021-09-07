@@ -66,7 +66,7 @@ public class DeleteSubscriberXExecutor extends AbstractExecutor {
 			}
 			
 		} catch (Exception e) {
-			logger.error("ChangeNumber calling error.", e);
+			logger.error("DeleteSubscriberX calling error.", e);
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			
@@ -84,7 +84,7 @@ public class DeleteSubscriberXExecutor extends AbstractExecutor {
 		wsRequest.setIbAppDep1("0");
 		wsRequest.setIbAppDep2("0");
 		wsRequest.setIbIdSrvc("MNPRdy2Tlk");
-		//wsRequest.setIbData(new ChangeNumberRequest.IbData());
+		wsRequest.setIbData(new DeleteSubscriberXRequest.IbData());
 		wsRequest.getIbData().setIbLenData(0);
 		
 		DeleteSubscriberXIbData payload = new DeleteSubscriberXIbData();
@@ -92,33 +92,34 @@ public class DeleteSubscriberXExecutor extends AbstractExecutor {
 		
 		payload.setRequestType("TwoStep");
 		
-		//payload.setTransaction(new Transaction());
+		payload.setTransaction(new DeleteSubscriberXIbData.Transaction());
 		payload.getTransaction().setTID(headerType.getTransactionID());
 		payload.getTransaction().setSubsystem(String.valueOf(headers.get(TrcsKafkaHeader.channel.name())));
 		payload.getTransaction().setService(wsRequest.getIbIdSrvc());
 		payload.getTransaction().setIDSystem(headerType.getSourceSystem());
 		
 		
-	//	payload.setClientKeys(new ChangeNumberIbData.ClientKeys());
+	    payload.setClientKeys(new DeleteSubscriberXIbData.ClientKeys());
 		payload.getClientKeys().setMSISDN(request.getPhoneNumber());
 		
-	//	payload.setOperation(new ChangeNumberIbData.Operation());
-		payload.getOperation().setOperationType("MNPRdy2Tlk");
+	    payload.setOperation(new DeleteSubscriberXIbData.Operation());
+		payload.getOperation().setOperationType("ServintSubscriber");
 		payload.getOperation().setInfo(request.getInfo());
+		DeleteSubscriberXIbData.Operation.ServintSubscriber servintSubscriber = new DeleteSubscriberXIbData.Operation.ServintSubscriber();
+		/*- Se deleteType è uguale a "Mnp", inserire "MnpServInt".
+		- In tutti gli altri casi, inserire il valore presente in input.*/
+		servintSubscriber.setServIntType("MnpServInt");
+		DeleteSubscriberXIbData.Operation.ServintSubscriber.Client client = new DeleteSubscriberXIbData.Operation.ServintSubscriber.Client();
+		client.setReason(request.getReason());
+		servintSubscriber.setClient(client);
+		DeleteSubscriberXIbData.Operation.ServintSubscriber.MnpServInt  mnpServInt = new DeleteSubscriberXIbData.Operation.ServintSubscriber.MnpServInt ();
+		mnpServInt.setMnpMSISDN(request.getPhoneNumberMnp());
+		servintSubscriber.setMnpServInt(mnpServInt);
+		DeleteSubscriberXIbData.Operation.ServintSubscriber.MnpMvno  mnpMvno = new DeleteSubscriberXIbData.Operation.ServintSubscriber.MnpMvno();
+		mnpMvno.setMnpMSISDN(request.getPhoneNumberMnp());
+		servintSubscriber.setMnpMvno(mnpMvno);
+		payload.getOperation().setServintSubscriber(servintSubscriber);
 		
-		//ChangeNumberIbData.Operation.MNPRdy2Tlk params = new ChangeNumberIbData.Operation.MNPRdy2Tlk();
-		//payload.getOperation().setMNPRdy2Tlk(params);
-		
-	//	params.setClient(new ChangeNumberIbData.Operation.MNPRdy2Tlk.Client());
-		//params.getClient().setMSISDNOLO(request.getPhoneNumberOLO());
-	//	params.getClient().setTypeOfCard(request.getTypeOfCard());
-	//	params.getClient().setTypeOfCustom(request.getTypeOfCustomer());
-		
-	///	params.setSubscription(new SubscriptionType());
-	//	params.getSubscription().setName("WRAPPER");
-		OfferType offerType = new OfferType();
-	//	offerType.setName(request.getBaseOffer());
-	//	params.getSubscription().getOffer().add(offerType);
 		
 		return wsRequest;
 	}
