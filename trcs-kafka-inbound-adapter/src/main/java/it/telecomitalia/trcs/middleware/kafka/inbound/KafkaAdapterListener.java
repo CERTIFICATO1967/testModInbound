@@ -44,6 +44,11 @@ class KafkaAdapterListeners{
 			LOG.info("ACKNOWLEDGE");
 			ack.acknowledge();
 			
+		} catch (NullPointerException  t) {
+			// t.printStackTrace();
+			
+			LOG.error("Message not valid");
+			
 		} catch (Throwable t) {
 			t.printStackTrace();
 			
