@@ -9,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
-@Component
-public class KafkaProducer {
+//@Component
+public class TestKafkaProducer {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(KafkaProducer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TestKafkaProducer.class);
 
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
