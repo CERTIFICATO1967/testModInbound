@@ -11,11 +11,14 @@ import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
+import it.telecomitalia.trcs.middleware.kafka.inbound.command.ExecutorSynchronousFailed;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.TrcsInboundExecutor;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.TrcsInboundExecutorFactory;
 
 @Component
 class KafkaAdapterListeners{
+	
+	@Autowired KafkaProducer producer;
 
 	private final Logger LOG = LoggerFactory.getLogger(KafkaAdapterListeners.class);
 
@@ -48,6 +51,15 @@ class KafkaAdapterListeners{
 			// t.printStackTrace();
 			
 			LOG.error("Message not valid");
+			
+		} catch (ExecutorSynchronousFailed ex) {
+			
+			producer.send(ex.getTopic(), 
+					      ex.getPayload(), 
+					      ex.getPhoneNumber(), 
+					      ex.getHeader());
+			
+			ack.acknowledge();
 			
 		} catch (Throwable t) {
 			t.printStackTrace();

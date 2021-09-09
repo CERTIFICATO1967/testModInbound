@@ -1,4 +1,4 @@
-package it.telecomitalia.trcs.middleware.kafka.inbound.test;
+package it.telecomitalia.trcs.middleware.kafka.inbound;
 
 import java.util.HashMap;
 import java.util.Map;

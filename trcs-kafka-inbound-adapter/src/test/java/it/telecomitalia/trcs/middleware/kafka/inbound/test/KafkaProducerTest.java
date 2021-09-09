@@ -12,6 +12,7 @@ import org.springframework.test.annotation.DirtiesContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import it.telecomitalia.trcs.middleware.kafka.inbound.KafkaProducer;
 import it.telecomitalia.trcs.middleware.kafka.inbound.TrcsKafkaEventType;
 import it.telecomitalia.trcs.middleware.kafka.inbound.TrcsKafkaHeader;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.dto.ChangeCardRequestBean;
@@ -28,7 +29,7 @@ public class KafkaProducerTest {
     @Value("${test.topic}")
     private String topic;
 
-  //  @Test
+    @Test
     public void sendMessage() throws Exception {
     	String phoneNumber="3391231234";
     	
