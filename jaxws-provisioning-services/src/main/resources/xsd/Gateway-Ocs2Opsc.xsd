@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:commons="http://telecomitalia.it/SOA/TRCS/Gateway/Commons"
+	targetNamespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<import namespace="http://telecomitalia.it/SOA/TRCS/Gateway/Commons"
+		schemaLocation="Gateway-Commons_v1.3.xsd" />
+
+	<element name="Ocs2OpscRequest">
+		<complexType>
+			<attribute name="phoneNumber" type="commons:PhoneNumber"
+				use="required">
+			</attribute>
+			<attribute name="subsystem" type="string" use="required"></attribute>
+			<attribute name="info" type="string"></attribute>
+			<attribute name="migrationType" type="boolean"></attribute>
+		</complexType>
+	</element>
+
+	<element name="Ocs2OpscResponse" type="commons:ResponseMessage" />
+
+</schema>

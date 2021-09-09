@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:commons="http://telecomitalia.it/SOA/TRCS/Gateway/Commons" targetNamespace="http://telecomitalia.it/SOA/TRCS/Gateway" elementFormDefault="qualified" attributeFormDefault="unqualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://telecomitalia.it/SOA/TRCS/Gateway">
+
+    <xsd:include schemaLocation="query/GOLDResponse.xsd"></xsd:include>
+    <xsd:include schemaLocation="query/GOLDResponse.xsd"></xsd:include>
+	
+	<xsd:import namespace="http://telecomitalia.it/SOA/TRCS/Gateway/Commons" schemaLocation="Gateway-Commons_v1.3.xsd" />
+
+	<xsd:element name="Opsc2OcsRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Query" type="OpscQueryResponse"></xsd:element>
+			</xsd:sequence>
+			<xsd:attribute name="phoneNumber" type="commons:PhoneNumber"
+				use="required">
+			</xsd:attribute>
+			<xsd:attribute name="subsystem" type="xsd:string"
+				use="required">
+			</xsd:attribute>
+			<xsd:attribute name="info" type="xsd:string"></xsd:attribute>
+			<xsd:attribute name="newToc" type="commons:typeOfCardType"></xsd:attribute>
+			<xsd:attribute name="newProfile" type="xsd:string"></xsd:attribute>
+			<xsd:attribute name="newSubscription" type="xsd:string"></xsd:attribute>
+			<xsd:attribute name="migrationType">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="PCNMM_2_PP"></xsd:enumeration>
+						<xsd:enumeration value="TCB_MASTER_2_PP"></xsd:enumeration>
+						<xsd:enumeration value="TCB_SLAVE_2_PP"></xsd:enumeration>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="iccid" type="commons:iccidType"></xsd:attribute>
+			<xsd:attribute name="imsi" type="commons:imsiType"></xsd:attribute>
+			<xsd:attribute name="cardFeatures" type="commons:cardFeatureType"></xsd:attribute>
+            <xsd:attribute name="cardPhase" type="commons:cardPhaseType"></xsd:attribute>
+            <xsd:attribute name="debit" type="commons:costType"></xsd:attribute>
+            <xsd:attribute name="cost" type="commons:costType"></xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="Opsc2OcsResponse" type="commons:ResponseMessage" />
+
+</xsd:schema>

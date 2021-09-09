@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+	elementFormDefault="qualified" attributeFormDefault="unqualified"
+	jaxb:extensionBindingPrefixes="xjc" jaxb:version="2.1">
+	<xs:annotation>
+		<xs:appinfo>
+			<jaxb:globalBindings>
+				<xjc:serializable />
+			</jaxb:globalBindings>
+			<jaxb:bindings schemaLocation="xsd/Gateway-Commons_v1.3.xsd">
+				<jaxb:bindings node="//xs:attribute[@name='result']/xs:simpleType">
+					<jaxb:typesafeEnumClass name="Result" />
+				</jaxb:bindings>
+			</jaxb:bindings>
+
+			<jaxb:bindings schemaLocation="xsd/Gateway-AssignPoints.xsd">
+				<jaxb:bindings node="//xs:attribute[@name='operationType']/xs:simpleType">
+					<jaxb:typesafeEnumClass name="OperationType" />
+				</jaxb:bindings>
+			</jaxb:bindings>
+			<jaxb:bindings schemaLocation="xsd/Gateway-Opsc2Ocs.xsd">
+				<jaxb:bindings node="//xs:attribute[@name='migrationType']/xs:simpleType">
+					<jaxb:typesafeEnumClass name="MigrationType" />
+				</jaxb:bindings>
+			</jaxb:bindings>
+
+			<jaxb:bindings schemaLocation="xsd/Gateway-NetworkReconfigureGINO.xsd">
+				<jaxb:bindings node="//xs:attribute[@name='riconfType']/xs:simpleType">
+					<jaxb:typesafeEnumClass name="OperationType" />
+				</jaxb:bindings>
+			</jaxb:bindings>
+
+			<jaxb:bindings schemaLocation="xsd/Gateway-ChangeCard.xsd">
+				<jaxb:bindings node="//xs:element[@name='chCardType']/xs:simpleType">
+					<jaxb:typesafeEnumClass name="ChangeCardType" />
+				</jaxb:bindings>
+			</jaxb:bindings>
+
+			<jaxb:bindings schemaLocation="xsd/Gateway-SetSubscriberLocation.xsd">
+				<jaxb:bindings node="//xs:attribute[@name='location']/xs:simpleType">
+					<jaxb:typesafeEnumClass name="location" />
+				</jaxb:bindings>
+			</jaxb:bindings>
+			
+		</xs:appinfo>
+	</xs:annotation>
+</xs:schema>

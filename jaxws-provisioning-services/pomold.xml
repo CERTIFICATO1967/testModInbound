@@ -1,0 +1,76 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>it.telecomitalia.trcs.gateway.services</groupId>
+		<artifactId>gw-services-provisioning</artifactId>
+		<version>3.8.3-SNAPSHOT</version>
+	</parent>
+	<artifactId>jaxws-provisioning-services</artifactId>
+	<packaging>jar</packaging>
+
+	<properties>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jaxws-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>wsimport-from-jdk</id>
+						<goals>
+							<goal>wsimport</goal>
+						</goals>
+						<configuration>
+							<executable>${tool.wsimport}</executable>
+							<!-- <wsdlDirectory>src/mywsdls</wsdlDirectory> -->
+							<wsdlDirectory>${basedir}/src/main/resources</wsdlDirectory>
+							<!-- <wsdlFiles> <wsdlFile>GinoCrsGatewayServices_v1.wsdl</wsdlFile> 
+								</wsdlFiles> -->
+							<verbose>true</verbose>
+							<xdebug>true</xdebug>
+						</configuration>
+					</execution>
+				</executions>
+				<configuration>
+					<wsdlDirectory>src/main/resources/wsdl</wsdlDirectory>
+					<sourceDestDir>${basedir}/generated/src/main/java</sourceDestDir>
+					<bindingFiles>
+						<bindingFile>${basedir}/src/main/resources/jaxb-bindings.xml</bindingFile>
+					</bindingFiles>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>win</id>
+			<activation>
+				<os>
+					<family>windows</family>
+				</os>
+			</activation>
+			<properties>
+				<tool.wsgen>${java.home}/../bin/wsgen.exe</tool.wsgen>
+				<tool.wsimport>${java.home}/../bin/wsimport.exe</tool.wsimport>
+			</properties>
+		</profile>
+		<profile>
+			<id>nix</id>
+			<activation>
+				<os>
+					<family>!windows</family>
+				</os>
+			</activation>
+			<properties>
+				<tool.wsgen>${java.home}/../bin/wsgen</tool.wsgen>
+				<tool.wsimport>${java.home}/../bin/wsimport</tool.wsimport>
+			</properties>
+		</profile>
+	</profiles>
+
+</project>

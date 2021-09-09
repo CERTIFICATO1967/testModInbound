@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="GOLDSubscriber.xsd" />
+	<xs:complexType name="OpscQueryResponse">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element ref="ACCOUNT" minOccurs="0"
+				maxOccurs="unbounded" />
+			<xs:element ref="ACCESSORY" />
+			<xs:element name="ACCOUNTGROUP" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The ACCOUNTGROUP element is present on queryType
+						11 (TIM Digital query)</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="AccountComponentType">
+							<xs:sequence>
+								<xs:element ref="ACCOUNTGROUPMEMBER"
+									maxOccurs="unbounded" />
+							</xs:sequence>
+							<xs:attribute name="GROUPID">
+								<xs:simpleType>
+									<xs:restriction base="xs:decimal">
+										<xs:totalDigits value="12" />
+										<xs:fractionDigits value="0" />
+										<xs:minInclusive value="0" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="OFFERDEACTLIST" type="xs:string">
+								<xs:annotation>
+									<xs:documentation>Valid for QUERY response</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RECURRINGTRANSFER">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="RECURRINGMEMBER"
+							maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:attribute name="DonatingMSISDN" use="required">
+									<xs:simpleType>
+										<xs:restriction base="xs:NMTOKEN">
+											<xs:maxLength value="12" />
+											<xs:pattern value="[0-9]+" />
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+								<xs:attribute name="ReceivingMSISDN" use="required">
+									<xs:simpleType>
+										<xs:restriction base="xs:NMTOKEN">
+											<xs:maxLength value="12" />
+											<xs:pattern value="[0-9]+" />
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+								<xs:attribute name="AMOUNT" use="required" />
+								<xs:attribute name="FEE" use="required" />
+								<xs:attribute name="FREQUENCY" use="required">
+									<xs:simpleType>
+										<xs:restriction base="xs:int">
+											<xs:totalDigits value="4" />
+											<xs:minInclusive value="1" />
+											<xs:maxInclusive value="9999" />
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+								<xs:attribute name="NEXTEVENT" type="xs:dateTime"
+									use="required" />
+								<xs:attribute name="ACTIVATIONDATE"
+									type="xs:dateTime" use="required" />
+								<xs:attribute name="DEACTIVATIONDATE"
+									type="xs:dateTime" use="required" />
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+		<xs:attribute name="QueryType" use="required">
+			<xs:annotation>
+				<xs:documentation>QuertyType = '9' is only for DISCOUNT
+					functionality.
+
+					QueryType = '10' is only for MULTIPLE query functionality.
+
+					QueryType = '11' is only for TIM DIGITAL query functionality.
+				</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="1" />
+					<xs:enumeration value="2" />
+					<xs:enumeration value="3" />
+					<xs:enumeration value="4" />
+					<xs:enumeration value="5" />
+					<xs:enumeration value="6" />
+					<xs:enumeration value="7" />
+					<xs:enumeration value="8" />
+					<xs:enumeration value="9" />
+					<xs:enumeration value="10" />
+					<xs:enumeration value="11" />
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="OfferName">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:minLength value="1" />
+					<xs:maxLength value="10" />
+					<xs:whiteSpace value="preserve" />
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+
+</xs:schema>

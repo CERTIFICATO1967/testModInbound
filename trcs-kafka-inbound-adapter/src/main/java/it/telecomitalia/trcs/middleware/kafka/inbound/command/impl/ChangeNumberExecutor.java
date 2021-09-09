@@ -50,7 +50,7 @@ public class ChangeNumberExecutor extends AbstractExecutor {
 
 			
 			// Invoca il servizio di cambio numero di GW
-			ChangeNumberResponse response = this.getClient().changeNumber(headerType, wsRequest);
+			ChangeNumberResponse response = this.getOpscClient().changeNumber(headerType, wsRequest);
 
 			logger.info("ChangeNumber result=[{}]", response.getIbRetCode());
 			

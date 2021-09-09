@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import it.telecomitalia.trcs.middleware.kafka.inbound.TrcsKafkaEventType;
 import it.telecomitalia.trcs.middleware.kafka.inbound.TrcsKafkaHeader;
+import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.dto.ChangeCardRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.dto.ChangeNumberRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.dto.DeleteSubscriberXRequestBean;
 
@@ -55,7 +56,7 @@ public class KafkaProducerTest {
         producer.send(topic, out.toString(), phoneNumber, headers);        
     }
     
-    @Test
+    //@Test
     public void sendMessageDeleteSubscriberX() throws Exception {
     	String phoneNumber="3391231234";
     	
@@ -80,6 +81,39 @@ public class KafkaProducerTest {
     	//bean.setTypeOfCard("TOC-01");
     	//bean.setTypeOfCustomer("CUST-001");
     	//bean.setInfo("Info");
+    	
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	
+    	ByteArrayOutputStream out = new ByteArrayOutputStream();
+    	
+    	objectMapper.writeValue(out, bean);
+        producer.send(topic, out.toString(), phoneNumber, headers);        
+    }
+    
+    
+    @Test
+    public void sendMessageChangeCard() throws Exception {
+    	String phoneNumber="3391231234";
+    	
+    	HashMap<String, String> headers = new HashMap<>();
+    	
+    	headers.put(TrcsKafkaHeader.eventType.name(), TrcsKafkaEventType.changeCardRequest.value());
+    	headers.put(TrcsKafkaHeader.transactionID.name(), UUID.randomUUID().toString());
+    	headers.put(TrcsKafkaHeader.businessID.name(), UUID.randomUUID().toString());
+    	headers.put(TrcsKafkaHeader.sourceSystem.name(), "JunitTest");
+    	
+    	ChangeCardRequestBean bean = new ChangeCardRequestBean();
+    	
+    	bean.setPhase("setPhase");
+    	bean.setFeatures("setFeatures");
+    	bean.setIccidNew("iccid");
+    	bean.setIccidOld("iccidOLD");
+    	bean.setPhoneNumber(phoneNumber);
+    	
+    	bean.setInfo("setInfo");
+    	
+    	bean.setTypeOfCard("ChNoBlockState");
+    	
     	
     	ObjectMapper objectMapper = new ObjectMapper();
     	

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:commons="http://telecomitalia.it/SOA/TRCS/Gateway/Commons"
+	targetNamespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<import namespace="http://telecomitalia.it/SOA/TRCS/Gateway/Commons"
+		schemaLocation="Gateway-Commons_v1.3.xsd" />
+
+	<element name="ChangeProfileRequest">
+		<complexType>
+			<sequence>
+				<element name="query" type="string" maxOccurs="1" minOccurs="0"></element>
+			</sequence>
+			<attribute name="phoneNumber" type="commons:PhoneNumber"
+				use="required">
+			</attribute>
+			<attribute name="subsystem" type="string" use="required"></attribute>
+			<attribute name="info" type="string"></attribute>
+			<attribute name="resetNumReload" type="boolean"
+				use="required">
+			</attribute>
+			<attribute name="newOfferCode" type="commons:offerCodeType"
+				use="required">
+			</attribute>
+			<attribute name="offerCost" type="commons:costType"
+				use="optional">
+			</attribute>
+		</complexType>
+	</element>
+
+	<element name="ChangeProfileResponse" type="commons:ResponseMessage" />
+
+</schema>

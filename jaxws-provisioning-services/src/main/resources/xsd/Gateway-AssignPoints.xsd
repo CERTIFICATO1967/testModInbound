@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:commons="http://telecomitalia.it/SOA/TRCS/Gateway/Commons"
+	targetNamespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<import namespace="http://telecomitalia.it/SOA/TRCS/Gateway/Commons"
+		schemaLocation="Gateway-Commons_v1.3.xsd" />
+
+	<element name="AssignPointsRequest">
+		<complexType>
+			<sequence>
+				<element name="assigns">
+					<complexType>
+						<sequence>
+							<element name="points" minOccurs="1"
+								maxOccurs="unbounded">
+								<complexType>
+									<attribute name="amount"
+										type="decimal" use="required">
+									</attribute>
+									<attribute name="operationType"
+										use="required">
+										<simpleType>
+											<restriction
+												base="string">
+												<enumeration
+													value="SUM">
+												</enumeration>
+												<enumeration
+													value="DEDUCT">
+												</enumeration>
+												<enumeration
+													value="SET">
+												</enumeration>
+											</restriction>
+										</simpleType>
+									</attribute>
+									<attribute name="offerCode"
+										type="commons:offerCodeType" use="required">
+									</attribute>
+									<attribute name="opscXPath"
+										type="string" use="required">
+									</attribute>
+								</complexType>
+							</element>
+						</sequence>
+					</complexType>
+				</element>
+			</sequence>
+			<attribute name="phoneNumber" type="commons:PhoneNumber"
+				use="required">
+			</attribute>
+            <attribute name="subsystem" type="string" use="required"></attribute>
+            <attribute name="info" type="string"></attribute>
+		</complexType>
+	</element>
+
+	<element name="AssignPointsResponse" type="commons:ResponseMessage" />
+
+</schema>

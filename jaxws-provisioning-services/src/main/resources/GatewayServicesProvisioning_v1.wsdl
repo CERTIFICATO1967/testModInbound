@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:head="http://telecomitalia.it/SOA/SOAP/SOAPHeader"
+	xmlns:tns="http://telecomitalia.it/SOA/TRCS/Gateway" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+	<wsdl:types>
+		<xsd:schema xmlns="http://www.w3.org/2001/XMLSchema"
+			xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://telecomitalia.it/SOA/TRCS/Gateway">
+			<xsd:import namespace="http://telecomitalia.it/SOA/SOAP/SOAPHeader"
+				schemaLocation="xsd/SOAPHeader_v1.1.xsd" />
+			<xsd:import namespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+				schemaLocation="xsd/Gateway-ChangeLanguage.xsd" />
+			<xsd:import namespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+				schemaLocation="xsd/Gateway-AssignPoints.xsd" />
+			<xsd:import namespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+				schemaLocation="xsd/Gateway-NetworkReconfigureGINO.xsd" />
+			<xsd:import namespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+				schemaLocation="xsd/Gateway-ChangeCard.xsd" />
+			<xsd:import namespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+				schemaLocation="xsd/Gateway-Ocs2Opsc.xsd" />
+			<xsd:import namespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+				schemaLocation="xsd/Gateway-Opsc2Ocs.xsd" />
+			<xsd:import namespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+				schemaLocation="xsd/Gateway-SetSubscriberLocation.xsd" />
+			<xsd:import namespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+				schemaLocation="xsd/Gateway-ChangeProfile.xsd" />
+			<xsd:import namespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+				schemaLocation="xsd/Gateway-ChangeResourceState.xsd" />	
+			<xsd:import namespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+				schemaLocation="xsd/Gateway-ResetNumTariff.xsd" />
+			<xsd:import namespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+				schemaLocation="xsd/Gateway-TariffSimulation.xsd" />
+			<xsd:import namespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+				schemaLocation="xsd/Gateway-AccountMigration.xsd" />
+			<xsd:import namespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+				schemaLocation="xsd/Gateway-OneNumberManager.xsd" />	
+		</xsd:schema>
+	</wsdl:types>
+
+	<wsdl:message name="ChangeLanguageRequestMsg">
+		<wsdl:part element="tns:ChangeLanguageRequest" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="ChangeLanguageResponseMsg">
+		<wsdl:part element="tns:ChangeLanguageResponse" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+
+	<wsdl:message name="AssignPointsRequestMsg">
+		<wsdl:part element="tns:AssignPointsRequest" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="AssignPointsResponseMsg">
+		<wsdl:part element="tns:AssignPointsResponse" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+
+	<wsdl:message name="NetworkReconfigureGINORequestMsg">
+		<wsdl:part element="tns:NetworkReconfigureGINORequest" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="NetworkReconfigureGINOResponseMsg">
+		<wsdl:part element="tns:NetworkReconfigureGINOResponse" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+
+	<wsdl:message name="ChangeCardRequestMsg">
+		<wsdl:part element="tns:ChangeCardRequest" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="ChangeCardResponseMsg">
+		<wsdl:part element="tns:ChangeCardResponse" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+
+	<wsdl:message name="Opsc2OcsRequestMsg">
+		<wsdl:part element="tns:Opsc2OcsRequest" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="Opsc2OcsResponseMsg">
+		<wsdl:part element="tns:Opsc2OcsResponse" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+
+	<wsdl:message name="Ocs2OpscRequestMsg">
+		<wsdl:part element="tns:Ocs2OpscRequest" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="Ocs2OpscResponseMsg">
+		<wsdl:part element="tns:Ocs2OpscResponse" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+
+	<wsdl:message name="SetSubscriberLocationRequestMsg">
+		<wsdl:part element="tns:SetSubscriberLocationRequest" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="SetSubscriberLocationResponseMsg">
+		<wsdl:part element="tns:SetSubscriberLocationResponse" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	
+	<wsdl:message name="ChangeProfileRequestMsg">
+		<wsdl:part element="tns:ChangeProfileRequest" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="ChangeProfileResponseMsg">
+		<wsdl:part element="tns:ChangeProfileResponse" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="ChangeResourceStateRequestMsg">
+		<wsdl:part element="tns:ChangeResourceStateRequest" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="ChangeResourceStateResponseMsg">
+		<wsdl:part element="tns:ChangeResourceStateResponse" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+		<wsdl:message name="ResetNumTariffRequestMsg">
+		<wsdl:part element="tns:ResetNumTariffRequest" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="ResetNumTariffResponseMsg">
+		<wsdl:part element="tns:ResetNumTariffResponse" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	
+	<wsdl:message name="TariffSimulationRequestMsg">
+		<wsdl:part element="tns:TariffSimulationRequest" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="TariffSimulationResponseMsg">
+		<wsdl:part element="tns:TariffSimulationResponse" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	
+	<wsdl:message name="AccountMigrationRequestMsg">
+		<wsdl:part element="tns:AccountMigrationRequest" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="AccountMigrationResponseMsg">
+		<wsdl:part element="tns:AccountMigrationResponse" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	
+	<wsdl:message name="OneNumberManagerRequestMsg">
+		<wsdl:part element="tns:OneNumberManagerRequest" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	<wsdl:message name="OneNumberManagerResponseMsg">
+		<wsdl:part element="tns:OneNumberManagerResponse" name="body" />
+		<wsdl:part name="Header" element="head:Header" />
+	</wsdl:message>
+	
+	<wsdl:portType name="TrcsGatewayPortType">
+		<wsdl:operation name="ChangeLanguage">
+			<wsdl:input message="tns:ChangeLanguageRequestMsg" />
+			<wsdl:output message="tns:ChangeLanguageResponseMsg" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="AssignPoints">
+			<wsdl:input message="tns:AssignPointsRequestMsg" />
+			<wsdl:output message="tns:AssignPointsResponseMsg" />
+		</wsdl:operation>	
+
+		<wsdl:operation name="NetworkReconfigureGINO">
+			<wsdl:input message="tns:NetworkReconfigureGINORequestMsg" />
+			<wsdl:output message="tns:NetworkReconfigureGINOResponseMsg" />
+		</wsdl:operation>	
+
+		<wsdl:operation name="ChangeCard">
+			<wsdl:input message="tns:ChangeCardRequestMsg" />
+			<wsdl:output message="tns:ChangeCardResponseMsg" />
+		</wsdl:operation>	
+
+		<wsdl:operation name="Opsc2Ocs">
+			<wsdl:input message="tns:Opsc2OcsRequestMsg" />
+			<wsdl:output message="tns:Opsc2OcsResponseMsg" />
+		</wsdl:operation>	
+
+		<wsdl:operation name="Ocs2Opsc">
+			<wsdl:input message="tns:Ocs2OpscRequestMsg" />
+			<wsdl:output message="tns:Ocs2OpscResponseMsg" />
+		</wsdl:operation>	
+
+		<wsdl:operation name="SetSubscriberLocation">
+			<wsdl:input message="tns:SetSubscriberLocationRequestMsg" />
+			<wsdl:output message="tns:SetSubscriberLocationResponseMsg" />
+		</wsdl:operation>	
+		
+		<wsdl:operation name="ChangeProfile">
+			<wsdl:input message="tns:ChangeProfileRequestMsg" />
+			<wsdl:output message="tns:ChangeProfileResponseMsg" />
+		</wsdl:operation>
+			
+			
+		<wsdl:operation name="ChangeResourceState">
+			<wsdl:input message="tns:ChangeResourceStateRequestMsg" />
+			<wsdl:output message="tns:ChangeResourceStateResponseMsg" />
+		</wsdl:operation>	
+		
+		<wsdl:operation name="ResetNumTariff">
+			<wsdl:input message="tns:ResetNumTariffRequestMsg" />
+			<wsdl:output message="tns:ResetNumTariffResponseMsg" />
+		</wsdl:operation>	
+ 
+    <wsdl:operation name="TariffSimulation">
+			<wsdl:input message="tns:TariffSimulationRequestMsg" />
+			<wsdl:output message="tns:TariffSimulationResponseMsg" />
+		</wsdl:operation>
+
+		<wsdl:operation name="AccountMigration">
+			<wsdl:input message="tns:AccountMigrationRequestMsg" />
+			<wsdl:output message="tns:AccountMigrationResponseMsg" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="OneNumberManager">
+			<wsdl:input message="tns:OneNumberManagerRequestMsg" />
+			<wsdl:output message="tns:OneNumberManagerResponseMsg" />
+		</wsdl:operation>
+
+	</wsdl:portType>
+
+
+	<wsdl:binding name="TrcsGatewayBinding" type="tns:TrcsGatewayPortType">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+			
+		<wsdl:operation name="ChangeLanguage">
+			<soap:operation soapAction="ChangeLanguage" style="document" />
+			<wsdl:input>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:ChangeLanguageRequestMsg" part="Header"
+					use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:ChangeLanguageResponseMsg"
+					part="Header" use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="AssignPoints">
+			<soap:operation soapAction="AssignPoints" style="document" />
+			<wsdl:input>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:AssignPointsRequestMsg" part="Header"
+					use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:AssignPointsResponseMsg"
+					part="Header" use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="NetworkReconfigureGINO">
+			<soap:operation soapAction="NetworkReconfigureGINO" style="document" />
+			<wsdl:input>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:NetworkReconfigureGINORequestMsg" part="Header"
+					use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:NetworkReconfigureGINOResponseMsg"
+					part="Header" use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+			
+		<wsdl:operation name="ChangeCard">
+			<soap:operation soapAction="ChangeCard" style="document" />
+			<wsdl:input>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:ChangeCardRequestMsg" part="Header"
+					use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:ChangeCardResponseMsg"
+					part="Header" use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="Opsc2Ocs">
+			<soap:operation soapAction="Opsc2Ocs" style="document" />
+			<wsdl:input>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:Opsc2OcsRequestMsg" part="Header"
+					use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:Opsc2OcsResponseMsg"
+					part="Header" use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="Ocs2Opsc">
+			<soap:operation soapAction="Ocs2Opsc" style="document" />
+			<wsdl:input>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:Ocs2OpscRequestMsg" part="Header"
+					use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:Ocs2OpscResponseMsg"
+					part="Header" use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="SetSubscriberLocation">
+			<soap:operation soapAction="SetSubscriberLocation" style="document" />
+			<wsdl:input>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:SetSubscriberLocationRequestMsg" part="Header"
+					use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:SetSubscriberLocationResponseMsg"
+					part="Header" use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="ChangeProfile">
+			<soap:operation soapAction="ChangeProfile" style="document" />
+			<wsdl:input>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:ChangeProfileRequestMsg" part="Header"
+					use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:ChangeProfileResponseMsg"
+					part="Header" use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="ChangeResourceState">
+			<soap:operation soapAction="ChangeResourceState" style="document" />
+			<wsdl:input>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:ChangeResourceStateRequestMsg" part="Header"
+					use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:ChangeResourceStateResponseMsg"
+					part="Header" use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="ResetNumTariff">
+			<soap:operation soapAction="ResetNumTariff" style="document" />
+			<wsdl:input>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:ResetNumTariffRequestMsg" part="Header"
+					use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:ResetNumTariffResponseMsg"
+					part="Header" use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+    
+    <wsdl:operation name="TariffSimulation">
+			<soap:operation soapAction="TariffSimulation" style="document" />
+			<wsdl:input>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:TariffSimulationRequestMsg" part="Header"
+					use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:TariffSimulationResponseMsg"
+					part="Header" use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="AccountMigration">
+			<soap:operation soapAction="AccountMigration" style="document" />
+			<wsdl:input>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:AccountMigrationRequestMsg" part="Header"
+					use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:AccountMigrationResponseMsg"
+					part="Header" use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="OneNumberManager">
+			<soap:operation soapAction="OneNumberManager" style="document" />
+			<wsdl:input>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:OneNumberManagerRequestMsg" part="Header"
+					use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:OneNumberManagerResponseMsg"
+					part="Header" use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+	</wsdl:binding>
+
+	<wsdl:service name="TrcsGateway">
+		<wsdl:port binding="tns:TrcsGatewayBinding" name="TrcsGatewayPort">
+			<soap:address location="http://..." />
+		</wsdl:port>
+	</wsdl:service>
+
+</wsdl:definitions>

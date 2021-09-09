@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:commons="http://telecomitalia.it/SOA/TRCS/Gateway/Commons"
+	targetNamespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+	elementFormDefault="qualified" attributeFormDefault="unqualified"
+	xmlns:Q1="http://telecomitalia.it/SOA/TRCS/Gateway"
+	xmlns:Q2="http://telecomitalia.it/SOA/TRCS/Gateway/Commons"
+	xmlns:Q3="http://telecomitalia.it/SOA/TRCS/Gateway/Commons"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:Q4="http://www.w3.org/2001/XMLSchema"
+	xmlns:Q5="http://telecomitalia.it/SOA/TRCS/Gateway">
+
+	<import
+		namespace="http://telecomitalia.it/SOA/TRCS/Gateway/Commons"
+		schemaLocation="Gateway-Commons_v1.3.xsd" />
+
+	<element name="ChangeResourceStateRequest">
+		<complexType>
+
+			<attribute name="phoneNumber" type="commons:PhoneNumber"
+				use="required">
+			</attribute>
+			<attribute name="subsystem" type="string" use="required"></attribute>
+			<attribute name="info" type="string"></attribute>
+			<attribute name="resourceName" type="string"
+				use="required">
+			</attribute>
+			<attribute name="state" type="boolean" use="required"></attribute>
+		</complexType>
+	</element>
+
+	<element name="ChangeResourceStateResponse"
+		type="commons:ResponseMessage" />
+
+</schema>

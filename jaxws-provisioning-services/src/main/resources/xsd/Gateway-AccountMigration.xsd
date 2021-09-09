@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:commons="http://telecomitalia.it/SOA/TRCS/Gateway/Commons"
+	targetNamespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<import
+		namespace="http://telecomitalia.it/SOA/TRCS/Gateway/Commons"
+		schemaLocation="Gateway-Commons_v1.3.xsd" />
+
+	<element name="AccountMigrationRequest">
+		<complexType>
+		    <sequence>
+			  <element name="query" type="string" maxOccurs="1" minOccurs="0"></element>
+			</sequence>
+		
+			<attribute name="phoneNumber" type="commons:PhoneNumber" use="required">
+			</attribute>
+			<attribute name="subsystem" type="string" use="required"></attribute>
+			<attribute name="info" type="string"></attribute>
+			<attribute name="migrationType">
+				<simpleType>
+					<restriction base="string">
+						<enumeration value="PP2PCN"></enumeration>
+						<enumeration value="PCN2CONSIP"></enumeration>
+						<enumeration value="PCN2EBU"></enumeration>
+						<enumeration value="CONSIP72EBU"></enumeration>
+						<enumeration value="EBU2PCN"></enumeration>
+						<enumeration value="EBU2CONSIP7"></enumeration>
+						<enumeration value="CONSIP2CONSIP"></enumeration>
+					</restriction>
+				</simpleType>
+			</attribute>
+			<attribute name="toc" type="commons:typeOfCardType"	use="required"></attribute>
+			<attribute name="profile" type="string" use="required"></attribute>
+			<attribute name="reason" type="string"></attribute>
+			<attribute name="subscription" type="string" use="required"></attribute>
+			<attribute name="iccid" type="commons:iccidType"></attribute>
+			<attribute name="imsi" type="commons:imsiType"></attribute>
+			<attribute name="cardFeatures" type="commons:cardFeatureType"></attribute>
+			<attribute name="cardPhase" type="commons:cardPhaseType"></attribute>
+			<attribute name="serviceProviderId">
+				<simpleType>
+					<restriction base="string">
+						<maxLength value="5" />
+					</restriction>
+				</simpleType>
+			</attribute>
+			<attribute name="msisdnOlo">
+				<simpleType>
+					<restriction base="decimal">
+						<totalDigits value="12"/>
+						<fractionDigits value="0"/>
+						<minInclusive value="0"/>
+					</restriction>
+				</simpleType>
+			</attribute>
+			<attribute name="languageId">
+				<simpleType>
+					<restriction base="string">
+						<maxLength value="2"/>
+					</restriction>
+				</simpleType>
+			</attribute>
+			<attribute name="productType">
+				<simpleType>
+					<restriction base="decimal">
+						<totalDigits value="4"/>
+						<fractionDigits value="0"/>
+						<minInclusive value="0"/>
+						<maxInclusive value="7"/>
+					</restriction>
+				</simpleType>
+			</attribute>
+			<attribute name="productValue">
+				<simpleType>
+					<restriction base="decimal">
+						<totalDigits value="4"/>
+						<fractionDigits value="0"/>
+						<minInclusive value="0"/>
+						<maxInclusive value="5"/>
+					</restriction>
+				</simpleType>
+			</attribute>
+			<attribute name="productChannel">
+				<simpleType>
+					<restriction base="decimal">
+						<totalDigits value="4"/>
+						<fractionDigits value="0"/>
+						<minInclusive value="1"/>
+						<maxInclusive value="5"/>
+					</restriction>
+				</simpleType>
+			</attribute>
+			<attribute name="accountCategory">
+				<simpleType>
+					<restriction base="string">
+						<maxLength value="16"/>
+					</restriction>
+				</simpleType>
+			</attribute>	
+
+			<attribute name="rif">
+				<simpleType>
+					<restriction base="string">
+						<enumeration value="On"></enumeration>
+						<enumeration value="Off"></enumeration>
+					</restriction>
+				</simpleType>
+			</attribute>
+			<attribute name="registry">
+				<simpleType>
+					<restriction base="string">
+						<enumeration value="On"></enumeration>
+						<enumeration value="Off"></enumeration>
+					</restriction>
+				</simpleType>
+			</attribute>
+			<attribute name="debit" type="commons:costType"></attribute>
+			<attribute name="debitMode" default="0">
+				<simpleType>
+					<restriction base="integer">
+						<minInclusive value="0"/>
+						<maxInclusive value="2"/>
+					</restriction>
+				</simpleType>
+			</attribute>
+			<attribute name="debitZeroMode" default="0">
+				<simpleType>
+					<restriction base="integer">
+						<minInclusive value="0"/>
+						<maxInclusive value="2"/>
+					</restriction>
+				</simpleType>
+			</attribute>
+			<attribute name="debitCo" type="commons:costType"></attribute>
+			<attribute name="debitCoMode" default="0">
+				<simpleType>
+					<restriction base="integer">
+						<minInclusive value="0"/>
+						<maxInclusive value="2"/>
+					</restriction>
+				</simpleType>
+			</attribute>
+			<attribute name="debitCoZeroMode" default="0">
+				<simpleType>
+					<restriction base="integer">
+						<minInclusive value="0"/>
+						<maxInclusive value="2"/>
+					</restriction>
+				</simpleType>
+			</attribute>
+		</complexType>
+	</element>
+
+
+	<element name="AccountMigrationResponse"
+		type="commons:ResponseMessage" />
+
+</schema>

@@ -54,7 +54,7 @@ public class DeleteSubscriberXExecutor extends AbstractExecutor {
 
 			
 			// Invoca il servizio di cambio numero di GW
-			DeleteSubscriberXResponse response = this.getClient().deleteSubscriberX(headerType, wsRequest);
+			DeleteSubscriberXResponse response = this.getOpscClient().deleteSubscriberX(headerType, wsRequest);
 
 			logger.info("DeleteSubsciberX result=[{}]", response.getIbRetCode());
 			

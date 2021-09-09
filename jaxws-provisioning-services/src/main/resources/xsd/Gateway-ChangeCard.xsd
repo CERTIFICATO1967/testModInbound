@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:commons="http://telecomitalia.it/SOA/TRCS/Gateway/Commons"
+	targetNamespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<import namespace="http://telecomitalia.it/SOA/TRCS/Gateway/Commons"
+		schemaLocation="Gateway-Commons_v1.3.xsd" />
+
+	<element name="ChangeCardRequest">
+		<complexType>
+			<sequence>
+				<element name="iccid">
+					<complexType>
+						<attribute name="oldIccid"
+							type="commons:iccidType">
+						</attribute>
+						<attribute name="newIccid"
+							type="commons:iccidType">
+						</attribute>
+					</complexType>
+				</element>
+				<element name="imsi">
+					<complexType>
+						<attribute name="oldImsi"
+							type="commons:imsiType">
+						</attribute>
+						<attribute name="newImsi"
+							type="commons:imsiType">
+						</attribute>
+					</complexType>
+				</element>
+				<element name="toc" type="string"></element>
+				<element name="cardPhase" type="string"></element>
+				<element name="cardFeature" type="string"></element>
+				<element name="reason" type="string"></element>
+				<element name="operationCost" type="commons:costType"></element>
+				<element name="chCardType">
+					<simpleType>
+						<restriction base="string">
+							<enumeration value="ChNoBlockState"></enumeration>
+							<enumeration value="ChBlockState"></enumeration>
+						</restriction>
+					</simpleType>
+				</element>
+			</sequence>
+			<attribute name="phoneNumber" type="commons:PhoneNumber"
+				use="required">
+			</attribute>
+			<attribute name="subsystem" type="string" use="required"></attribute>
+			<attribute name="info" type="string"></attribute>
+		</complexType>
+	</element>
+
+	<element name="ChangeCardResponse" type="commons:ResponseMessage" />
+
+</schema>
