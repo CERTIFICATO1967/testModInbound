@@ -48,11 +48,11 @@ public class ChangeCardExecutor extends AbstractExecutor {
 
 			
 			// Invoca il servizio di cambio numero di GW
-			JAXBElement<ResponseMessage> response = this.getGinoClient().changeCard(headerType, wsRequest);
+			ResponseMessage response = this.getGinoClient().changeCard(headerType, wsRequest);
 
-			logger.info("ChangeNumber result=[{}]", response.getValue().getResult());
+			logger.info("ChangeNumber result=[{}]", response.getResult());
 			
-			if ("1".equals(response.getValue().getResult())) {
+			if ("1".equals(response.getResult())) {
 				//TODO: Scrivere Log di Success
 
 			} else {
