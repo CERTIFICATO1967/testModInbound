@@ -1,5 +1,7 @@
 package it.telecomitalia.trcs.middleware.ws.client;
 
+import javax.xml.bind.JAXBElement;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
@@ -31,12 +33,20 @@ public class GinoProvisioningClient extends WebServiceGatewaySupport {
 	public ResponseMessage changeCard(HeaderType header, ChangeCardRequest request) {
 		log.info("Requesting change card for [{}]", request.getPhoneNumber());
 
-		ResponseMessage response = (ResponseMessage) getWebServiceTemplate()
-				.marshalSendAndReceive(this.getDefaultUri(), request,
-						new SoapActionAndHeaderCallback(
-								"ChangeCard", header));
+//		ResponseMessage response = (ResponseMessage) getWebServiceTemplate()
+//				.marshalSendAndReceive(this.getDefaultUri(), request,
+//						new SoapActionAndHeaderCallback(
+//								"ChangeCard", header));
 
-		return response;
+
+		JAXBElement<ResponseMessage> response = (JAXBElement<ResponseMessage>) getWebServiceTemplate()
+		.marshalSendAndReceive(this.getDefaultUri(), request,
+				new SoapActionAndHeaderCallback(
+						"ChangeCard", header));
+		
+		
+		
+		return response.getValue();
 		
 	}
 	
