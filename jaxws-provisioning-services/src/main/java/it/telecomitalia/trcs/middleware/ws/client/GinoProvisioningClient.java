@@ -2,12 +2,12 @@ package it.telecomitalia.trcs.middleware.ws.client;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 
 import it.telecomitalia.soa.soap.soapheader.HeaderType;
-import it.telecomitalia.soa.trcs.gateway.ChangeCardRequest;
-import it.telecomitalia.soa.trcs.gateway.commons.ResponseMessage;
+import it.telecomitalia.soa.trcs.gateway.provisioning.ChangeCardRequest;
+import it.telecomitalia.soa.trcs.gateway.provisioning.commons.ResponseMessage;
+
 
 /**
  * Classe Client per i WebServices esposti per provisioning da GINO

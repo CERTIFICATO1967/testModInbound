@@ -52,7 +52,9 @@ public class GinoProvisioningClientConfig {
 	@Bean(name="ginoJaxb2Marshaller")
     public Jaxb2Marshaller marshaller() {
         Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
-        String[] packagesToScan= {"it.telecomitalia.soa.soap.soapheader","it.telecomitalia.soa.trcs.gateway","it.telecomitalia.soa.trcs.gateway.commons"};
+        String[] packagesToScan= {"it.telecomitalia.soa.soap.soapheader",
+        		                  "it.telecomitalia.soa.trcs.gateway.provisioning",
+        		                  "it.telecomitalia.soa.trcs.gateway.commons.provisioning"};
         marshaller.setPackagesToScan(packagesToScan);
         return marshaller;
     }

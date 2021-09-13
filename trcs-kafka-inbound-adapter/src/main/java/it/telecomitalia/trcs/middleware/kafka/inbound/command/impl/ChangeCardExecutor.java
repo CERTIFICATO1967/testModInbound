@@ -1,29 +1,23 @@
 package it.telecomitalia.trcs.middleware.kafka.inbound.command.impl;
 
+import java.math.BigDecimal;
 import java.util.Map;
+
+import javax.xml.bind.JAXBElement;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.math.BigDecimal;
+
 import it.telecomitalia.soa.soap.soapheader.HeaderType;
-import it.telecomitalia.soa.trcs.gateway.ChangeCardRequest;
-import it.telecomitalia.soa.trcs.gateway.ChangeNumberIbData;
-import it.telecomitalia.soa.trcs.gateway.ChangeNumberIbData.Transaction;
-import it.telecomitalia.soa.trcs.gateway.ChangeNumberRequest;
-import it.telecomitalia.soa.trcs.gateway.ChangeNumberResponse;
-import it.telecomitalia.soa.trcs.gateway.OfferType;
-import it.telecomitalia.soa.trcs.gateway.SubscriptionType;
-import it.telecomitalia.soa.trcs.gateway.commons.ResponseMessage;
+import it.telecomitalia.soa.trcs.gateway.provisioning.ChangeCardRequest;
+import it.telecomitalia.soa.trcs.gateway.provisioning.commons.ResponseMessage;
 import it.telecomitalia.trcs.middleware.kafka.inbound.ResponseTargets;
-import it.telecomitalia.trcs.middleware.kafka.inbound.TrcsKafkaHeader;
 import it.telecomitalia.trcs.middleware.kafka.inbound.builder.HeaderTypeBuilder;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.TrcsInboundExecutorException;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.dto.ChangeCardRequestBean;
-import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.dto.ChangeNumberRequestBean;
 import it.telecomitalia.trcs.middleware.ws.client.GinoProvisioningClient;
-import it.telecomitalia.trcs.middleware.ws.client.OpscProvisioningClient;
 
 public class ChangeCardExecutor extends AbstractExecutor {
 
@@ -54,11 +48,11 @@ public class ChangeCardExecutor extends AbstractExecutor {
 
 			
 			// Invoca il servizio di cambio numero di GW
-			ResponseMessage response = this.getGinoClient().changeCard(headerType, wsRequest);
+			JAXBElement<ResponseMessage> response = this.getGinoClient().changeCard(headerType, wsRequest);
 
-			logger.info("ChangeNumber result=[{}]", response.getResult());
+			logger.info("ChangeNumber result=[{}]", response.getValue().getResult());
 			
-			if ("1".equals(response.getResult())) {
+			if ("1".equals(response.getValue().getResult())) {
 				//TODO: Scrivere Log di Success
 
 			} else {

@@ -62,11 +62,12 @@
     <configuration>
           <schemaLanguage>WSDL</schemaLanguage>
           <generateDirectory>${project.basedir}/src/main/java</generateDirectory>
-          <!--  <generatePackage>com.baeldung.springsoap.client.gen</generatePackage>  -->
+          <!--  <generatePackage>it.telecomitalia.soa.trcs.gateway.provisioning</generatePackage>  -->
           <schemaDirectory>${project.basedir}/src/main/resources</schemaDirectory>
           <schemaIncludes>
              <include>GatewayServicesProvisioning_v1.wsdl</include>
           </schemaIncludes>
+          <cleanPackageDirectories>true</cleanPackageDirectories>
     </configuration>
 </plugin>
     </plugins>

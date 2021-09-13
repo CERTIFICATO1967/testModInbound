@@ -5,9 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import it.telecomitalia.soa.soap.soapheader.HeaderType;
-import it.telecomitalia.soa.trcs.gateway.ChangeCardRequest;
-
+import it.telecomitalia.soa.trcs.gateway.provisioning.ChangeCardRequest;
 import it.telecomitalia.trcs.middleware.ws.client.GinoProvisioningClient;
 
 
