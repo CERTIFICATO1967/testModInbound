@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,23 +17,26 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import it.telecomitalia.trcs.middleware.kafka.inbound.KafkaProducer;
 import it.telecomitalia.trcs.middleware.kafka.inbound.TrcsKafkaEventType;
 import it.telecomitalia.trcs.middleware.kafka.inbound.TrcsKafkaHeader;
+import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.DeleteSubscriberExecutor;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.dto.ChangeCardRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.dto.ChangeNumberRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.dto.DeleteSubscriberRequestBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.dto.SetSubscriberStatusXBean;
 
 
 @SpringBootTest
 @DirtiesContext
 public class KafkaProducerTest {
-
+	private final Logger logger = LoggerFactory.getLogger(KafkaProducerTest.class);
     @Autowired
     private KafkaProducer producer;
 
     @Value("${test.topic}")
     private String topic;
 
-    // @Test
-    public void sendMessage() throws Exception {
+    @Test
+    public void sendMessageChangeNumber() throws Exception {
+    	logger.debug("sendMessageChangeNumber");
     	String phoneNumber="3391231234";
     	
     	HashMap<String, String> headers = new HashMap<>();
@@ -58,8 +63,9 @@ public class KafkaProducerTest {
         producer.send(topic, out.toString(), phoneNumber, headers);        
     }
     
-    //@Test
+    @Test
     public void sendMessageDeleteSubscriberX() throws Exception {
+    	logger.debug("sendMessageDeleteSubscriberX");
     	String phoneNumber="3391231234";
     	
     	HashMap<String, String> headers = new HashMap<>();
@@ -72,17 +78,43 @@ public class KafkaProducerTest {
     	DeleteSubscriberRequestBean bean = new DeleteSubscriberRequestBean();
     	
     	bean.setPhoneNumber(phoneNumber);
-    	bean.setDeleteType("setDeleteType");
+    	bean.setDeleteType("MnpMvno");
+    	bean.setDiscountRecover(false);
+    	bean.setReason("setReason");
+    	bean.setInfo("setInfo");
+    	bean.setPhoneNumberMnp("3391231234");
+    	bean.setTypeOfCard("setTypeOfCard");
+    	
+    	
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	
+    	ByteArrayOutputStream out = new ByteArrayOutputStream();
+    	
+    	objectMapper.writeValue(out, bean);
+        producer.send(topic, out.toString(), phoneNumber, headers);        
+    }
+    
+    @Test
+    public void sendMessageDeleteSubscriber() throws Exception {
+    	logger.debug("sendMessageDeleteSubscriber");
+    	String phoneNumber="3391231234";
+    	
+    	HashMap<String, String> headers = new HashMap<>();
+    	
+    	headers.put(TrcsKafkaHeader.eventType.name(), TrcsKafkaEventType.deleteSubscriberRequest.value());
+    	headers.put(TrcsKafkaHeader.transactionID.name(), UUID.randomUUID().toString());
+    	headers.put(TrcsKafkaHeader.businessID.name(), UUID.randomUUID().toString());
+    	headers.put(TrcsKafkaHeader.sourceSystem.name(), "JunitTest");
+    	
+    	DeleteSubscriberRequestBean bean = new DeleteSubscriberRequestBean();
+    	
+    	bean.setPhoneNumber(phoneNumber);
+    	bean.setDeleteType("MnpMvno");
     	bean.setDiscountRecover(true);
     	bean.setReason("setReason");
     	bean.setInfo("setInfo");
     	bean.setPhoneNumberMnp("setPhoneNumberMnp");
     	bean.setTypeOfCard("setTypeOfCard");
-    	//bean.setBaseOffer("OB001");
-    	//bean.setPhoneNumberOLO("3393214321");
-    	//bean.setTypeOfCard("TOC-01");
-    	//bean.setTypeOfCustomer("CUST-001");
-    	//bean.setInfo("Info");
     	
     	ObjectMapper objectMapper = new ObjectMapper();
     	
@@ -95,6 +127,7 @@ public class KafkaProducerTest {
     
     @Test
     public void sendMessageChangeCard() throws Exception {
+    	logger.debug("sendMessageChangeCard");
     	String phoneNumber="3391231234";
     	
     	HashMap<String, String> headers = new HashMap<>();
@@ -120,6 +153,34 @@ public class KafkaProducerTest {
     	bean.setTypeOfCard("ChNoBlockState");
     	bean.setUnblockSubscriber(false);
     	
+    	
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	
+    	ByteArrayOutputStream out = new ByteArrayOutputStream();
+    	
+    	objectMapper.writeValue(out, bean);
+        producer.send(topic, out.toString(), phoneNumber, headers);        
+    }
+    
+    
+    @Test
+    public void sendMessageSetSubscriberStatusX() throws Exception {
+    	logger.debug("sendMessageSetSubscriberStatusX");
+    	String phoneNumber="3391231234";
+    	
+    	HashMap<String, String> headers = new HashMap<>();
+    	
+    	headers.put(TrcsKafkaHeader.eventType.name(), TrcsKafkaEventType.setSubscriberStatusXRequest.value());
+    	headers.put(TrcsKafkaHeader.transactionID.name(), UUID.randomUUID().toString());
+    	headers.put(TrcsKafkaHeader.businessID.name(), UUID.randomUUID().toString());
+    	headers.put(TrcsKafkaHeader.sourceSystem.name(), "JunitTest");
+    	
+    	SetSubscriberStatusXBean bean = new SetSubscriberStatusXBean();
+    	
+    	bean.setOldReason("Q");
+    	bean.setReason("A");
+       	bean.setPhoneNumber(phoneNumber);
+    	bean.setInfo("setInfo");
     	
     	ObjectMapper objectMapper = new ObjectMapper();
     	
