@@ -1,5 +1,7 @@
 package it.telecomitalia.trcs.middleware.ws.client;
 
+import javax.xml.bind.JAXBElement;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -12,6 +14,9 @@ import it.telecomitalia.soa.trcs.gateway.DeleteSubscriberXRequest;
 import it.telecomitalia.soa.trcs.gateway.DeleteSubscriberXResponse;
 import it.telecomitalia.soa.trcs.gateway.SetSubscriberStatusXRequest;
 import it.telecomitalia.soa.trcs.gateway.SetSubscriberStatusXResponse;
+import it.telecomitalia.soa.trcs.gateway.infobus.commons.InfobusMessage;
+
+import it.telecomitalia.trcs.gateway.services.opsc.DeleteSubscriberRequest;
 
 
 /**
@@ -65,6 +70,17 @@ public class OpscProvisioningClient extends WebServiceGatewaySupport {
 								"DeleteSubscriberX", header));
 
 		return response;
+		
+	}
+	
+	public InfobusMessage deleteSubscriber(HeaderType header, DeleteSubscriberRequest request) {
+		log.info("Requesting delete subscriber  for [{}]", request.getPayload().getMsisdn());
+		JAXBElement<InfobusMessage>	 response = (JAXBElement<InfobusMessage>) getWebServiceTemplate()
+				.marshalSendAndReceive(this.getDefaultUri(), request,
+						new SoapActionAndHeaderCallback(
+								"DeleteSubscriber", header));
+
+		return response.getValue();
 		
 	}
 }

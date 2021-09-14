@@ -8,9 +8,13 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import it.telecomitalia.soa.soap.soapheader.HeaderType;
+import it.telecomitalia.soa.trcs.gateway.ChangeNumberRequest;
 import it.telecomitalia.soa.trcs.gateway.DeleteSubscriberXIbData;
 import it.telecomitalia.soa.trcs.gateway.DeleteSubscriberXRequest;
 import it.telecomitalia.soa.trcs.gateway.DeleteSubscriberXResponse;
+import it.telecomitalia.soa.trcs.gateway.infobus.commons.InfobusMessage;
+import it.telecomitalia.trcs.gateway.services.opsc.DeleteSubscriberRequest;
+import it.telecomitalia.trcs.gateway.services.opsc.DeleteSubscriberRequest.Payload.OperationType;
 import it.telecomitalia.trcs.middleware.kafka.inbound.ResponseTargets;
 import it.telecomitalia.trcs.middleware.kafka.inbound.TrcsKafkaHeader;
 import it.telecomitalia.trcs.middleware.kafka.inbound.builder.HeaderTypeBuilder;
@@ -49,6 +53,17 @@ public class DeleteSubscriberExecutor extends AbstractExecutor{
 		    case MnpMvno:
 		    	if(request.isDiscountRecover()) {
 		    		logger.debug("Call DeleteSubscriber");
+		    		InfobusMessage resp = callWebServiceDeleteSubscriber(request, headers, headerType);
+			    	logger.info("DeleteSubsciber result=[{}]", resp.getIbRetCode());
+
+			    	if ("1".equals(resp.getIbRetCode())) {
+			    		//TODO: Scrivere Log di Success
+			    		;
+
+			    	} else {
+			    		//TODO: Gestire Errore di invocazione inviando risposta KO su Kafka
+			    		;
+			    	} 
 		    	}
 		    	else {
 		    		logger.debug("Call DeleteSubscriberX");
@@ -68,8 +83,6 @@ public class DeleteSubscriberExecutor extends AbstractExecutor{
 		    case EbuRollbackDelete:
 		    case EbuRollbackPreinstalled:
 		    	logger.debug("Call DeleteSubscriberX");
-
-		    	logger.debug("Call DeleteSubscriberX");
 		    	DeleteSubscriberXResponse resp = callWebServiceDeleteSubscriberX(request, headers, headerType);
 		    	logger.info("DeleteSubsciberX result=[{}]", resp.getIbRetCode());
 
@@ -81,7 +94,7 @@ public class DeleteSubscriberExecutor extends AbstractExecutor{
 		    		//TODO: Gestire Errore di invocazione inviando risposta KO su Kafka
 		    		;
 		    	} 
-		    		break;
+		    	break;
 		    case MnpOnDeletedSubscriber:
 		    	logger.debug("Call DeleteSubscriber");
 		        break;
@@ -173,6 +186,60 @@ public class DeleteSubscriberExecutor extends AbstractExecutor{
 	}
 
 	
+	private InfobusMessage callWebServiceDeleteSubscriber(DeleteSubscriberRequestBean request, Map<String, Object> headers,
+			HeaderType headerType) {
+		// Effettua il mapping con il body SOAP
+		DeleteSubscriberRequest wsRequest = this.createWebServiceRequest(request, headers, headerType);
+		// Invoca il servizio di cambio numero di GW
+		InfobusMessage response = this.getOpscClient().deleteSubscriber(headerType, wsRequest);
+		return response;
+	}
+	
+	private DeleteSubscriberRequest createWebServiceRequest(DeleteSubscriberRequestBean request, Map<String, Object> headers,
+			HeaderType headerType) {
 
+		InfobusMessage message =  new InfobusMessage();
+		message.setIbAppDep1("0");
+		message.setIbAppDep2("0");
+		message.setIbRetCode("1");
+		message.setIbIdSrvc("SERVINTG");
+		message.setIbData(new DeleteSubscriberRequest.IbData());
+		message.getIbData().setIbLenData(0);
+		
+		DeleteSubscriberRequest wsRequest = DeleteSubscriberRequest.createInstance(message);
+		
+		wsRequest.setIbData(message.getIbData());
+		
+		switch (Enum.valueOf(DeleteType.class,request.getDeleteType())) {
+		case Normal:
+			wsRequest.getPayload().setOperationType(OperationType.volontary);
+			break;
+		case GoodByeService:
+			wsRequest.getPayload().setOperationType(OperationType.goodbye);
+			break;
+		case Mnp:
+			wsRequest.getPayload().setOperationType(OperationType.mnp);
+			break;
+
+		case MnpMvno:
+			wsRequest.getPayload().setOperationType(OperationType.mnp2mvno);
+			break;
+		case MnpOnDeletedSubscriber:
+
+			wsRequest.getPayload().setOperationType(OperationType.deadMnp);
+			break;
+		}
+		
+		wsRequest.getPayload().setMsisdn(request.getPhoneNumber());
+		wsRequest.getPayload().setAstState(request.getReason());
+		wsRequest.getPayload().setrSystem(3);
+		
+		wsRequest.getPayload().setSrnb(request.isDiscountRecover() ? "" : "99");
+		wsRequest.getPayload().setMnpMsisdn(request.getPhoneNumber());
+		wsRequest.getPayload().setTypeOfCard(request.getTypeOfCard());
+		// da vedere
+		wsRequest.getPayload().setSubSystem("channel");
+		return wsRequest;
+	}
 	
 }

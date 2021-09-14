@@ -113,8 +113,7 @@ public class ChangeCardExecutor extends AbstractExecutor {
 		wsRequest.setCardFeature(request.getFeatures());
 		
 		// chCardType
-		// da vedere
-//		wsRequest.setChCardType( request.isUnblockSubscriber() ? ChangeCardType.CH_BLOCK_STATE : ChangeCardType.CH_NO_BLOCK_STATE );
+		wsRequest.setChCardType( request.isUnblockSubscriber() ? "ChBlockState" : "ChNoBlockState" );
 		
 		return wsRequest;
 	}
