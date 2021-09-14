@@ -48,7 +48,7 @@ public class ChangeCardExecutor extends AbstractExecutor {
 			// Invoca il servizio di cambio numero di GW
 			ResponseMessage response = this.getGinoClient().changeCard(headerType, wsRequest);
 
-			logger.info("ChangeNumber result=[{}]", response.getResult());
+			logger.info("ChangeCard result=[{}]", response.getResult());
 			
 			if ("1".equals(response.getResult())) {
 				//TODO: Scrivere Log di Success
@@ -73,7 +73,7 @@ public class ChangeCardExecutor extends AbstractExecutor {
 		boolean subscriberLocked = false;
 		ChangeCardRequest wsRequest = new ChangeCardRequest();
 		
-		wsRequest.setSubsystem("test");
+		wsRequest.setSubsystem("channel"); // da vedere
 		
 		// reason
 		wsRequest.setReason("A");
@@ -113,6 +113,7 @@ public class ChangeCardExecutor extends AbstractExecutor {
 		wsRequest.setCardFeature(request.getFeatures());
 		
 		// chCardType
+		// da vedere
 //		wsRequest.setChCardType( request.isUnblockSubscriber() ? ChangeCardType.CH_BLOCK_STATE : ChangeCardType.CH_NO_BLOCK_STATE );
 		
 		return wsRequest;

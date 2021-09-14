@@ -68,7 +68,20 @@ public class DeleteSubscriberExecutor extends AbstractExecutor{
 		    case EbuRollbackDelete:
 		    case EbuRollbackPreinstalled:
 		    	logger.debug("Call DeleteSubscriberX");
-		        break;
+
+		    	logger.debug("Call DeleteSubscriberX");
+		    	DeleteSubscriberXResponse resp = callWebServiceDeleteSubscriberX(request, headers, headerType);
+		    	logger.info("DeleteSubsciberX result=[{}]", resp.getIbRetCode());
+
+		    	if ("1".equals(resp.getIbRetCode())) {
+		    		//TODO: Scrivere Log di Success
+		    		;
+
+		    	} else {
+		    		//TODO: Gestire Errore di invocazione inviando risposta KO su Kafka
+		    		;
+		    	} 
+		    		break;
 		    case MnpOnDeletedSubscriber:
 		    	logger.debug("Call DeleteSubscriber");
 		        break;
@@ -93,7 +106,7 @@ public class DeleteSubscriberExecutor extends AbstractExecutor{
 	private DeleteSubscriberXResponse callWebServiceDeleteSubscriberX(DeleteSubscriberRequestBean request, Map<String, Object> headers,
 			HeaderType headerType) {
 		// Effettua il mapping con il body SOAP
-		DeleteSubscriberXRequest wsRequest = this.createWebServiceRequest(request, headers, headerType);
+		DeleteSubscriberXRequest wsRequest = this.createWebServiceRequestX(request, headers, headerType);
 		// Invoca il servizio di cambio numero di GW
 		DeleteSubscriberXResponse response = this.getOpscClient().deleteSubscriberX(headerType, wsRequest);
 		return response;
@@ -101,7 +114,7 @@ public class DeleteSubscriberExecutor extends AbstractExecutor{
 
 	
 	
-	private DeleteSubscriberXRequest createWebServiceRequest(DeleteSubscriberRequestBean request, Map<String, Object> headers,
+	private DeleteSubscriberXRequest createWebServiceRequestX(DeleteSubscriberRequestBean request, Map<String, Object> headers,
 			HeaderType headerType) {
 
 		DeleteSubscriberXRequest wsRequest = new DeleteSubscriberXRequest();
@@ -109,7 +122,7 @@ public class DeleteSubscriberExecutor extends AbstractExecutor{
 		wsRequest.setIbRetCode("1");
 		wsRequest.setIbAppDep1("0");
 		wsRequest.setIbAppDep2("0");
-		wsRequest.setIbIdSrvc("MNPRdy2Tlk");
+		wsRequest.setIbIdSrvc("SERVINT");
 		wsRequest.setIbData(new DeleteSubscriberXRequest.IbData());
 		wsRequest.getIbData().setIbLenData(0);
 		
@@ -119,11 +132,12 @@ public class DeleteSubscriberExecutor extends AbstractExecutor{
 		payload.setRequestType("TwoStep");
 		
 		payload.setTransaction(new DeleteSubscriberXIbData.Transaction());
+		
 		payload.getTransaction().setTID(headerType.getTransactionID());
 		payload.getTransaction().setSubsystem(String.valueOf(headers.get(TrcsKafkaHeader.channel.name())));
 		payload.getTransaction().setService(wsRequest.getIbIdSrvc());
 		payload.getTransaction().setIDSystem(headerType.getSourceSystem());
-		
+		payload.getTransaction().setRetCode("1");
 		
 	    payload.setClientKeys(new DeleteSubscriberXIbData.ClientKeys());
 		payload.getClientKeys().setMSISDN(request.getPhoneNumber());
@@ -134,20 +148,31 @@ public class DeleteSubscriberExecutor extends AbstractExecutor{
 		DeleteSubscriberXIbData.Operation.ServintSubscriber servintSubscriber = new DeleteSubscriberXIbData.Operation.ServintSubscriber();
 		/*- Se deleteType è uguale a "Mnp", inserire "MnpServInt".
 		- In tutti gli altri casi, inserire il valore presente in input.*/
-		servintSubscriber.setServIntType("MnpServInt");
+		servintSubscriber.setServIntType(request.getDeleteType());
+		if(request.getDeleteType().equals("Mnp")) {
+			servintSubscriber.setServIntType("MnpServInt");
+			DeleteSubscriberXIbData.Operation.ServintSubscriber.MnpServInt  mnpServInt = new DeleteSubscriberXIbData.Operation.ServintSubscriber.MnpServInt ();
+			mnpServInt.setMnpMSISDN(request.getPhoneNumberMnp());
+			servintSubscriber.setMnpServInt(mnpServInt);
+		}
+		
 		DeleteSubscriberXIbData.Operation.ServintSubscriber.Client client = new DeleteSubscriberXIbData.Operation.ServintSubscriber.Client();
 		client.setReason(request.getReason());
 		servintSubscriber.setClient(client);
-		DeleteSubscriberXIbData.Operation.ServintSubscriber.MnpServInt  mnpServInt = new DeleteSubscriberXIbData.Operation.ServintSubscriber.MnpServInt ();
-		mnpServInt.setMnpMSISDN(request.getPhoneNumberMnp());
-		servintSubscriber.setMnpServInt(mnpServInt);
-		DeleteSubscriberXIbData.Operation.ServintSubscriber.MnpMvno  mnpMvno = new DeleteSubscriberXIbData.Operation.ServintSubscriber.MnpMvno();
-		mnpMvno.setMnpMSISDN(request.getPhoneNumberMnp());
-		servintSubscriber.setMnpMvno(mnpMvno);
+		
+		if(request.getDeleteType().equals("MnpMvno")) {
+
+			DeleteSubscriberXIbData.Operation.ServintSubscriber.MnpMvno  mnpMvno = new DeleteSubscriberXIbData.Operation.ServintSubscriber.MnpMvno();
+			mnpMvno.setMnpMSISDN(request.getPhoneNumberMnp());
+			servintSubscriber.setMnpMvno(mnpMvno);
+		}
 		payload.getOperation().setServintSubscriber(servintSubscriber);
 		
 		
 		return wsRequest;
 	}
 
+	
+
+	
 }
