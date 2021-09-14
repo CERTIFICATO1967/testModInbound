@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.transport.WebServiceMessageSender;
-import it.telecomitalia.trcs.middleware.ws.client.GinoProvisioningClient;
 
 
 @Configuration

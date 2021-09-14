@@ -8,29 +8,23 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import it.telecomitalia.soa.soap.soapheader.HeaderType;
-import it.telecomitalia.soa.trcs.gateway.ChangeNumberIbData;
-import it.telecomitalia.soa.trcs.gateway.ChangeNumberIbData.Transaction;
-import it.telecomitalia.soa.trcs.gateway.ChangeNumberRequest;
-import it.telecomitalia.soa.trcs.gateway.ChangeNumberResponse;
 import it.telecomitalia.soa.trcs.gateway.DeleteSubscriberXIbData;
 import it.telecomitalia.soa.trcs.gateway.DeleteSubscriberXRequest;
 import it.telecomitalia.soa.trcs.gateway.DeleteSubscriberXResponse;
-import it.telecomitalia.soa.trcs.gateway.OfferType;
-import it.telecomitalia.soa.trcs.gateway.SubscriptionType;
 import it.telecomitalia.trcs.middleware.kafka.inbound.ResponseTargets;
 import it.telecomitalia.trcs.middleware.kafka.inbound.TrcsKafkaHeader;
 import it.telecomitalia.trcs.middleware.kafka.inbound.builder.HeaderTypeBuilder;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.TrcsInboundExecutorException;
-import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.dto.ChangeNumberRequestBean;
-import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.dto.DeleteSubscriberXRequestBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.dto.DeleteSubscriberRequestBean;
 import it.telecomitalia.trcs.middleware.ws.client.OpscProvisioningClient;
 
-public class DeleteSubscriberXExecutor extends AbstractExecutor {
 
-	private final Logger logger = LoggerFactory.getLogger(DeleteSubscriberXExecutor.class);
+public class DeleteSubscriberExecutor extends AbstractExecutor{
+
+	private final Logger logger = LoggerFactory.getLogger(DeleteSubscriberExecutor.class);
 
 
-	public DeleteSubscriberXExecutor(OpscProvisioningClient client, ResponseTargets responseTargets) {
+	public DeleteSubscriberExecutor(OpscProvisioningClient client, ResponseTargets responseTargets) {
 		super(client, responseTargets);
 	}
 
@@ -44,29 +38,50 @@ public class DeleteSubscriberXExecutor extends AbstractExecutor {
 			logger.debug("Request [{}]", payload);
 			
 			// Converte il JSON in POJO
-			DeleteSubscriberXRequestBean request = objectMapper.readValue(payload, DeleteSubscriberXRequestBean.class);
+			DeleteSubscriberRequestBean request = objectMapper.readValue(payload, DeleteSubscriberRequestBean.class);
 			
 			// Effettua il mapping con l'header SOAP
-			HeaderType headerType = new HeaderTypeBuilder(headers).build();
-			
-			// Effettua il mapping con il body SOAP
-			DeleteSubscriberXRequest wsRequest = this.createWebServiceRequest(request, headers, headerType);
+		    HeaderType headerType = new HeaderTypeBuilder(headers).build();
+		    switch (Enum.valueOf(DeleteType.class,request.getDeleteType())) {
+		    case Normal:
+		    case GoodByeService:
+		    case Mnp:
+		    case MnpMvno:
+		    	if(request.isDiscountRecover()) {
+		    		logger.debug("Call DeleteSubscriber");
+		    	}
+		    	else {
+		    		logger.debug("Call DeleteSubscriberX");
+		    		DeleteSubscriberXResponse resp = callWebServiceDeleteSubscriberX(request, headers, headerType);
+		    		logger.info("DeleteSubsciberX result=[{}]", resp.getIbRetCode());
+					
+					if ("1".equals(resp.getIbRetCode())) {
+						//TODO: Scrivere Log di Success
+						;
 
-			
-			// Invoca il servizio di cambio numero di GW
-			DeleteSubscriberXResponse response = this.getOpscClient().deleteSubscriberX(headerType, wsRequest);
-
-			logger.info("DeleteSubsciberX result=[{}]", response.getIbRetCode());
-			
-			if ("1".equals(response.getIbRetCode())) {
-				//TODO: Scrivere Log di Success
-
-			} else {
-				//TODO: Gestire Errore di invocazione inviando risposta KO su Kafka
-			}
-			
+					} else {
+						//TODO: Gestire Errore di invocazione inviando risposta KO su Kafka
+						;
+					}
+		    	}
+		       break;
+		    case EbuRollbackDelete:
+		    case EbuRollbackPreinstalled:
+		    	logger.debug("Call DeleteSubscriberX");
+		        break;
+		    case MnpOnDeletedSubscriber:
+		    	logger.debug("Call DeleteSubscriber");
+		        break;
+		    case MnpDeactivationOnDeletedSubscriber:
+		    	logger.debug("Call RestoreSubscriber");
+		         break;
+	
+		    default:
+			   	return ;
+		    }
+		
 		} catch (Exception e) {
-			logger.error("DeleteSubscriberX calling error.", e);
+			logger.error("DeleteSubscriber calling error", e);
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			
@@ -75,7 +90,18 @@ public class DeleteSubscriberXExecutor extends AbstractExecutor {
 
 	}
 
-	private DeleteSubscriberXRequest createWebServiceRequest(DeleteSubscriberXRequestBean request, Map<String, Object> headers,
+	private DeleteSubscriberXResponse callWebServiceDeleteSubscriberX(DeleteSubscriberRequestBean request, Map<String, Object> headers,
+			HeaderType headerType) {
+		// Effettua il mapping con il body SOAP
+		DeleteSubscriberXRequest wsRequest = this.createWebServiceRequest(request, headers, headerType);
+		// Invoca il servizio di cambio numero di GW
+		DeleteSubscriberXResponse response = this.getOpscClient().deleteSubscriberX(headerType, wsRequest);
+		return response;
+	}
+
+	
+	
+	private DeleteSubscriberXRequest createWebServiceRequest(DeleteSubscriberRequestBean request, Map<String, Object> headers,
 			HeaderType headerType) {
 
 		DeleteSubscriberXRequest wsRequest = new DeleteSubscriberXRequest();

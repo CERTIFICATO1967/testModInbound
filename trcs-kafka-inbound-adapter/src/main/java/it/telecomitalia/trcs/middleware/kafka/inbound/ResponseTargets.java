@@ -19,8 +19,8 @@ public class ResponseTargets {
 			case lockUnlockNumberRequest:
 				return this.responses.get(TrcsKafkaEventType.lockUnlockNumberResponse.value());
 				
-			case deleteSubscriberXRequest:
-				return this.responses.get(TrcsKafkaEventType.deleteSubscriberXResponse.value());
+			case deleteSubscriberRequest:
+				return this.responses.get(TrcsKafkaEventType.deleteSubscriberResponse.value());
 				
 			case changeCardRequest:
 				return this.responses.get(TrcsKafkaEventType.changeCardResponse.value());

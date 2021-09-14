@@ -8,8 +8,8 @@ public enum TrcsKafkaEventType {
 	lockUnlockNumberRequest("lineeMobili.bloccoSbloccoNumero.v1"),
 	lockUnlockNumberResponse("lineeMobili.responseBloccoSbloccoNumero.v1"),
 	
-	deleteSubscriberXRequest("lineeMobili.cancellaUtenza.v1"),
-	deleteSubscriberXResponse("lineeMobili.responseCancellaUtenza.v1"),
+	deleteSubscriberRequest("lineeMobili.cancellaUtenza.v1"),
+	deleteSubscriberResponse("lineeMobili.responseCancellaUtenza.v1"),
 	
 	
 	changeCardRequest("lineeMobili.cambioCarta.v1"),
