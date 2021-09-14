@@ -3,8 +3,6 @@ package it.telecomitalia.trcs.middleware.kafka.inbound.command.impl;
 import java.math.BigDecimal;
 import java.util.Map;
 
-import javax.xml.bind.JAXBElement;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,22 +70,50 @@ public class ChangeCardExecutor extends AbstractExecutor {
 	private ChangeCardRequest createWebServiceRequest(ChangeCardRequestBean request, Map<String, Object> headers,
 			HeaderType headerType) {
 
+		boolean subscriberLocked = false;
 		ChangeCardRequest wsRequest = new ChangeCardRequest();
+		
 		wsRequest.setSubsystem("test");
-		wsRequest.setToc("toc");
-		wsRequest.setReason("setReason");
-		wsRequest.setOperationCost(new BigDecimal("0"));
-		wsRequest.setCardFeature(request.getFeatures());
-		wsRequest.setCardPhase(request.getPhase());
-		wsRequest.setChCardType(request.getTypeOfCard());
-		ChangeCardRequest.Iccid iccid = new ChangeCardRequest.Iccid();
-		iccid.setNewIccid(request.getIccidOld());
-		wsRequest.setIccid(iccid);
-		ChangeCardRequest.Imsi imsi = new ChangeCardRequest.Imsi();
-		imsi.setOldImsi(request.getImsiOld());
-		wsRequest.setImsi(imsi);
-		wsRequest.setInfo(request.getInfo());
+		
+		// reason
+		wsRequest.setReason("A");
+		
+		// operationCost
+		wsRequest.setOperationCost(new BigDecimal("0.00"));
+
+		// phoneNumber
 		wsRequest.setPhoneNumber(request.getPhoneNumber());
+		
+		// info
+		wsRequest.setInfo(request.getInfo());
+		
+		// IMSI
+		ChangeCardRequest.Imsi imsi = new ChangeCardRequest.Imsi();
+		// imsiOld
+		imsi.setOldImsi(request.getImsiOld());
+		// imsiNew
+		imsi.setNewImsi(request.getImsiNew());
+		wsRequest.setImsi(imsi);
+		
+		// ICCID
+		ChangeCardRequest.Iccid iccid = new ChangeCardRequest.Iccid();
+		// iccidOld
+		iccid.setOldIccid(request.getIccidOld());
+		// iccidNew
+		iccid.setNewIccid(request.getIccidNew());
+		wsRequest.setIccid(iccid);
+		
+		// typeOfCard
+		wsRequest.setToc(request.getTypeOfCard());
+
+		// phase
+		wsRequest.setCardPhase(request.getPhase());
+
+		// features
+		wsRequest.setCardFeature(request.getFeatures());
+		
+		// chCardType
+//		wsRequest.setChCardType( request.isUnblockSubscriber() ? ChangeCardType.CH_BLOCK_STATE : ChangeCardType.CH_NO_BLOCK_STATE );
 		
 		return wsRequest;
 	}

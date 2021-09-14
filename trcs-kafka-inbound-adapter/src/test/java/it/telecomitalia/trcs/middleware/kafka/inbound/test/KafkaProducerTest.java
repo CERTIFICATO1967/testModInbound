@@ -29,7 +29,7 @@ public class KafkaProducerTest {
     @Value("${test.topic}")
     private String topic;
 
-    @Test
+    // @Test
     public void sendMessage() throws Exception {
     	String phoneNumber="3391231234";
     	
@@ -107,13 +107,17 @@ public class KafkaProducerTest {
     	
     	bean.setPhase("setPhase");
     	bean.setFeatures("setFeatures");
-    	bean.setIccidNew("iccid");
-    	bean.setIccidOld("iccidOLD");
+    	bean.setIccidNew("8939019876543210321");
+    	bean.setIccidOld("8939011234567891234");
+    	bean.setImsiOld("222013395947770");
+    	bean.setImsiNew("222023395947200");
     	bean.setPhoneNumber(phoneNumber);
+    	
     	
     	bean.setInfo("setInfo");
     	
     	bean.setTypeOfCard("ChNoBlockState");
+    	bean.setUnblockSubscriber(false);
     	
     	
     	ObjectMapper objectMapper = new ObjectMapper();
