@@ -15,16 +15,12 @@ public class ResponseTargets {
 		switch (eventType) {
 			case changeNumberRequest:
 				return this.responses.get(TrcsKafkaEventType.changeNumberResponse.value());
-				
-			case lockUnlockNumberRequest:
-				return this.responses.get(TrcsKafkaEventType.lockUnlockNumberResponse.value());
-				
+			case setSubscriberStatusXRequest:
+				return this.responses.get(TrcsKafkaEventType.setSubscriberStatusXResponse.value());
 			case deleteSubscriberRequest:
 				return this.responses.get(TrcsKafkaEventType.deleteSubscriberResponse.value());
-				
 			case changeCardRequest:
 				return this.responses.get(TrcsKafkaEventType.changeCardResponse.value());
-				
 			default:
 				return this.responses.get(eventType.value());
 		}

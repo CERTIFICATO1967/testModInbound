@@ -8,9 +8,9 @@ import it.telecomitalia.trcs.middleware.kafka.inbound.TrcsKafkaEventType;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.ChangeCardExecutor;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.ChangeNumberExecutor;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.DeleteSubscriberExecutor;
-import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.LockUnlockNumberExecutor;
-import it.telecomitalia.trcs.middleware.ws.client.OpscProvisioningClient;
+import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.SetSubscriberStatusXExecutor;
 import it.telecomitalia.trcs.middleware.ws.client.GinoProvisioningClient;
+import it.telecomitalia.trcs.middleware.ws.client.OpscProvisioningClient;
 
 @Component
 public class TrcsInboundExecutorFactory {
@@ -23,17 +23,17 @@ public class TrcsInboundExecutorFactory {
 	
 	@Autowired
 	ResponseTargets responseTargets;
+	
 
 	public TrcsInboundExecutor createInstance(TrcsKafkaEventType eventType) {
 		switch (eventType) {
-			case  changeNumberRequest:
+			case changeNumberRequest:
 				return new ChangeNumberExecutor(opscProvisioningClient, responseTargets);
-			case lockUnlockNumberRequest:
-				return new LockUnlockNumberExecutor(opscProvisioningClient, responseTargets);
-			case  deleteSubscriberRequest:
-				
+			case setSubscriberStatusXRequest:
+				return new SetSubscriberStatusXExecutor(opscProvisioningClient, responseTargets);
+			case deleteSubscriberRequest:
 				return new DeleteSubscriberExecutor(opscProvisioningClient, responseTargets);
-			case  changeCardRequest:
+			case changeCardRequest:
 				return new ChangeCardExecutor(ginoProvisioningClient, responseTargets);
 			default:
 				throw new RuntimeException("Invalid Event Type [" + eventType.value() + "]");
