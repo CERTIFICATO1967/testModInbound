@@ -17,7 +17,8 @@ import it.telecomitalia.trcs.middleware.kafka.inbound.TrcsKafkaEventType;
 import it.telecomitalia.trcs.middleware.kafka.inbound.TrcsKafkaHeader;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.dto.ChangeCardRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.dto.ChangeNumberRequestBean;
-import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.dto.DeleteSubscriberXRequestBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.dto.DeleteSubscriberRequestBean;
+
 
 @SpringBootTest
 @DirtiesContext
@@ -63,12 +64,12 @@ public class KafkaProducerTest {
     	
     	HashMap<String, String> headers = new HashMap<>();
     	
-    	headers.put(TrcsKafkaHeader.eventType.name(), TrcsKafkaEventType.deleteSubscriberXRequest.value());
+    	headers.put(TrcsKafkaHeader.eventType.name(), TrcsKafkaEventType.deleteSubscriberRequest.value());
     	headers.put(TrcsKafkaHeader.transactionID.name(), UUID.randomUUID().toString());
     	headers.put(TrcsKafkaHeader.businessID.name(), UUID.randomUUID().toString());
     	headers.put(TrcsKafkaHeader.sourceSystem.name(), "JunitTest");
     	
-    	DeleteSubscriberXRequestBean bean = new DeleteSubscriberXRequestBean();
+    	DeleteSubscriberRequestBean bean = new DeleteSubscriberRequestBean();
     	
     	bean.setPhoneNumber(phoneNumber);
     	bean.setDeleteType("setDeleteType");
