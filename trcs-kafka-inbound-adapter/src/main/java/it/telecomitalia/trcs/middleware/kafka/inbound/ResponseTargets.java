@@ -1,15 +1,18 @@
 package it.telecomitalia.trcs.middleware.kafka.inbound;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
-@Component
+@Configuration
 @ConfigurationProperties(prefix = "kafka")
+@EnableConfigurationProperties
 public class ResponseTargets {
-	
-	private Map<String, String> responses;
+
+	private Map<String, String> responses = new HashMap<>();
 	
 	public String getResponseTarget(TrcsKafkaEventType eventType) {
 		switch (eventType) {
@@ -25,4 +28,14 @@ public class ResponseTargets {
 				return this.responses.get(eventType.value());
 		}
 	}
+
+	public Map<String, String> getResponses() {
+		return responses;
+	}
+
+	public void setResponses(Map<String, String> responses) {
+		this.responses = responses;
+	}
+	
+	
 }

@@ -4,7 +4,7 @@ kafka:
   consumer:
     groupId: test-group
     topics: test-22,test-23
-  reponses:
+  responses:
     lineeMobili.responseCambioNumero.v1: test-response-1
     lineeMobili.responseBloccoSbloccoNumero.v1: test-response-2
 

@@ -15,10 +15,13 @@ import it.telecomitalia.soa.trcs.gateway.ChangeNumberResponse;
 import it.telecomitalia.soa.trcs.gateway.OfferType;
 import it.telecomitalia.soa.trcs.gateway.SubscriptionType;
 import it.telecomitalia.trcs.middleware.kafka.inbound.ResponseTargets;
+import it.telecomitalia.trcs.middleware.kafka.inbound.TrcsKafkaEventType;
 import it.telecomitalia.trcs.middleware.kafka.inbound.TrcsKafkaHeader;
 import it.telecomitalia.trcs.middleware.kafka.inbound.builder.HeaderTypeBuilder;
+import it.telecomitalia.trcs.middleware.kafka.inbound.command.ExecutorSynchronousFailed;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.TrcsInboundExecutorException;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.dto.ChangeNumberRequestBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.dto.ChangeNumberResponseBean;
 import it.telecomitalia.trcs.middleware.ws.client.OpscProvisioningClient;
 
 public class ChangeNumberExecutor extends AbstractExecutor {
@@ -32,7 +35,7 @@ public class ChangeNumberExecutor extends AbstractExecutor {
 
 	
 	@Override
-	public void execute(Map<String, Object> headers, String payload) {
+	public void execute(Map<String, Object> headers, String payload) throws ExecutorSynchronousFailed {
 		
 		ObjectMapper objectMapper = new ObjectMapper();
 		
@@ -58,9 +61,18 @@ public class ChangeNumberExecutor extends AbstractExecutor {
 				//TODO: Scrivere Log di Success
 
 			} else {
-				//TODO: Gestire Errore di invocazione inviando risposta KO su Kafka
+				//TODO: Inserire Logging
+				
+				throw new ExecutorSynchronousFailed(
+							this.getReponseTargets().getResponseTarget(TrcsKafkaEventType.changeNumberResponse),
+							TrcsKafkaHeader.createResponseKafkaHeader(headers, TrcsKafkaEventType.changeNumberResponse),
+							objectMapper.writeValueAsString(this.createResponsePayload(headers, request, response)),
+							request.getPhoneNumber()
+						);
 			}
 			
+		} catch (ExecutorSynchronousFailed e) {
+			throw e;
 		} catch (Exception e) {
 			logger.error("ChangeNumber calling error.", e);
 			// TODO Auto-generated catch block
@@ -70,6 +82,22 @@ public class ChangeNumberExecutor extends AbstractExecutor {
 		}
 
 	}
+
+	private ChangeNumberResponseBean createResponsePayload(Map<String, Object> headers, ChangeNumberRequestBean request,  ChangeNumberResponse response) {
+		
+		ChangeNumberResponseBean result = new ChangeNumberResponseBean(headers.get(TrcsKafkaHeader.sourceSystem.name()).toString(),
+				                                                       request.getPhoneNumber(),
+				                                                       KafkaErrorCodes.decodeFromOpsc(response.getIbRetCode()),
+				                                                       KafkaErrorCodes.messageFromOpsc(response.getIbRetCode()),
+				                                                       request.getPhoneNumberOLO());
+
+		result.setSubsystemErrorCode(response.getIbRetCode());
+		
+		return result;
+	}
+
+
+
 
 	private ChangeNumberRequest createWebServiceRequest(ChangeNumberRequestBean request, Map<String, Object> headers,
 			HeaderType headerType) {

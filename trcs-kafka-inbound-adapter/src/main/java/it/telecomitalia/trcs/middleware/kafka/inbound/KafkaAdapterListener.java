@@ -48,25 +48,31 @@ class KafkaAdapterListeners{
 			ack.acknowledge();
 			
 		} catch (NullPointerException  t) {
-			// t.printStackTrace();
+			//TODO: Scrivere errore nel log
 			
 			LOG.error("Message not valid");
 			
 		} catch (ExecutorSynchronousFailed ex) {
-			
-			producer.send(ex.getTopic(), 
-					      ex.getPayload(), 
-					      ex.getPhoneNumber(), 
-					      ex.getHeader());
-			
-			ack.acknowledge();
+			//TODO: Scrivere errore nel log			
+			try {
+				producer.send(ex.getTopic(), 
+						      ex.getPayload(), 
+						      ex.getPhoneNumber(), 
+						      ex.getHeader());
+						
+				ack.acknowledge();
+			} catch (Exception e) {
+				//TODO: Scrivere errore nel log
+				e.printStackTrace();
+				
+				ack.nack(10000); //Imposta il Timeout per le retry
+			}
 			
 		} catch (Throwable t) {
+			//TODO: Scrivere errore nel log
 			t.printStackTrace();
 			
 			ack.nack(10000); //Imposta il Timeout per le retry
-			
-			throw t;
 		}
 	}
 
