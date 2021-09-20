@@ -1,6 +1,6 @@
 package it.telecomitalia.trcs.middleware.kafka.inbound.dto;
 
-public class SetSubscriberStatusXBean {
+public class SetSubscriberStatusXRequestBean {
 	private String phoneNumber;
 	private String info;
 	private String reason;

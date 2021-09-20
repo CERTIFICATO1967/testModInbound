@@ -9,12 +9,19 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import it.telecomitalia.soa.soap.soapheader.HeaderType;
+import it.telecomitalia.soa.trcs.gateway.ChangeNumberResponse;
 import it.telecomitalia.soa.trcs.gateway.provisioning.ChangeCardRequest;
 import it.telecomitalia.soa.trcs.gateway.provisioning.commons.ResponseMessage;
 import it.telecomitalia.trcs.middleware.kafka.inbound.builder.HeaderTypeBuilder;
+import it.telecomitalia.trcs.middleware.kafka.inbound.command.ExecutorSynchronousFailed;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.TrcsInboundExecutorException;
 import it.telecomitalia.trcs.middleware.kafka.inbound.config.ResponseTargets;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ChangeCardRequestBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ChangeCardResponseBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ChangeNumberRequestBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ChangeNumberResponseBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaEventType;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaHeader;
 import it.telecomitalia.trcs.middleware.ws.client.GinoProvisioningClient;
 
 public class ChangeCardExecutor extends AbstractExecutor {
@@ -28,7 +35,7 @@ public class ChangeCardExecutor extends AbstractExecutor {
 
 	
 	@Override
-	public void execute(Map<String, Object> headers, String payload) {
+	public void execute(Map<String, Object> headers, String payload) throws ExecutorSynchronousFailed {
 		
 		ObjectMapper objectMapper = new ObjectMapper();
 		
@@ -55,8 +62,18 @@ public class ChangeCardExecutor extends AbstractExecutor {
 
 			} else {
 				//TODO: Gestire Errore di invocazione inviando risposta KO su Kafka
+				//TODO: Inserire Logging
+				throw new ExecutorSynchronousFailed(
+						this.getReponseTargets().getResponseTarget(TrcsKafkaEventType.changeCardResponse),
+						TrcsKafkaHeader.createResponseKafkaHeader(headers, TrcsKafkaEventType.changeCardResponse),
+						objectMapper.writeValueAsString(this.createResponsePayload(headers, request, response)),
+						request.getPhoneNumber()
+					);
 			}
 			
+			
+		} catch (ExecutorSynchronousFailed e) {
+			throw e;
 		} catch (Exception e) {
 			logger.error("ChangeCard calling error.", e);
 			// TODO Auto-generated catch block
@@ -66,11 +83,28 @@ public class ChangeCardExecutor extends AbstractExecutor {
 		}
 
 	}
+	
+	private ChangeCardResponseBean createResponsePayload(Map<String, Object> headers, ChangeCardRequestBean request,  ResponseMessage response) {
+		
+		
+        //String imsiOld,String imsiNew,String iccidOld ,String iccidNew
+        
+		ChangeCardResponseBean result = new ChangeCardResponseBean(headers.get(TrcsKafkaHeader.sourceSystem.name()).toString(),
+				                                                       request.getPhoneNumber(),
+				                                                       KafkaErrorCodes.decodeFromOpsc(response.getError().getCode()),
+				                                                       KafkaErrorCodes.messageFromOpsc(response.getError().getCode()),
+				                                                       request.getImsiOld(),request.getImsiNew(),request.getIccidOld(),request.getIccidNew());
+
+		result.setSubsystemErrorCode(response.getError().getCode());
+		
+		return result;
+	}
+
 
 	private ChangeCardRequest createWebServiceRequest(ChangeCardRequestBean request, Map<String, Object> headers,
 			HeaderType headerType) {
 
-		boolean subscriberLocked = false;
+	
 		ChangeCardRequest wsRequest = new ChangeCardRequest();
 		
 		wsRequest.setSubsystem("channel"); // da vedere

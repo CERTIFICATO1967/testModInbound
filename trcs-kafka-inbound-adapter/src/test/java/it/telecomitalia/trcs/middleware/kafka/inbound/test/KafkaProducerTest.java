@@ -19,7 +19,7 @@ import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.DeleteSubscri
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ChangeCardRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ChangeNumberRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.DeleteSubscriberRequestBean;
-import it.telecomitalia.trcs.middleware.kafka.inbound.dto.SetSubscriberStatusXBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.SetSubscriberStatusXRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaEventType;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaHeader;
 
@@ -175,7 +175,7 @@ public class KafkaProducerTest {
     	headers.put(TrcsKafkaHeader.businessID.name(), UUID.randomUUID().toString());
     	headers.put(TrcsKafkaHeader.sourceSystem.name(), "JunitTest");
     	
-    	SetSubscriberStatusXBean bean = new SetSubscriberStatusXBean();
+    	SetSubscriberStatusXRequestBean bean = new SetSubscriberStatusXRequestBean();
     	
     	bean.setOldReason("Q");
     	bean.setReason("A");
