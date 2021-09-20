@@ -11,6 +11,8 @@ public class ExecutorSynchronousFailed extends Exception {
 
 	private static final long serialVersionUID = -7477745311278947976L;
 
+	private Object payloadObject;
+	
 	private String payload;
 	
 	private Map<String, String> header;
@@ -20,7 +22,8 @@ public class ExecutorSynchronousFailed extends Exception {
 	private String phoneNumber;
 
 	public ExecutorSynchronousFailed(String topic, 
-			                         Map<String,String> header, 
+			                         Map<String,String> header,
+			                         Object payloadObject,
 			                         String payload,
 			                         String phoneNumber) {
 		super();
@@ -28,6 +31,7 @@ public class ExecutorSynchronousFailed extends Exception {
 		this.header = header;
 		this.topic = topic;
 		this.phoneNumber=phoneNumber;
+		this.payloadObject=payloadObject;
 	}
 
 	public String getPayload() {
@@ -45,5 +49,10 @@ public class ExecutorSynchronousFailed extends Exception {
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
+
+	public Object getPayloadObject() {
+		return payloadObject;
+	}
+	
 	
 }

@@ -2,6 +2,7 @@ package it.telecomitalia.trcs.middleware.kafka.inbound.builder;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.Map;
 
 import it.telecomitalia.soa.soap.soapheader.HeaderType;
@@ -27,21 +28,21 @@ public class HeaderTypeBuilder {
 		Object value;
 		
 		value = this.headerParams.get(TrcsKafkaHeader.businessID.name());
-		header.setBusinessID(value!=null?String.valueOf(value):null);
+		header.setBusinessID(TrcsKafkaHeader.objectToString(value));
 		
 		value = this.headerParams.get(TrcsKafkaHeader.transactionID.name());
-		header.setTransactionID(value!=null?String.valueOf(value):null);
+		header.setTransactionID(TrcsKafkaHeader.objectToString(value));
 		
 		value = this.headerParams.get(TrcsKafkaHeader.messageID.name());
-		header.setMessageID(value!=null?String.valueOf(value):null);
+		header.setMessageID(TrcsKafkaHeader.objectToString(value));
 
 		value = this.headerParams.get(TrcsKafkaHeader.interactionDate.name());
 		if (value!=null) {
 			header.setInteractionDate(new InteractionDateType());
-			header.getInteractionDate().setDate(value!=null?String.valueOf(value):null);
+			header.getInteractionDate().setDate(TrcsKafkaHeader.objectToString(value));
 			
 			value = this.headerParams.get(TrcsKafkaHeader.interactionTime.name());
-			header.getInteractionDate().setTime(value!=null?String.valueOf(value):null);
+			header.getInteractionDate().setTime(TrcsKafkaHeader.objectToString(value));
 		} else {
 			LocalDateTime now = LocalDateTime.now();
 			
@@ -55,7 +56,7 @@ public class HeaderTypeBuilder {
 		}
 		
 		value = this.headerParams.get(TrcsKafkaHeader.sourceSystem.name());
-		header.setSourceSystem(value!=null?String.valueOf(value):null);
+		header.setSourceSystem(TrcsKafkaHeader.objectToString(value));
 		
 		
 		return header;

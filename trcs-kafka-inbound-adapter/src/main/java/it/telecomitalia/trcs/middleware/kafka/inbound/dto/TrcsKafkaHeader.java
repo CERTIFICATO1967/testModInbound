@@ -30,7 +30,7 @@ public enum TrcsKafkaHeader {
 		
 		for (String key : headers.keySet()) {
 			if (TrcsKafkaHeader.eventType.name().equals(key)) {
-				result.put(key, responseEventType.name());
+				result.put(key, responseEventType.value());
 			} else if (TrcsKafkaHeader.interactionDate.name().equals(key)) {
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 				result.put(key, formatter.format(now));
@@ -38,11 +38,25 @@ public enum TrcsKafkaHeader {
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");
 				result.put(key, formatter.format(now));
 			} else {
-				result.put(key, headers.get(key).toString());
+				result.put(key, TrcsKafkaHeader.objectToString(headers.get(key)));
 			}
 			
 		}
 		
 		return result;
+	}
+	
+	
+	public static String objectToString(Object obj) {
+		if (obj!=null) {
+			if (obj instanceof String)
+				return (String)obj;
+			else if ( obj instanceof byte[] ) {
+				return new String((byte[])obj);
+			} else {
+				return String.valueOf(obj);
+			}
+		} else
+			return null;
 	}
 }

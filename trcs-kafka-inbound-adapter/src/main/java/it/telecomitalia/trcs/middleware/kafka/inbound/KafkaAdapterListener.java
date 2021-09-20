@@ -1,5 +1,12 @@
 package it.telecomitalia.trcs.middleware.kafka.inbound;
 
+
+import static net.logstash.logback.argument.StructuredArguments.fields;
+import static net.logstash.logback.argument.StructuredArguments.value;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +23,22 @@ import it.telecomitalia.trcs.middleware.kafka.inbound.command.TrcsInboundExecuto
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.TrcsInboundExecutorFactory;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaEventType;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaHeader;
+import it.telecomitalia.trcs.middleware.kafka.inbound.logging.HydraLogBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.logging.HydraLogBean.KafkaMessageBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.logging.HydraLogThreadLocal;
+import it.telecomitalia.trcs.middleware.kafka.inbound.logging.InboundLogMessages;
+
 
 @Component
 class KafkaAdapterListeners{
 	
-	@Autowired KafkaProducer producer;
+	@Autowired 
+	private KafkaProducer producer;
 
 	private final Logger LOG = LoggerFactory.getLogger(KafkaAdapterListeners.class);
 
-	@Autowired TrcsInboundExecutorFactory factory;
+	@Autowired 
+	private TrcsInboundExecutorFactory factory;
 	
 	@KafkaListener(
 			topics = "#{'${kafka.consumer.topics}'.split(',')}",
@@ -35,47 +49,92 @@ class KafkaAdapterListeners{
 			@Headers MessageHeaders headers,
 			Acknowledgment ack) {
 		
+		Instant start= Instant.now();
+	      
+	      
 		LOG.info("Listener [{}] - part=[{}]", message, headers.get(KafkaHeaders.RECEIVED_PARTITION_ID));
+		
+		HydraLogBean bean = HydraLogThreadLocal.getLogBean();
+		
+		bean.setSource(TrcsKafkaHeader.objectToString(headers.get(TrcsKafkaHeader.sourceSystem.name())));
+		bean.setChannel(TrcsKafkaHeader.objectToString(headers.get(TrcsKafkaHeader.channel.name())));
+		bean.setService(TrcsKafkaHeader.objectToString(headers.get(TrcsKafkaHeader.eventType.name())));
+		bean.setTransactionId(TrcsKafkaHeader.objectToString(headers.get(TrcsKafkaHeader.transactionID.name())));
+		
+		bean.getEvent().setHeader(headers);
+		
+		InboundLogMessages logMessage = InboundLogMessages.SUCCESS;
+		Throwable failureException = null;
 		
 		try {
 			byte[] value = (byte[])headers.get(TrcsKafkaHeader.eventType.name());
 			TrcsKafkaEventType eventType = TrcsKafkaEventType.getInstance(new String(value));
 			
-			
 			TrcsInboundExecutor executor = factory.createInstance(eventType);
 			
 			executor.execute(headers, message);
 			
-			LOG.info("ACKNOWLEDGE");
 			ack.acknowledge();
 			
-		} catch (NullPointerException  t) {
-			//TODO: Scrivere errore nel log
+			bean.setResult(HydraLogBean.Result.success);
+					
+		} catch (NullPointerException  e) {
 			
-			LOG.error("Message not valid");
+			bean.setResult(HydraLogBean.Result.discard);
 			
-		} catch (ExecutorSynchronousFailed ex) {
-			//TODO: Scrivere errore nel log			
+			logMessage = InboundLogMessages.INVALID_MESSAGE;
+			failureException=e;
+			
+		} catch (ExecutorSynchronousFailed e) {
 			try {
-				producer.send(ex.getTopic(), 
-						      ex.getPayload(), 
-						      ex.getPhoneNumber(), 
-						      ex.getHeader());
+				producer.send(e.getTopic(), 
+						      e.getPayload(), 
+						      e.getPhoneNumber(), 
+						      e.getHeader());
 						
 				ack.acknowledge();
-			} catch (Exception e) {
-				//TODO: Scrivere errore nel log
-				e.printStackTrace();
 				
+				bean.setResult(HydraLogBean.Result.failure);
+				
+				bean.getEvent().setResponse(new KafkaMessageBean());
+				bean.getEvent().getResponse().setStringHeader(e.getHeader());
+				bean.getEvent().getResponse().setPayload(e.getPayloadObject());
+
+				logMessage = InboundLogMessages.FAILURE_ON_GATEWAY;
+
+			} catch (Exception ex) {
 				ack.nack(10000); //Imposta il Timeout per le retry
+				
+				bean.setResult(HydraLogBean.Result.retry);
+				
+				logMessage = InboundLogMessages.FAILURE_RETRY;
+				failureException=ex;
 			}
 			
 		} catch (Throwable t) {
-			//TODO: Scrivere errore nel log
-			t.printStackTrace();
-			
 			ack.nack(10000); //Imposta il Timeout per le retry
+			
+			bean.setResult(HydraLogBean.Result.retry);
+
+			logMessage = InboundLogMessages.FAILURE_RETRY;
+			failureException=t;			
+		} finally {
+			
+			Instant end = Instant.now();
+		    bean.setElapsed(ChronoUnit.MILLIS.between(start, end));
+			
+			if (bean.getResult().equals(HydraLogBean.Result.success)) {
+				LOG.info(logMessage.getMessage(), 
+						value("messageId", logMessage.getCode()),
+						fields(bean));
+			} else {
+				LOG.info(logMessage.getMessage(), 
+						value("messageId", logMessage.getCode()),
+						fields(bean),
+						failureException);
+			}
 		}
+		
 	}
 
 	/*
@@ -108,4 +167,5 @@ class KafkaAdapterListeners{
 		LOG.info("MessageConverterUserListener [{}]", user);
 	}
 	*/
+
 }

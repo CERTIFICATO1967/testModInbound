@@ -22,6 +22,8 @@ import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ChangeNumberRequestBea
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ChangeNumberResponseBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaEventType;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaHeader;
+import it.telecomitalia.trcs.middleware.kafka.inbound.logging.HydraLogBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.logging.HydraLogThreadLocal;
 import it.telecomitalia.trcs.middleware.ws.client.OpscProvisioningClient;
 
 public class ChangeNumberExecutor extends AbstractExecutor {
@@ -45,6 +47,8 @@ public class ChangeNumberExecutor extends AbstractExecutor {
 			// Converte il JSON in POJO
 			ChangeNumberRequestBean request = objectMapper.readValue(payload, ChangeNumberRequestBean.class);
 			
+			HydraLogThreadLocal.getLogBean().getEvent().setPayload(request);
+			
 			// Effettua il mapping con l'header SOAP
 			HeaderType headerType = new HeaderTypeBuilder(headers).build();
 			
@@ -58,25 +62,26 @@ public class ChangeNumberExecutor extends AbstractExecutor {
 			logger.info("ChangeNumber result=[{}]", response.getIbRetCode());
 			
 			if ("1".equals(response.getIbRetCode())) {
-				//TODO: Scrivere Log di Success
-
+				HydraLogThreadLocal.getLogBean().setResult(HydraLogBean.Result.success);
 			} else {
-				//TODO: Inserire Logging
+				Object responsePayload = this.createResponsePayload(headers, request, response);
 				
 				throw new ExecutorSynchronousFailed(
 							this.getReponseTargets().getResponseTarget(TrcsKafkaEventType.changeNumberResponse),
 							TrcsKafkaHeader.createResponseKafkaHeader(headers, TrcsKafkaEventType.changeNumberResponse),
-							objectMapper.writeValueAsString(this.createResponsePayload(headers, request, response)),
+							responsePayload,
+							objectMapper.writeValueAsString(responsePayload),
 							request.getPhoneNumber()
 						);
 			}
 			
 		} catch (ExecutorSynchronousFailed e) {
+			
 			throw e;
+			
 		} catch (Exception e) {
-			logger.error("ChangeNumber calling error.", e);
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
+			logger.debug("ChangeNumber calling error.", e);
 			
 			throw new TrcsInboundExecutorException(e);
 		}
