@@ -1,5 +1,8 @@
 package it.telecomitalia.trcs.middleware.kafka.inbound.logging;
 
+import java.io.StringWriter;
+import java.text.DecimalFormat;
+
 public enum InboundLogMessages {
 
 	SUCCESS(1,"<{}> Message sent successfull"),
@@ -7,6 +10,8 @@ public enum InboundLogMessages {
 	FAILURE_ON_GATEWAY(3, "<{}> Target WebService failed on Gateway. Error Response sent"), 
 	FAILURE_RETRY(4, "<{}> Error during Event handling. Retry Later"),
 	;
+	
+	private static final String PREFIX="KAFKA_INBOUND";
 	
 	private int code;
 	
@@ -19,8 +24,15 @@ public enum InboundLogMessages {
 	}
 
 
-	public int getCode() {
-		return code;
+	public String getCode() {
+		DecimalFormat formatter = new DecimalFormat("0000");
+		StringWriter message = new StringWriter();
+		
+		message.write(PREFIX);
+		message.write("-");
+		message.write(formatter.format(code));
+		
+		return message.toString();
 	}
 
 
