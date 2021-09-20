@@ -10,12 +10,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import it.telecomitalia.soa.soap.soapheader.HeaderType;
 import it.telecomitalia.soa.trcs.gateway.SetSubscriberStatusXIbData;
 import it.telecomitalia.soa.trcs.gateway.SetSubscriberStatusXIbData.Transaction;
+import it.telecomitalia.soa.trcs.gateway.provisioning.commons.ResponseMessage;
 import it.telecomitalia.soa.trcs.gateway.SetSubscriberStatusXRequest;
 import it.telecomitalia.soa.trcs.gateway.SetSubscriberStatusXResponse;
 import it.telecomitalia.trcs.middleware.kafka.inbound.builder.HeaderTypeBuilder;
+import it.telecomitalia.trcs.middleware.kafka.inbound.command.ExecutorSynchronousFailed;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.TrcsInboundExecutorException;
 import it.telecomitalia.trcs.middleware.kafka.inbound.config.ResponseTargets;
-import it.telecomitalia.trcs.middleware.kafka.inbound.dto.SetSubscriberStatusXBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ChangeCardRequestBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ChangeCardResponseBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.SetSubscriberStatusXRequestBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.SetSubscriberStatusXResponseBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaEventType;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaHeader;
 import it.telecomitalia.trcs.middleware.ws.client.OpscProvisioningClient;
 
@@ -30,7 +36,7 @@ public class SetSubscriberStatusXExecutor extends AbstractExecutor {
 
 	
 	@Override
-	public void execute(Map<String, Object> headers, String payload) {
+	public void execute(Map<String, Object> headers, String payload) throws ExecutorSynchronousFailed{
 		
 		ObjectMapper objectMapper = new ObjectMapper();
 		
@@ -38,7 +44,7 @@ public class SetSubscriberStatusXExecutor extends AbstractExecutor {
 			logger.debug("Request [{}]", payload);
 			
 			// Converte il JSON in POJO
-			SetSubscriberStatusXBean request = objectMapper.readValue(payload, SetSubscriberStatusXBean.class);
+			SetSubscriberStatusXRequestBean request = objectMapper.readValue(payload, SetSubscriberStatusXRequestBean.class);
 			
 			// Effettua il mapping con l'header SOAP
 			HeaderType headerType = new HeaderTypeBuilder(headers).build();
@@ -57,19 +63,39 @@ public class SetSubscriberStatusXExecutor extends AbstractExecutor {
 
 			} else {
 				//TODO: Gestire Errore di invocazione inviando risposta KO su Kafka
+				//TODO: Inserire Logging
+				throw new ExecutorSynchronousFailed(
+						this.getReponseTargets().getResponseTarget(TrcsKafkaEventType.setSubscriberStatusXResponse),
+						TrcsKafkaHeader.createResponseKafkaHeader(headers, TrcsKafkaEventType.setSubscriberStatusXResponse),
+						objectMapper.writeValueAsString(this.createResponsePayload(headers, request, response)),
+						request.getPhoneNumber()
+					);
 			}
 			
+		} catch (ExecutorSynchronousFailed e) {
+			throw e;
 		} catch (Exception e) {
 			logger.error("SetSubscriberStatusX calling error.", e);
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			
+
 			throw new TrcsInboundExecutorException(e);
 		}
 
 	}
+	
+    private SetSubscriberStatusXResponseBean createResponsePayload(Map<String, Object> headers, SetSubscriberStatusXRequestBean request,  SetSubscriberStatusXResponse response) {
+		SetSubscriberStatusXResponseBean result = new SetSubscriberStatusXResponseBean(headers.get(TrcsKafkaHeader.sourceSystem.name()).toString(),
+				                                                       request.getPhoneNumber(),
+				                                                       KafkaErrorCodes.decodeFromOpsc(response.getIbRetCode()),
+				                                                       KafkaErrorCodes.messageFromOpsc(response.getIbRetCode()),
+				                                                       request.getReason(),request.getOldReason());
+		result.setSubsystemErrorCode(response.getIbRetCode());
+		return result;
+	}
 
-	private SetSubscriberStatusXRequest createWebServiceRequest(SetSubscriberStatusXBean request, Map<String, Object> headers,
+
+	private SetSubscriberStatusXRequest createWebServiceRequest(SetSubscriberStatusXRequestBean request, Map<String, Object> headers,
 			HeaderType headerType) {
 
 		SetSubscriberStatusXRequest wsRequest = new SetSubscriberStatusXRequest();

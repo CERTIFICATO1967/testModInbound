@@ -1,5 +1,6 @@
 package it.telecomitalia.trcs.middleware.kafka.inbound.command.impl;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -15,10 +16,13 @@ import it.telecomitalia.soa.trcs.gateway.infobus.commons.InfobusMessage;
 import it.telecomitalia.trcs.gateway.services.opsc.DeleteSubscriberRequest;
 import it.telecomitalia.trcs.gateway.services.opsc.DeleteSubscriberRequest.Payload.OperationType;
 import it.telecomitalia.trcs.middleware.kafka.inbound.builder.HeaderTypeBuilder;
+import it.telecomitalia.trcs.middleware.kafka.inbound.command.ExecutorSynchronousFailed;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.TrcsInboundExecutorException;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.type.DeleteType;
 import it.telecomitalia.trcs.middleware.kafka.inbound.config.ResponseTargets;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.DeleteSubscriberRequestBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.DeleteSubscriberResponseBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaEventType;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaHeader;
 import it.telecomitalia.trcs.middleware.ws.client.OpscProvisioningClient;
 
@@ -32,87 +36,158 @@ public class DeleteSubscriberExecutor extends AbstractExecutor{
 		super(client, responseTargets);
 	}
 
-	
+
 	@Override
-	public void execute(Map<String, Object> headers, String payload) {
-		
+	public void execute(Map<String, Object> headers, String payload) throws ExecutorSynchronousFailed{
+
 		ObjectMapper objectMapper = new ObjectMapper();
-		
+
 		try {
 			logger.debug("Request [{}]", payload);
-			
+
 			// Converte il JSON in POJO
 			DeleteSubscriberRequestBean request = objectMapper.readValue(payload, DeleteSubscriberRequestBean.class);
-			
+
 			// Effettua il mapping con l'header SOAP
-		    HeaderType headerType = new HeaderTypeBuilder(headers).build();
-		    switch (Enum.valueOf(DeleteType.class,request.getDeleteType())) {
-		    case Normal:
-		    case GoodByeService:
-		    case Mnp:
-		    case MnpMvno:
-		    	if(request.isDiscountRecover()) {
-		    		logger.debug("Call DeleteSubscriber");
-		    		InfobusMessage resp = callWebServiceDeleteSubscriber(request, headers, headerType);
-			    	logger.info("DeleteSubsciber result=[{}]", resp.getIbRetCode());
+			HeaderType headerType = new HeaderTypeBuilder(headers).build();
+			switch (Enum.valueOf(DeleteType.class,request.getDeleteType())) {
+			case Normal:
+			case GoodByeService:
+			case Mnp:
+			case MnpMvno:
+				if(request.isDiscountRecover()) {
+					logger.debug("Call DeleteSubscriber");
+					callDelete(objectMapper,request,headers,headerType);
+				}
+				else {
+					logger.debug("Call DeleteSubscriberX");
+					callDeleteX(objectMapper,request,headers,headerType);
+				}
+				break;
+			case EbuRollbackDelete:
+			case EbuRollbackPreinstalled:
+				logger.debug("Call DeleteSubscriberX");
+				callDeleteX(objectMapper,request,headers,headerType);
+				break;
+			case MnpOnDeletedSubscriber:
+				logger.debug("Call DeleteSubscriber");
+				callDelete(objectMapper,request,headers,headerType);
+				break;
+			case MnpDeactivationOnDeletedSubscriber:
+				logger.debug("Call RestoreSubscriber");
+				break;
 
-			    	if ("1".equals(resp.getIbRetCode())) {
-			    		//TODO: Scrivere Log di Success
-			    		;
+			default:
+				return ;
+			}
 
-			    	} else {
-			    		//TODO: Gestire Errore di invocazione inviando risposta KO su Kafka
-			    		;
-			    	} 
-		    	}
-		    	else {
-		    		logger.debug("Call DeleteSubscriberX");
-		    		DeleteSubscriberXResponse resp = callWebServiceDeleteSubscriberX(request, headers, headerType);
-		    		logger.info("DeleteSubsciberX result=[{}]", resp.getIbRetCode());
-					
-					if ("1".equals(resp.getIbRetCode())) {
-						//TODO: Scrivere Log di Success
-						;
-
-					} else {
-						//TODO: Gestire Errore di invocazione inviando risposta KO su Kafka
-						;
-					}
-		    	}
-		       break;
-		    case EbuRollbackDelete:
-		    case EbuRollbackPreinstalled:
-		    	logger.debug("Call DeleteSubscriberX");
-		    	DeleteSubscriberXResponse resp = callWebServiceDeleteSubscriberX(request, headers, headerType);
-		    	logger.info("DeleteSubsciberX result=[{}]", resp.getIbRetCode());
-
-		    	if ("1".equals(resp.getIbRetCode())) {
-		    		//TODO: Scrivere Log di Success
-		    		;
-
-		    	} else {
-		    		//TODO: Gestire Errore di invocazione inviando risposta KO su Kafka
-		    		;
-		    	} 
-		    	break;
-		    case MnpOnDeletedSubscriber:
-		    	logger.debug("Call DeleteSubscriber");
-		        break;
-		    case MnpDeactivationOnDeletedSubscriber:
-		    	logger.debug("Call RestoreSubscriber");
-		         break;
-	
-		    default:
-			   	return ;
-		    }
-		
-		} catch (Exception e) {
+		} catch (ExecutorSynchronousFailed e) {
+			throw e;
+		}catch (Exception e) {
 			logger.error("DeleteSubscriber calling error", e);
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			
+
 			throw new TrcsInboundExecutorException(e);
 		}
+
+	}
+
+
+	private void callDeleteX(ObjectMapper objectMapper,DeleteSubscriberRequestBean request,Map<String, Object> headers,HeaderType headerType) throws ExecutorSynchronousFailed,Exception {
+
+
+		DeleteSubscriberXResponse response = callWebServiceDeleteSubscriberX(request, headers, headerType);
+		logger.info("DeleteSubsciberX result=[{}]", response.getIbRetCode());
+
+		if ("1".equals(response.getIbRetCode())) {
+			//TODO: Scrivere Log di Success
+			;
+
+		} else {
+			//TODO: Gestire Errore di invocazione inviando risposta KO su Kafka
+			//TODO: Inserire Logging
+			throw new ExecutorSynchronousFailed(
+					this.getReponseTargets().getResponseTarget(TrcsKafkaEventType.deleteSubscriberResponse),
+					TrcsKafkaHeader.createResponseKafkaHeader(headers, TrcsKafkaEventType.deleteSubscriberResponse),
+					objectMapper.writeValueAsString(this.createResponsePayloadX(headers, request, response)),
+					request.getPhoneNumber()
+					);
+
+		} 
+
+	}
+
+	private void callDelete(ObjectMapper objectMapper,DeleteSubscriberRequestBean request,Map<String, Object> headers,HeaderType headerType) throws ExecutorSynchronousFailed,Exception {
+
+
+		InfobusMessage response = callWebServiceDeleteSubscriber(request, headers, headerType);
+		logger.info("DeleteSubsciber result=[{}]", response.getIbRetCode());
+
+		if ("1".equals(response.getIbRetCode())) {
+			//TODO: Scrivere Log di Success
+			;
+
+		} else {
+			//TODO: Gestire Errore di invocazione inviando risposta KO su Kafka
+			//TODO: Inserire Logging
+			throw new ExecutorSynchronousFailed(
+					this.getReponseTargets().getResponseTarget(TrcsKafkaEventType.deleteSubscriberResponse),
+					TrcsKafkaHeader.createResponseKafkaHeader(headers, TrcsKafkaEventType.deleteSubscriberResponse),
+					objectMapper.writeValueAsString(this.createResponsePayload(headers, request, response)),
+					request.getPhoneNumber()
+					);
+
+		} 
+
+	}
+
+
+	private DeleteSubscriberResponseBean createResponsePayload(Map<String, Object> headers, DeleteSubscriberRequestBean request,  InfobusMessage response) {
+
+		DeleteSubscriberResponseBean result = new DeleteSubscriberResponseBean(headers.get(TrcsKafkaHeader.sourceSystem.name()).toString(),
+				request.getPhoneNumber(),
+				KafkaErrorCodes.decodeFromOpsc(response.getIbRetCode()),
+				KafkaErrorCodes.messageFromOpsc(response.getIbRetCode()),
+				request.getDeleteType(),
+				request.getReason(),
+				request.getPhoneNumberMnp(),
+				request.isDiscountRecover(),
+				// rivedere 
+				new BigDecimal("0.00"),
+				new BigDecimal("0.00")
+				);
+
+
+
+		result.setSubsystemErrorCode(response.getIbRetCode());
+
+		return result;
+
+
+	}
+
+	private DeleteSubscriberResponseBean createResponsePayloadX(Map<String, Object> headers, DeleteSubscriberRequestBean request,  DeleteSubscriberXResponse response) {
+
+		DeleteSubscriberResponseBean result = new DeleteSubscriberResponseBean(headers.get(TrcsKafkaHeader.sourceSystem.name()).toString(),
+				request.getPhoneNumber(),
+				KafkaErrorCodes.decodeFromOpsc(response.getIbRetCode()),
+				KafkaErrorCodes.messageFromOpsc(response.getIbRetCode()),
+				request.getDeleteType(),
+				request.getReason(),
+				request.getPhoneNumberMnp(),
+				request.isDiscountRecover(),
+				// rivedere 
+				new BigDecimal("0.00"),
+				new BigDecimal("0.00")
+				);
+
+
+
+		result.setSubsystemErrorCode(response.getIbRetCode());
+
+		return result;
+
 
 	}
 
@@ -125,37 +200,37 @@ public class DeleteSubscriberExecutor extends AbstractExecutor{
 		return response;
 	}
 
-	
-	
+
+
 	private DeleteSubscriberXRequest createWebServiceRequestX(DeleteSubscriberRequestBean request, Map<String, Object> headers,
 			HeaderType headerType) {
 
 		DeleteSubscriberXRequest wsRequest = new DeleteSubscriberXRequest();
-		
+
 		wsRequest.setIbRetCode("1");
 		wsRequest.setIbAppDep1("0");
 		wsRequest.setIbAppDep2("0");
 		wsRequest.setIbIdSrvc("SERVINT");
 		wsRequest.setIbData(new DeleteSubscriberXRequest.IbData());
 		wsRequest.getIbData().setIbLenData(0);
-		
+
 		DeleteSubscriberXIbData payload = new DeleteSubscriberXIbData();
 		wsRequest.getIbData().setRequest(payload);
-		
+
 		payload.setRequestType("TwoStep");
-		
+
 		payload.setTransaction(new DeleteSubscriberXIbData.Transaction());
-		
+
 		payload.getTransaction().setTID(headerType.getTransactionID());
 		payload.getTransaction().setSubsystem(String.valueOf(headers.get(TrcsKafkaHeader.channel.name())));
 		payload.getTransaction().setService(wsRequest.getIbIdSrvc());
 		payload.getTransaction().setIDSystem(headerType.getSourceSystem());
 		payload.getTransaction().setRetCode("1");
-		
-	    payload.setClientKeys(new DeleteSubscriberXIbData.ClientKeys());
+
+		payload.setClientKeys(new DeleteSubscriberXIbData.ClientKeys());
 		payload.getClientKeys().setMSISDN(request.getPhoneNumber());
-		
-	    payload.setOperation(new DeleteSubscriberXIbData.Operation());
+
+		payload.setOperation(new DeleteSubscriberXIbData.Operation());
 		payload.getOperation().setOperationType("ServintSubscriber");
 		payload.getOperation().setInfo(request.getInfo());
 		DeleteSubscriberXIbData.Operation.ServintSubscriber servintSubscriber = new DeleteSubscriberXIbData.Operation.ServintSubscriber();
@@ -168,11 +243,11 @@ public class DeleteSubscriberExecutor extends AbstractExecutor{
 			mnpServInt.setMnpMSISDN(request.getPhoneNumberMnp());
 			servintSubscriber.setMnpServInt(mnpServInt);
 		}
-		
+
 		DeleteSubscriberXIbData.Operation.ServintSubscriber.Client client = new DeleteSubscriberXIbData.Operation.ServintSubscriber.Client();
 		client.setReason(request.getReason());
 		servintSubscriber.setClient(client);
-		
+
 		if(request.getDeleteType().equals("MnpMvno")) {
 
 			DeleteSubscriberXIbData.Operation.ServintSubscriber.MnpMvno  mnpMvno = new DeleteSubscriberXIbData.Operation.ServintSubscriber.MnpMvno();
@@ -180,12 +255,12 @@ public class DeleteSubscriberExecutor extends AbstractExecutor{
 			servintSubscriber.setMnpMvno(mnpMvno);
 		}
 		payload.getOperation().setServintSubscriber(servintSubscriber);
-		
-		
+
+
 		return wsRequest;
 	}
 
-	
+
 	private InfobusMessage callWebServiceDeleteSubscriber(DeleteSubscriberRequestBean request, Map<String, Object> headers,
 			HeaderType headerType) {
 		// Effettua il mapping con il body SOAP
@@ -194,7 +269,7 @@ public class DeleteSubscriberExecutor extends AbstractExecutor{
 		InfobusMessage response = this.getOpscClient().deleteSubscriber(headerType, wsRequest);
 		return response;
 	}
-	
+
 	private DeleteSubscriberRequest createWebServiceRequest(DeleteSubscriberRequestBean request, Map<String, Object> headers,
 			HeaderType headerType) {
 
@@ -205,11 +280,11 @@ public class DeleteSubscriberExecutor extends AbstractExecutor{
 		message.setIbIdSrvc("SERVINTG");
 		message.setIbData(new DeleteSubscriberRequest.IbData());
 		message.getIbData().setIbLenData(0);
-		
+
 		DeleteSubscriberRequest wsRequest = DeleteSubscriberRequest.createInstance(message);
-		
+
 		wsRequest.setIbData(message.getIbData());
-		
+
 		switch (Enum.valueOf(DeleteType.class,request.getDeleteType())) {
 		case Normal:
 			wsRequest.getPayload().setOperationType(OperationType.volontary);
@@ -229,11 +304,11 @@ public class DeleteSubscriberExecutor extends AbstractExecutor{
 			wsRequest.getPayload().setOperationType(OperationType.deadMnp);
 			break;
 		}
-		
+
 		wsRequest.getPayload().setMsisdn(request.getPhoneNumber());
 		wsRequest.getPayload().setAstState(request.getReason());
 		wsRequest.getPayload().setrSystem(3);
-		
+
 		wsRequest.getPayload().setSrnb(request.isDiscountRecover() ? "" : "99");
 		wsRequest.getPayload().setMnpMsisdn(request.getPhoneNumber());
 		wsRequest.getPayload().setTypeOfCard(request.getTypeOfCard());
@@ -241,5 +316,5 @@ public class DeleteSubscriberExecutor extends AbstractExecutor{
 		wsRequest.getPayload().setSubSystem("channel");
 		return wsRequest;
 	}
-	
+
 }
