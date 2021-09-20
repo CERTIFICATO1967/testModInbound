@@ -10,15 +10,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import it.telecomitalia.soa.soap.soapheader.HeaderType;
 import it.telecomitalia.soa.trcs.gateway.SetSubscriberStatusXIbData;
 import it.telecomitalia.soa.trcs.gateway.SetSubscriberStatusXIbData.Transaction;
-import it.telecomitalia.soa.trcs.gateway.provisioning.commons.ResponseMessage;
 import it.telecomitalia.soa.trcs.gateway.SetSubscriberStatusXRequest;
 import it.telecomitalia.soa.trcs.gateway.SetSubscriberStatusXResponse;
 import it.telecomitalia.trcs.middleware.kafka.inbound.builder.HeaderTypeBuilder;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.ExecutorSynchronousFailed;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.TrcsInboundExecutorException;
 import it.telecomitalia.trcs.middleware.kafka.inbound.config.ResponseTargets;
-import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ChangeCardRequestBean;
-import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ChangeCardResponseBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.SetSubscriberStatusXRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.SetSubscriberStatusXResponseBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaEventType;
@@ -64,10 +61,13 @@ public class SetSubscriberStatusXExecutor extends AbstractExecutor {
 			} else {
 				//TODO: Gestire Errore di invocazione inviando risposta KO su Kafka
 				//TODO: Inserire Logging
+				SetSubscriberStatusXResponseBean responsePayload = this.createResponsePayload(headers, request, response);
+				
 				throw new ExecutorSynchronousFailed(
 						this.getReponseTargets().getResponseTarget(TrcsKafkaEventType.setSubscriberStatusXResponse),
 						TrcsKafkaHeader.createResponseKafkaHeader(headers, TrcsKafkaEventType.setSubscriberStatusXResponse),
-						objectMapper.writeValueAsString(this.createResponsePayload(headers, request, response)),
+						responsePayload,
+						objectMapper.writeValueAsString(responsePayload),
 						request.getPhoneNumber()
 					);
 			}

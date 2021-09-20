@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import it.telecomitalia.soa.soap.soapheader.HeaderType;
-import it.telecomitalia.soa.trcs.gateway.ChangeNumberResponse;
 import it.telecomitalia.soa.trcs.gateway.provisioning.ChangeCardRequest;
 import it.telecomitalia.soa.trcs.gateway.provisioning.commons.ResponseMessage;
 import it.telecomitalia.trcs.middleware.kafka.inbound.builder.HeaderTypeBuilder;
@@ -18,8 +17,6 @@ import it.telecomitalia.trcs.middleware.kafka.inbound.command.TrcsInboundExecuto
 import it.telecomitalia.trcs.middleware.kafka.inbound.config.ResponseTargets;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ChangeCardRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ChangeCardResponseBean;
-import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ChangeNumberRequestBean;
-import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ChangeNumberResponseBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaEventType;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaHeader;
 import it.telecomitalia.trcs.middleware.ws.client.GinoProvisioningClient;
@@ -63,10 +60,14 @@ public class ChangeCardExecutor extends AbstractExecutor {
 			} else {
 				//TODO: Gestire Errore di invocazione inviando risposta KO su Kafka
 				//TODO: Inserire Logging
+				
+				ChangeCardResponseBean responsePayload = this.createResponsePayload(headers, request, response);
+				
 				throw new ExecutorSynchronousFailed(
 						this.getReponseTargets().getResponseTarget(TrcsKafkaEventType.changeCardResponse),
 						TrcsKafkaHeader.createResponseKafkaHeader(headers, TrcsKafkaEventType.changeCardResponse),
-						objectMapper.writeValueAsString(this.createResponsePayload(headers, request, response)),
+						responsePayload,
+						objectMapper.writeValueAsString(responsePayload),
 						request.getPhoneNumber()
 					);
 			}

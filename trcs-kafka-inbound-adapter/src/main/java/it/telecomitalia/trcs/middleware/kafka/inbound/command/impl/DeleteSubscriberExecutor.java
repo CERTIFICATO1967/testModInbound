@@ -107,10 +107,13 @@ public class DeleteSubscriberExecutor extends AbstractExecutor{
 		} else {
 			//TODO: Gestire Errore di invocazione inviando risposta KO su Kafka
 			//TODO: Inserire Logging
+			DeleteSubscriberResponseBean responsePayload = this.createResponsePayloadX(headers, request, response);
+			
 			throw new ExecutorSynchronousFailed(
 					this.getReponseTargets().getResponseTarget(TrcsKafkaEventType.deleteSubscriberResponse),
 					TrcsKafkaHeader.createResponseKafkaHeader(headers, TrcsKafkaEventType.deleteSubscriberResponse),
-					objectMapper.writeValueAsString(this.createResponsePayloadX(headers, request, response)),
+					responsePayload,
+					objectMapper.writeValueAsString(responsePayload),
 					request.getPhoneNumber()
 					);
 
@@ -131,10 +134,13 @@ public class DeleteSubscriberExecutor extends AbstractExecutor{
 		} else {
 			//TODO: Gestire Errore di invocazione inviando risposta KO su Kafka
 			//TODO: Inserire Logging
+			DeleteSubscriberResponseBean responsePayload = this.createResponsePayload(headers, request, response);
+			
 			throw new ExecutorSynchronousFailed(
 					this.getReponseTargets().getResponseTarget(TrcsKafkaEventType.deleteSubscriberResponse),
 					TrcsKafkaHeader.createResponseKafkaHeader(headers, TrcsKafkaEventType.deleteSubscriberResponse),
-					objectMapper.writeValueAsString(this.createResponsePayload(headers, request, response)),
+					responsePayload,
+					objectMapper.writeValueAsString(responsePayload),
 					request.getPhoneNumber()
 					);
 
