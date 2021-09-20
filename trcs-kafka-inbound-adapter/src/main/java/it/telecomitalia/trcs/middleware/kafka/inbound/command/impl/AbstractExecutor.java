@@ -1,7 +1,7 @@
 package it.telecomitalia.trcs.middleware.kafka.inbound.command.impl;
 
-import it.telecomitalia.trcs.middleware.kafka.inbound.ResponseTargets;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.TrcsInboundExecutor;
+import it.telecomitalia.trcs.middleware.kafka.inbound.config.ResponseTargets;
 import it.telecomitalia.trcs.middleware.ws.client.GinoProvisioningClient;
 import it.telecomitalia.trcs.middleware.ws.client.OpscProvisioningClient;
 

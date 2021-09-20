@@ -14,14 +14,14 @@ import it.telecomitalia.soa.trcs.gateway.ChangeNumberRequest;
 import it.telecomitalia.soa.trcs.gateway.ChangeNumberResponse;
 import it.telecomitalia.soa.trcs.gateway.OfferType;
 import it.telecomitalia.soa.trcs.gateway.SubscriptionType;
-import it.telecomitalia.trcs.middleware.kafka.inbound.ResponseTargets;
-import it.telecomitalia.trcs.middleware.kafka.inbound.TrcsKafkaEventType;
-import it.telecomitalia.trcs.middleware.kafka.inbound.TrcsKafkaHeader;
 import it.telecomitalia.trcs.middleware.kafka.inbound.builder.HeaderTypeBuilder;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.ExecutorSynchronousFailed;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.TrcsInboundExecutorException;
-import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.dto.ChangeNumberRequestBean;
-import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.dto.ChangeNumberResponseBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.config.ResponseTargets;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ChangeNumberRequestBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ChangeNumberResponseBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaEventType;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaHeader;
 import it.telecomitalia.trcs.middleware.ws.client.OpscProvisioningClient;
 
 public class ChangeNumberExecutor extends AbstractExecutor {

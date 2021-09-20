@@ -1,4 +1,4 @@
-package it.telecomitalia.trcs.middleware.kafka.inbound;
+package it.telecomitalia.trcs.middleware.kafka.inbound.dto;
 
 public enum TrcsKafkaEventType {
 

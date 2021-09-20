@@ -1,4 +1,4 @@
-package it.telecomitalia.trcs.middleware.kafka.inbound;
+package it.telecomitalia.trcs.middleware.kafka.inbound.dto;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

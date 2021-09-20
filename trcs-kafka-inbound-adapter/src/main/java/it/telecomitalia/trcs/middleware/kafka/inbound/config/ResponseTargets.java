@@ -1,4 +1,4 @@
-package it.telecomitalia.trcs.middleware.kafka.inbound;
+package it.telecomitalia.trcs.middleware.kafka.inbound.config;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,6 +6,8 @@ import java.util.Map;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaEventType;
 
 @Configuration
 @ConfigurationProperties(prefix = "kafka")

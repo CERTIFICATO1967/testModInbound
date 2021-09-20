@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.ExecutorSynchronousFailed;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.TrcsInboundExecutor;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.TrcsInboundExecutorFactory;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaEventType;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaHeader;
 
 @Component
 class KafkaAdapterListeners{

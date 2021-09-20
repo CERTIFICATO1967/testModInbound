@@ -11,10 +11,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import it.telecomitalia.soa.soap.soapheader.HeaderType;
 import it.telecomitalia.soa.trcs.gateway.provisioning.ChangeCardRequest;
 import it.telecomitalia.soa.trcs.gateway.provisioning.commons.ResponseMessage;
-import it.telecomitalia.trcs.middleware.kafka.inbound.ResponseTargets;
 import it.telecomitalia.trcs.middleware.kafka.inbound.builder.HeaderTypeBuilder;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.TrcsInboundExecutorException;
-import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.dto.ChangeCardRequestBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.config.ResponseTargets;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ChangeCardRequestBean;
 import it.telecomitalia.trcs.middleware.ws.client.GinoProvisioningClient;
 
 public class ChangeCardExecutor extends AbstractExecutor {

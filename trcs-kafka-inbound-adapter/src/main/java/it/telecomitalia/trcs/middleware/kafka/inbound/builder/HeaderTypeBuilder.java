@@ -6,7 +6,7 @@ import java.util.Map;
 
 import it.telecomitalia.soa.soap.soapheader.HeaderType;
 import it.telecomitalia.soa.soap.soapheader.InteractionDateType;
-import it.telecomitalia.trcs.middleware.kafka.inbound.TrcsKafkaHeader;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaHeader;
 
 /**
  * Builder per l'header dei WebServices esposti da TRCS-GW

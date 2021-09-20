@@ -3,12 +3,12 @@ package it.telecomitalia.trcs.middleware.kafka.inbound.command;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import it.telecomitalia.trcs.middleware.kafka.inbound.ResponseTargets;
-import it.telecomitalia.trcs.middleware.kafka.inbound.TrcsKafkaEventType;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.ChangeCardExecutor;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.ChangeNumberExecutor;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.DeleteSubscriberExecutor;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.SetSubscriberStatusXExecutor;
+import it.telecomitalia.trcs.middleware.kafka.inbound.config.ResponseTargets;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaEventType;
 import it.telecomitalia.trcs.middleware.ws.client.GinoProvisioningClient;
 import it.telecomitalia.trcs.middleware.ws.client.OpscProvisioningClient;
 

@@ -12,11 +12,11 @@ import it.telecomitalia.soa.trcs.gateway.SetSubscriberStatusXIbData;
 import it.telecomitalia.soa.trcs.gateway.SetSubscriberStatusXIbData.Transaction;
 import it.telecomitalia.soa.trcs.gateway.SetSubscriberStatusXRequest;
 import it.telecomitalia.soa.trcs.gateway.SetSubscriberStatusXResponse;
-import it.telecomitalia.trcs.middleware.kafka.inbound.ResponseTargets;
-import it.telecomitalia.trcs.middleware.kafka.inbound.TrcsKafkaHeader;
 import it.telecomitalia.trcs.middleware.kafka.inbound.builder.HeaderTypeBuilder;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.TrcsInboundExecutorException;
-import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.dto.SetSubscriberStatusXBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.config.ResponseTargets;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.SetSubscriberStatusXBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaHeader;
 import it.telecomitalia.trcs.middleware.ws.client.OpscProvisioningClient;
 
 public class SetSubscriberStatusXExecutor extends AbstractExecutor {

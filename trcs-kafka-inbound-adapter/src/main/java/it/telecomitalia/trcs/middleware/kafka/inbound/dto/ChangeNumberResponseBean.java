@@ -1,4 +1,4 @@
-package it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.dto;
+package it.telecomitalia.trcs.middleware.kafka.inbound.dto;
 
 public class ChangeNumberResponseBean extends GenericResponseBean {
 	

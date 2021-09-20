@@ -14,12 +14,12 @@ import it.telecomitalia.soa.trcs.gateway.DeleteSubscriberXResponse;
 import it.telecomitalia.soa.trcs.gateway.infobus.commons.InfobusMessage;
 import it.telecomitalia.trcs.gateway.services.opsc.DeleteSubscriberRequest;
 import it.telecomitalia.trcs.gateway.services.opsc.DeleteSubscriberRequest.Payload.OperationType;
-import it.telecomitalia.trcs.middleware.kafka.inbound.ResponseTargets;
-import it.telecomitalia.trcs.middleware.kafka.inbound.TrcsKafkaHeader;
 import it.telecomitalia.trcs.middleware.kafka.inbound.builder.HeaderTypeBuilder;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.TrcsInboundExecutorException;
-import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.dto.DeleteSubscriberRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.type.DeleteType;
+import it.telecomitalia.trcs.middleware.kafka.inbound.config.ResponseTargets;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.DeleteSubscriberRequestBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaHeader;
 import it.telecomitalia.trcs.middleware.ws.client.OpscProvisioningClient;
 
 

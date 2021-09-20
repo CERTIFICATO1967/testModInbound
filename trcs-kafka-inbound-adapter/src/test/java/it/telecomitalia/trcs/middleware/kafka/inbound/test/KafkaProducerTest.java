@@ -15,13 +15,13 @@ import org.springframework.test.annotation.DirtiesContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import it.telecomitalia.trcs.middleware.kafka.inbound.KafkaProducer;
-import it.telecomitalia.trcs.middleware.kafka.inbound.TrcsKafkaEventType;
-import it.telecomitalia.trcs.middleware.kafka.inbound.TrcsKafkaHeader;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.DeleteSubscriberExecutor;
-import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.dto.ChangeCardRequestBean;
-import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.dto.ChangeNumberRequestBean;
-import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.dto.DeleteSubscriberRequestBean;
-import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.dto.SetSubscriberStatusXBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ChangeCardRequestBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ChangeNumberRequestBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.DeleteSubscriberRequestBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.SetSubscriberStatusXBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaEventType;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaHeader;
 
 
 @SpringBootTest
