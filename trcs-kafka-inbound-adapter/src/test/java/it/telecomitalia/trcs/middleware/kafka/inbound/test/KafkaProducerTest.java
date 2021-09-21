@@ -34,10 +34,10 @@ public class KafkaProducerTest {
     @Value("${test.topic}")
     private String topic;
 
-    @Test
+    //@Test
     public void sendMessageChangeNumber() throws Exception {
     	logger.debug("sendMessageChangeNumber");
-    	String phoneNumber="3391231234";
+    	String phoneNumber="3391231232";
     	
     	HashMap<String, String> headers = new HashMap<>();
     	
@@ -63,10 +63,10 @@ public class KafkaProducerTest {
         producer.send(topic, out.toString(), phoneNumber, headers);        
     }
     
-    @Test
+   // @Test
     public void sendMessageDeleteSubscriberX() throws Exception {
     	logger.debug("sendMessageDeleteSubscriberX");
-    	String phoneNumber="3391231234";
+    	String phoneNumber="3391231299";
     	
     	HashMap<String, String> headers = new HashMap<>();
     	
@@ -94,10 +94,10 @@ public class KafkaProducerTest {
         producer.send(topic, out.toString(), phoneNumber, headers);        
     }
     
-    @Test
+    //@Test
     public void sendMessageDeleteSubscriber() throws Exception {
     	logger.debug("sendMessageDeleteSubscriber");
-    	String phoneNumber="3391231234";
+    	String phoneNumber="3391231200";
     	
     	HashMap<String, String> headers = new HashMap<>();
     	
@@ -125,10 +125,10 @@ public class KafkaProducerTest {
     }
     
     
-    @Test
+    //@Test
     public void sendMessageChangeCard() throws Exception {
     	logger.debug("sendMessageChangeCard");
-    	String phoneNumber="3391231234";
+    	String phoneNumber="3391231239";
     	
     	HashMap<String, String> headers = new HashMap<>();
     	
@@ -163,10 +163,10 @@ public class KafkaProducerTest {
     }
     
     
-    @Test
+     @Test
     public void sendMessageSetSubscriberStatusX() throws Exception {
     	logger.debug("sendMessageSetSubscriberStatusX");
-    	String phoneNumber="3391231234";
+    	String phoneNumber="3391230000";
     	
     	HashMap<String, String> headers = new HashMap<>();
     	

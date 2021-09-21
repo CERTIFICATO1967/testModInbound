@@ -24,6 +24,8 @@ import it.telecomitalia.trcs.middleware.kafka.inbound.dto.DeleteSubscriberReques
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.DeleteSubscriberResponseBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaEventType;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaHeader;
+import it.telecomitalia.trcs.middleware.kafka.inbound.logging.HydraLogBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.logging.HydraLogThreadLocal;
 import it.telecomitalia.trcs.middleware.ws.client.OpscProvisioningClient;
 
 
@@ -47,7 +49,8 @@ public class DeleteSubscriberExecutor extends AbstractExecutor{
 
 			// Converte il JSON in POJO
 			DeleteSubscriberRequestBean request = objectMapper.readValue(payload, DeleteSubscriberRequestBean.class);
-
+			
+			HydraLogThreadLocal.getLogBean().getEvent().setPayload(request);
 			// Effettua il mapping con l'header SOAP
 			HeaderType headerType = new HeaderTypeBuilder(headers).build();
 			switch (Enum.valueOf(DeleteType.class,request.getDeleteType())) {
@@ -102,7 +105,7 @@ public class DeleteSubscriberExecutor extends AbstractExecutor{
 
 		if ("1".equals(response.getIbRetCode())) {
 			//TODO: Scrivere Log di Success
-			;
+			HydraLogThreadLocal.getLogBean().setResult(HydraLogBean.Result.success);
 
 		} else {
 			//TODO: Gestire Errore di invocazione inviando risposta KO su Kafka
@@ -129,7 +132,7 @@ public class DeleteSubscriberExecutor extends AbstractExecutor{
 
 		if ("1".equals(response.getIbRetCode())) {
 			//TODO: Scrivere Log di Success
-			;
+			HydraLogThreadLocal.getLogBean().setResult(HydraLogBean.Result.success);
 
 		} else {
 			//TODO: Gestire Errore di invocazione inviando risposta KO su Kafka

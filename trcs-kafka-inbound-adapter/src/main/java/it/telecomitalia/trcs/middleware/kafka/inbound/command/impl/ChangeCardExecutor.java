@@ -19,6 +19,8 @@ import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ChangeCardRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ChangeCardResponseBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaEventType;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaHeader;
+import it.telecomitalia.trcs.middleware.kafka.inbound.logging.HydraLogBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.logging.HydraLogThreadLocal;
 import it.telecomitalia.trcs.middleware.ws.client.GinoProvisioningClient;
 
 public class ChangeCardExecutor extends AbstractExecutor {
@@ -42,6 +44,8 @@ public class ChangeCardExecutor extends AbstractExecutor {
 			// Converte il JSON in POJO
 			ChangeCardRequestBean request = objectMapper.readValue(payload, ChangeCardRequestBean.class);
 			
+			HydraLogThreadLocal.getLogBean().getEvent().setPayload(request);
+			
 			// Effettua il mapping con l'header SOAP
 			HeaderType headerType = new HeaderTypeBuilder(headers).build();
 			
@@ -54,8 +58,9 @@ public class ChangeCardExecutor extends AbstractExecutor {
 
 			logger.info("ChangeCard result=[{}]", response.getResult());
 			
-			if ("1".equals(response.getResult())) {
+			if ("success".equals(response.getResult())) {
 				//TODO: Scrivere Log di Success
+				HydraLogThreadLocal.getLogBean().setResult(HydraLogBean.Result.success);
 
 			} else {
 				//TODO: Gestire Errore di invocazione inviando risposta KO su Kafka

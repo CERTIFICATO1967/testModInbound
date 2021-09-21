@@ -7,6 +7,9 @@ kafka:
   responses:
     lineeMobili.responseCambioNumero.v1: test-response-1
     lineeMobili.responseBloccoSbloccoNumero.v1: test-response-2
+    lineeMobili.responseCancellaUtenza.v1: test-response-3
+    lineeMobili.responseCambioCarta.v1: test-response-4
+    
 
 
 trcs:

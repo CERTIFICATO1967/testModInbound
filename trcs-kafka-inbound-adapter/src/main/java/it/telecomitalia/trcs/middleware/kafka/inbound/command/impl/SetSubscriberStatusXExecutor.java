@@ -20,6 +20,8 @@ import it.telecomitalia.trcs.middleware.kafka.inbound.dto.SetSubscriberStatusXRe
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.SetSubscriberStatusXResponseBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaEventType;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaHeader;
+import it.telecomitalia.trcs.middleware.kafka.inbound.logging.HydraLogBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.logging.HydraLogThreadLocal;
 import it.telecomitalia.trcs.middleware.ws.client.OpscProvisioningClient;
 
 public class SetSubscriberStatusXExecutor extends AbstractExecutor {
@@ -43,6 +45,7 @@ public class SetSubscriberStatusXExecutor extends AbstractExecutor {
 			// Converte il JSON in POJO
 			SetSubscriberStatusXRequestBean request = objectMapper.readValue(payload, SetSubscriberStatusXRequestBean.class);
 			
+			HydraLogThreadLocal.getLogBean().getEvent().setPayload(request);
 			// Effettua il mapping con l'header SOAP
 			HeaderType headerType = new HeaderTypeBuilder(headers).build();
 			
@@ -57,6 +60,7 @@ public class SetSubscriberStatusXExecutor extends AbstractExecutor {
 			
 			if ("1".equals(response.getIbRetCode())) {
 				//TODO: Scrivere Log di Success
+				HydraLogThreadLocal.getLogBean().setResult(HydraLogBean.Result.success);
 
 			} else {
 				//TODO: Gestire Errore di invocazione inviando risposta KO su Kafka
