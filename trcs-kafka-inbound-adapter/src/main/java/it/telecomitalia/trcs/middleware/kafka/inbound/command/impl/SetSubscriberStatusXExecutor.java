@@ -131,10 +131,13 @@ public class SetSubscriberStatusXExecutor extends AbstractExecutor {
 		payload.getOperation().setInfo(request.getInfo());
 		
 		
-		payload.getOperation().setOperationType(SetSubscriberStatusXExecutor.calcolateValue(request.getReason(),request.getOldReason()));
+		
+		SetSubscriberStatusXIbData.Operation.ASTMgr aSTMgr = new SetSubscriberStatusXIbData.Operation.ASTMgr();
 		SetSubscriberStatusXIbData.Operation.ASTMgr.Client client = new SetSubscriberStatusXIbData.Operation.ASTMgr.Client();
 		client.setReason(request.getReason());
-		payload.getOperation().getASTMgr().setClient(client);
+		aSTMgr.setClient(client);
+		aSTMgr.setOperationType(SetSubscriberStatusXExecutor.calcolateValue(request.getReason(),request.getOldReason()));
+		payload.getOperation().setASTMgr(aSTMgr);
 		
 		return wsRequest;
 	}
