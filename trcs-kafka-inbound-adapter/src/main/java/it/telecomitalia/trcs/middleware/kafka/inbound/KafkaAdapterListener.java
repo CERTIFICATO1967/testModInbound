@@ -31,7 +31,7 @@ import it.telecomitalia.trcs.middleware.kafka.inbound.logging.InboundLogMessages
 
 @Component
 class KafkaAdapterListeners{
-	
+
 	@Autowired 
 	private KafkaProducer producer;
 
@@ -39,7 +39,7 @@ class KafkaAdapterListeners{
 
 	@Autowired 
 	private TrcsInboundExecutorFactory factory;
-	
+
 	@KafkaListener(
 			topics = "#{'${kafka.consumer.topics}'.split(',')}",
 			//topics = "${kafka.consumer.topics}",
@@ -48,54 +48,55 @@ class KafkaAdapterListeners{
 			@Payload String message,
 			@Headers MessageHeaders headers,
 			Acknowledgment ack) {
-		
+
 		Instant start= Instant.now();
-	      
-	      
+
+
 		LOG.info("Listener [{}] - part=[{}]", message, headers.get(KafkaHeaders.RECEIVED_PARTITION_ID));
-		
+
 		HydraLogBean bean = HydraLogThreadLocal.getLogBean();
-		
+
 		bean.setSource(TrcsKafkaHeader.objectToString(headers.get(TrcsKafkaHeader.sourceSystem.name())));
 		bean.setChannel(TrcsKafkaHeader.objectToString(headers.get(TrcsKafkaHeader.channel.name())));
 		bean.setService(TrcsKafkaHeader.objectToString(headers.get(TrcsKafkaHeader.eventType.name())));
 		bean.setTransactionId(TrcsKafkaHeader.objectToString(headers.get(TrcsKafkaHeader.transactionID.name())));
-		
+
 		bean.getEvent().setHeader(headers);
-		
+
 		InboundLogMessages logMessage = InboundLogMessages.SUCCESS;
 		Throwable failureException = null;
-		
+
 		try {
 			byte[] value = (byte[])headers.get(TrcsKafkaHeader.eventType.name());
+			bean.setEventType(new String(value));
 			TrcsKafkaEventType eventType = TrcsKafkaEventType.getInstance(new String(value));
-			
+
 			TrcsInboundExecutor executor = factory.createInstance(eventType);
-			
+
 			executor.execute(headers, message);
-			
+
 			ack.acknowledge();
-			
+
 			bean.setResult(HydraLogBean.Result.success);
-					
+
 		} catch (NullPointerException  e) {
-			
+
 			bean.setResult(HydraLogBean.Result.discard);
-			
+
 			logMessage = InboundLogMessages.INVALID_MESSAGE;
 			failureException=e;
-			
+
 		} catch (ExecutorSynchronousFailed e) {
 			try {
 				producer.send(e.getTopic(), 
-						      e.getPayload(), 
-						      e.getPhoneNumber(), 
-						      e.getHeader());
-						
+						e.getPayload(), 
+						e.getPhoneNumber(), 
+						e.getHeader());
+
 				ack.acknowledge();
-				
+
 				bean.setResult(HydraLogBean.Result.failure);
-				
+
 				bean.getEvent().setResponse(new KafkaMessageBean());
 				bean.getEvent().getResponse().setStringHeader(e.getHeader());
 				bean.getEvent().getResponse().setPayload(e.getPayloadObject());
@@ -104,37 +105,43 @@ class KafkaAdapterListeners{
 
 			} catch (Exception ex) {
 				ack.nack(10000); //Imposta il Timeout per le retry
-				
+
 				bean.setResult(HydraLogBean.Result.retry);
-				
+
 				logMessage = InboundLogMessages.FAILURE_RETRY;
 				failureException=ex;
 			}
-			
+
 		} catch (Throwable t) {
 			ack.nack(10000); //Imposta il Timeout per le retry
-			
+
 			bean.setResult(HydraLogBean.Result.retry);
 
 			logMessage = InboundLogMessages.FAILURE_RETRY;
 			failureException=t;			
 		} finally {
-			
+
 			Instant end = Instant.now();
-		    bean.setElapsed(ChronoUnit.MILLIS.between(start, end));
-			
+			bean.setElapsed(ChronoUnit.MILLIS.between(start, end));
+
 			if (bean.getResult().equals(HydraLogBean.Result.success)) {
 				LOG.info(logMessage.getMessage(), 
 						value("messageId", logMessage.getCode()),
 						fields(bean));
 			} else {
-				LOG.info(logMessage.getMessage(), 
-						value("messageId", logMessage.getCode()),
-						fields(bean),
-						failureException);
+				if (failureException==null) {
+					LOG.warn(logMessage.getMessage(), 
+							value("messageId", logMessage.getCode()),
+							fields(bean));
+				} else {
+					LOG.error(logMessage.getMessage(), 
+							value("messageId", logMessage.getCode()),
+							fields(bean),
+							failureException);
+				}
 			}
 		}
-		
+
 	}
 
 	/*
@@ -166,6 +173,6 @@ class KafkaAdapterListeners{
 	void listenerWithMessageConverter(User user) {
 		LOG.info("MessageConverterUserListener [{}]", user);
 	}
-	*/
+	 */
 
 }
