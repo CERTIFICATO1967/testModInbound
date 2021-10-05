@@ -154,7 +154,7 @@ public class DeleteSubscriberRequest extends InfobusMessage {
 
 		this.payload=new Payload();
 		
-		if (ibData.length()<62)
+		/*if (ibData.length()<62)
 			throw new IllegalArgumentException("Payload too short");
 		
 		int index=0;
@@ -200,7 +200,7 @@ public class DeleteSubscriberRequest extends InfobusMessage {
 
 		index+=length;
 		length=2;
-		this.payload.setTypeOfCard(ibData.substring(index, index+length).trim());
+		this.payload.setTypeOfCard(ibData.substring(index, index+length).trim());*/
 	}
 
 	

@@ -1,6 +1,8 @@
 package it.telecomitalia.trcs.middleware.kafka.inbound.command.impl;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -15,6 +17,7 @@ import it.telecomitalia.soa.trcs.gateway.DeleteSubscriberXResponse;
 import it.telecomitalia.soa.trcs.gateway.infobus.commons.InfobusMessage;
 import it.telecomitalia.trcs.gateway.services.opsc.DeleteSubscriberRequest;
 import it.telecomitalia.trcs.gateway.services.opsc.DeleteSubscriberRequest.Payload.OperationType;
+import it.telecomitalia.trcs.gateway.services.opsc.RestoreSubscriberRequest;
 import it.telecomitalia.trcs.middleware.kafka.inbound.builder.HeaderTypeBuilder;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.ExecutorSynchronousFailed;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.TrcsInboundExecutorException;
@@ -78,6 +81,7 @@ public class DeleteSubscriberExecutor extends AbstractExecutor{
 				break;
 			case MnpDeactivationOnDeletedSubscriber:
 				logger.debug("Call RestoreSubscriber");
+				callRestore(objectMapper,request,headers,headerType);
 				break;
 
 			default:
@@ -96,6 +100,41 @@ public class DeleteSubscriberExecutor extends AbstractExecutor{
 
 	}
 
+	
+	private void callRestore(ObjectMapper objectMapper,DeleteSubscriberRequestBean request,Map<String, Object> headers,HeaderType headerType) throws ExecutorSynchronousFailed,Exception {
+
+
+		InfobusMessage response = callWebServiceRestoreSubscriber(request, headers, headerType);
+		logger.info("RestoreDeleteSubsciber result=[{}]", response.getIbRetCode());
+
+		if ("1".equals(response.getIbRetCode())) {
+			//TODO: Scrivere Log di Success
+			HydraLogThreadLocal.getLogBean().setResult(HydraLogBean.Result.success);
+
+		} else {
+			//TODO: Gestire Errore di invocazione inviando risposta KO su Kafka
+			//TODO: Inserire Logging
+			DeleteSubscriberResponseBean responsePayload = this.createResponsePayload(headers, request, response);
+			
+			throw new ExecutorSynchronousFailed(
+					this.getReponseTargets().getResponseTarget(TrcsKafkaEventType.deleteSubscriberResponse),
+					TrcsKafkaHeader.createResponseKafkaHeader(headers, TrcsKafkaEventType.deleteSubscriberResponse),
+					responsePayload,
+					objectMapper.writeValueAsString(responsePayload),
+					request.getPhoneNumber()
+					);
+
+		} 
+
+	}
+	
+	private InfobusMessage callWebServiceRestoreSubscriber(DeleteSubscriberRequestBean request, Map<String, Object> headers,
+			HeaderType headerType) {
+		// Effettua il mapping con il body SOAP
+		RestoreSubscriberRequest wsRequest = this.createWebServiceRestoreRequest(request, headers, headerType);
+		InfobusMessage response = this.getOpscClient().restoreSubscriber(headerType, wsRequest);
+		return response;
+	}
 
 	private void callDeleteX(ObjectMapper objectMapper,DeleteSubscriberRequestBean request,Map<String, Object> headers,HeaderType headerType) throws ExecutorSynchronousFailed,Exception {
 
@@ -326,4 +365,41 @@ public class DeleteSubscriberExecutor extends AbstractExecutor{
 		return wsRequest;
 	}
 
+	
+	private RestoreSubscriberRequest createWebServiceRestoreRequest(DeleteSubscriberRequestBean request, Map<String, Object> headers,
+			HeaderType headerType) {
+		
+		InfobusMessage message =  new InfobusMessage();
+		message.setIbAppDep1("0");
+		message.setIbAppDep2("0");
+		message.setIbRetCode("1");
+		message.setIbIdSrvc("RESTOREG");
+		message.setIbData(new DeleteSubscriberRequest.IbData());
+		message.getIbData().setIbLenData(0);
+		//RestoreSubscriberRequest wsRequest = new RestoreSubscriberRequest();
+	    RestoreSubscriberRequest wsRequest = RestoreSubscriberRequest.createInstance(message);
+
+		wsRequest.setIbData(message.getIbData());
+		wsRequest.getPayload().setOperationType(wsRequest.getPayload().getOperationType());
+		wsRequest.getPayload().setMsisdn(request.getPhoneNumber());
+		wsRequest.getPayload().setIccid("89000000000000000000");
+		wsRequest.getPayload().setImsi("220000000000000");
+		wsRequest.getPayload().setDebit("0.000000");
+		wsRequest.getPayload().setTariffid(283);
+		wsRequest.getPayload().setLanguageid("1");
+		wsRequest.getPayload().setAststate(request.getReason());
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+		wsRequest.getPayload().setInstalldate( formatter.format(new Date()));
+		wsRequest.getPayload().setTypeofcard("00");
+		wsRequest.getPayload().setCardphase("  ");
+		wsRequest.getPayload().setR_system("3");
+		wsRequest.getPayload().setDebitco("0.000000");
+		wsRequest.getPayload().setBonus1("0.000000");
+		wsRequest.getPayload().setBonus2("0.000000");
+		wsRequest.getPayload().setCardfeatures("A B C D");
+
+		// da vedere
+		wsRequest.getPayload().setSubSystem("channel");
+		return wsRequest;
+	}
 }

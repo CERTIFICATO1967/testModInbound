@@ -94,7 +94,7 @@ public class KafkaProducerTest {
         producer.send(topic, out.toString(), phoneNumber, headers);        
     }
     
-    //@Test
+    @Test
     public void sendMessageDeleteSubscriber() throws Exception {
     	logger.debug("sendMessageDeleteSubscriber");
     	String phoneNumber="3391231200";
@@ -125,10 +125,10 @@ public class KafkaProducerTest {
     }
     
     
-    //@Test
+   // @Test
     public void sendMessageChangeCard() throws Exception {
     	logger.debug("sendMessageChangeCard");
-    	String phoneNumber="3391231239";
+    	String phoneNumber="3391231999";
     	
     	HashMap<String, String> headers = new HashMap<>();
     	
@@ -163,7 +163,7 @@ public class KafkaProducerTest {
     }
     
     
-     @Test
+    //@Test
     public void sendMessageSetSubscriberStatusX() throws Exception {
     	logger.debug("sendMessageSetSubscriberStatusX");
     	String phoneNumber="3391230000";
@@ -189,4 +189,37 @@ public class KafkaProducerTest {
     	objectMapper.writeValue(out, bean);
         producer.send(topic, out.toString(), phoneNumber, headers);        
     }
+    
+    
+  //  @Test
+    public void sendMessageRestoreSubscriber() throws Exception {
+    	logger.debug("sendMessageRestoreSubscriber");
+    	String phoneNumber="3391231888";
+    	
+    	HashMap<String, String> headers = new HashMap<>();
+    	
+    	headers.put(TrcsKafkaHeader.eventType.name(), TrcsKafkaEventType.deleteSubscriberRequest.value());
+    	headers.put(TrcsKafkaHeader.transactionID.name(), UUID.randomUUID().toString());
+    	headers.put(TrcsKafkaHeader.businessID.name(), UUID.randomUUID().toString());
+    	headers.put(TrcsKafkaHeader.sourceSystem.name(), "JunitTest");
+    	
+    	DeleteSubscriberRequestBean bean = new DeleteSubscriberRequestBean();
+    	
+    	bean.setPhoneNumber(phoneNumber);
+    	bean.setDeleteType("MnpDeactivationOnDeletedSubscriber");
+    	bean.setDiscountRecover(true);
+    	bean.setReason("setReason");
+    	bean.setInfo("setInfo");
+    	bean.setPhoneNumberMnp("setPhoneNumberMnp");
+    	bean.setTypeOfCard("setTypeOfCard");
+    	
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	
+    	ByteArrayOutputStream out = new ByteArrayOutputStream();
+    	
+    	objectMapper.writeValue(out, bean);
+        producer.send(topic, out.toString(), phoneNumber, headers);        
+    }
+    
+    
 }

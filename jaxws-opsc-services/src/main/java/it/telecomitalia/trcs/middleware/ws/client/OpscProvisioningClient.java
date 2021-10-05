@@ -17,6 +17,7 @@ import it.telecomitalia.soa.trcs.gateway.SetSubscriberStatusXResponse;
 import it.telecomitalia.soa.trcs.gateway.infobus.commons.InfobusMessage;
 
 import it.telecomitalia.trcs.gateway.services.opsc.DeleteSubscriberRequest;
+import it.telecomitalia.trcs.gateway.services.opsc.RestoreSubscriberRequest;
 
 
 /**
@@ -79,6 +80,17 @@ public class OpscProvisioningClient extends WebServiceGatewaySupport {
 				.marshalSendAndReceive(this.getDefaultUri(), request,
 						new SoapActionAndHeaderCallback(
 								"DeleteSubscriber", header));
+
+		return response.getValue();
+		
+	}
+	
+	public InfobusMessage restoreSubscriber(HeaderType header, RestoreSubscriberRequest request) {
+		log.info("Requesting restore subscriber  for [{}]", request.getPayload().getMsisdn());
+		JAXBElement<InfobusMessage>	 response = (JAXBElement<InfobusMessage>) getWebServiceTemplate()
+				.marshalSendAndReceive(this.getDefaultUri(), request,
+						new SoapActionAndHeaderCallback(
+								"RestoreSubscriber", header));
 
 		return response.getValue();
 		
