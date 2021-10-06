@@ -111,10 +111,10 @@ public class KafkaProducerTest {
     	bean.setPhoneNumber(phoneNumber);
     	bean.setDeleteType("MnpMvno");
     	bean.setDiscountRecover(true);
-    	bean.setReason("setReason");
+    	bean.setReason("A");
     	bean.setInfo("setInfo");
-    	bean.setPhoneNumberMnp("setPhoneNumberMnp");
-    	bean.setTypeOfCard("setTypeOfCard");
+    	bean.setPhoneNumberMnp("1234567890");
+    	bean.setTypeOfCard("AA");
     	
     	ObjectMapper objectMapper = new ObjectMapper();
     	
@@ -191,10 +191,10 @@ public class KafkaProducerTest {
     }
     
     
-  //  @Test
+    // @Test
     public void sendMessageRestoreSubscriber() throws Exception {
     	logger.debug("sendMessageRestoreSubscriber");
-    	String phoneNumber="3391231888";
+    	String phoneNumber="3391231999";
     	
     	HashMap<String, String> headers = new HashMap<>();
     	
@@ -208,7 +208,7 @@ public class KafkaProducerTest {
     	bean.setPhoneNumber(phoneNumber);
     	bean.setDeleteType("MnpDeactivationOnDeletedSubscriber");
     	bean.setDiscountRecover(true);
-    	bean.setReason("setReason");
+    	bean.setReason("A");
     	bean.setInfo("setInfo");
     	bean.setPhoneNumberMnp("setPhoneNumberMnp");
     	bean.setTypeOfCard("setTypeOfCard");

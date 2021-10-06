@@ -11,6 +11,12 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.12.0</version>
+		</dependency>
+
+		<dependency>
 			<groupId>it.telecomitalia.trcs.middleware.kafka.inbound</groupId>
 			<artifactId>jaxws-opsc-services</artifactId>
 			<version>${project.version}</version>
@@ -45,13 +51,13 @@
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>net.logstash.logback</groupId>
 			<artifactId>logstash-logback-encoder</artifactId>
 			<version>6.6</version>
 		</dependency>
-		
+
 	</dependencies>
 
 	<build>

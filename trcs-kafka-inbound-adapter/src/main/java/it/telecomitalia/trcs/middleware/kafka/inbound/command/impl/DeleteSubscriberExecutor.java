@@ -5,6 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
+import javax.xml.bind.JAXBElement;
+
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,9 +18,7 @@ import it.telecomitalia.soa.trcs.gateway.DeleteSubscriberXIbData;
 import it.telecomitalia.soa.trcs.gateway.DeleteSubscriberXRequest;
 import it.telecomitalia.soa.trcs.gateway.DeleteSubscriberXResponse;
 import it.telecomitalia.soa.trcs.gateway.infobus.commons.InfobusMessage;
-import it.telecomitalia.trcs.gateway.services.opsc.DeleteSubscriberRequest;
-import it.telecomitalia.trcs.gateway.services.opsc.DeleteSubscriberRequest.Payload.OperationType;
-import it.telecomitalia.trcs.gateway.services.opsc.RestoreSubscriberRequest;
+
 import it.telecomitalia.trcs.middleware.kafka.inbound.builder.HeaderTypeBuilder;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.ExecutorSynchronousFailed;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.TrcsInboundExecutorException;
@@ -62,7 +63,7 @@ public class DeleteSubscriberExecutor extends AbstractExecutor{
 			case Mnp:
 			case MnpMvno:
 				if(request.isDiscountRecover()) {
-					logger.debug("Call DeleteSubscriber");
+					logger.info("Call DeleteSubscriber");
 					callDelete(objectMapper,request,headers,headerType);
 				}
 				else {
@@ -131,7 +132,7 @@ public class DeleteSubscriberExecutor extends AbstractExecutor{
 	private InfobusMessage callWebServiceRestoreSubscriber(DeleteSubscriberRequestBean request, Map<String, Object> headers,
 			HeaderType headerType) {
 		// Effettua il mapping con il body SOAP
-		RestoreSubscriberRequest wsRequest = this.createWebServiceRestoreRequest(request, headers, headerType);
+		JAXBElement<InfobusMessage> wsRequest = this.createWebServiceRestoreRequest(request, headers, headerType);
 		InfobusMessage response = this.getOpscClient().restoreSubscriber(headerType, wsRequest);
 		return response;
 	}
@@ -312,13 +313,13 @@ public class DeleteSubscriberExecutor extends AbstractExecutor{
 	private InfobusMessage callWebServiceDeleteSubscriber(DeleteSubscriberRequestBean request, Map<String, Object> headers,
 			HeaderType headerType) {
 		// Effettua il mapping con il body SOAP
-		DeleteSubscriberRequest wsRequest = this.createWebServiceRequest(request, headers, headerType);
+	    JAXBElement<InfobusMessage>  wsRequest = this.createWebServiceRequest(request, headers, headerType);
 		// Invoca il servizio di cambio numero di GW
 		InfobusMessage response = this.getOpscClient().deleteSubscriber(headerType, wsRequest);
 		return response;
 	}
 
-	private DeleteSubscriberRequest createWebServiceRequest(DeleteSubscriberRequestBean request, Map<String, Object> headers,
+	private JAXBElement<InfobusMessage> createWebServiceRequest(DeleteSubscriberRequestBean request, Map<String, Object> headers,
 			HeaderType headerType) {
 
 		InfobusMessage message =  new InfobusMessage();
@@ -326,47 +327,59 @@ public class DeleteSubscriberExecutor extends AbstractExecutor{
 		message.setIbAppDep2("0");
 		message.setIbRetCode("1");
 		message.setIbIdSrvc("SERVINTG");
-		message.setIbData(new DeleteSubscriberRequest.IbData());
-		message.getIbData().setIbLenData(0);
-
-		DeleteSubscriberRequest wsRequest = DeleteSubscriberRequest.createInstance(message);
-
-		wsRequest.setIbData(message.getIbData());
-
+		message.setIbData(new InfobusMessage.IbData());
+		
+		// Create buffer flat for ibdata
+		StringBuffer strBuf =  new StringBuffer("   channel");
+		String opType = new String(" ");
 		switch (Enum.valueOf(DeleteType.class,request.getDeleteType())) {
-		case Normal:
-			wsRequest.getPayload().setOperationType(OperationType.volontary);
+		  case Normal:
+			opType="0";
 			break;
-		case GoodByeService:
-			wsRequest.getPayload().setOperationType(OperationType.goodbye);
+		  case GoodByeService:
+			opType="1";
 			break;
-		case Mnp:
-			wsRequest.getPayload().setOperationType(OperationType.mnp);
+		  case Mnp:
+			opType="2";
 			break;
-
-		case MnpMvno:
-			wsRequest.getPayload().setOperationType(OperationType.mnp2mvno);
+		  case MnpMvno:
+			opType="8";
 			break;
-		case MnpOnDeletedSubscriber:
-
-			wsRequest.getPayload().setOperationType(OperationType.deadMnp);
+		  case MnpOnDeletedSubscriber:
+			opType="B";
 			break;
 		}
-
-		wsRequest.getPayload().setMsisdn(request.getPhoneNumber());
-		wsRequest.getPayload().setAstState(request.getReason());
-		wsRequest.getPayload().setrSystem(3);
-
-		wsRequest.getPayload().setSrnb(request.isDiscountRecover() ? "" : "99");
-		wsRequest.getPayload().setMnpMsisdn(request.getPhoneNumber());
-		wsRequest.getPayload().setTypeOfCard(request.getTypeOfCard());
-		// da vedere
-		wsRequest.getPayload().setSubSystem("channel");
-		return wsRequest;
+        // operationType
+		strBuf.append(opType);
+		// msisdn
+		strBuf.append(StringUtils.leftPad(request.getPhoneNumber(),12));
+		// setAstState
+		strBuf.append(request.getReason());
+		// R_SYSTEM
+		strBuf.append("3");
+		// SRNB
+		strBuf.append(request.isDiscountRecover() ? StringUtils.leftPad("",11):StringUtils.leftPad("99",11));
+		// MNPMSISDN
+		strBuf.append(StringUtils.leftPad(request.getPhoneNumberMnp(),12));
+		// OLOMSISDN
+		strBuf.append(StringUtils.leftPad("",12));
+		//TYPEOFCARD
+		strBuf.append(StringUtils.leftPad(request.getTypeOfCard(),2));
+		
+		
+		message.getIbData().setIbLenData(strBuf.toString().length());
+		message.getIbData().setValue(strBuf.toString());
+			
+		message.setIbData(message.getIbData());
+		it.telecomitalia.soa.trcs.gateway.ObjectFactory obj = new it.telecomitalia.soa.trcs.gateway.ObjectFactory();
+		JAXBElement<InfobusMessage> result = obj.createDeleteSubscriberRequest(message);
+	
+		return result;
+		
 	}
 
 	
-	private RestoreSubscriberRequest createWebServiceRestoreRequest(DeleteSubscriberRequestBean request, Map<String, Object> headers,
+	private JAXBElement<InfobusMessage>	 createWebServiceRestoreRequest(DeleteSubscriberRequestBean request, Map<String, Object> headers,
 			HeaderType headerType) {
 		
 		InfobusMessage message =  new InfobusMessage();
@@ -374,32 +387,63 @@ public class DeleteSubscriberExecutor extends AbstractExecutor{
 		message.setIbAppDep2("0");
 		message.setIbRetCode("1");
 		message.setIbIdSrvc("RESTOREG");
-		message.setIbData(new DeleteSubscriberRequest.IbData());
-		message.getIbData().setIbLenData(0);
-		//RestoreSubscriberRequest wsRequest = new RestoreSubscriberRequest();
-	    RestoreSubscriberRequest wsRequest = RestoreSubscriberRequest.createInstance(message);
-
-		wsRequest.setIbData(message.getIbData());
-		wsRequest.getPayload().setOperationType(wsRequest.getPayload().getOperationType());
-		wsRequest.getPayload().setMsisdn(request.getPhoneNumber());
-		wsRequest.getPayload().setIccid("89000000000000000000");
-		wsRequest.getPayload().setImsi("220000000000000");
-		wsRequest.getPayload().setDebit("0.000000");
-		wsRequest.getPayload().setTariffid(283);
-		wsRequest.getPayload().setLanguageid("1");
-		wsRequest.getPayload().setAststate(request.getReason());
+		message.setIbData(new InfobusMessage.IbData());
+		// Create buffer flat for ibdata
+		StringBuffer strBuf =  new StringBuffer("   channel3");
+		strBuf.append(StringUtils.leftPad(request.getPhoneNumber(),12));
+		// iccid
+		strBuf.append("89000000000000000000");
+		//imsi
+		strBuf.append("220000000000000");
+		// pin puk pin2 puk2 category
+		
+		strBuf.append(StringUtils.leftPad("",30));
+		// debit
+		strBuf.append(StringUtils.leftPad("0.000000",16));
+		// tariff
+		strBuf.append(StringUtils.leftPad("283",5));
+		// language
+		strBuf.append(" 1");
+		// aststate
+		strBuf.append(StringUtils.leftPad(request.getReason(),1));
+		// serviceid
+		strBuf.append(StringUtils.leftPad("",5));
+		
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
-		wsRequest.getPayload().setInstalldate( formatter.format(new Date()));
-		wsRequest.getPayload().setTypeofcard("00");
-		wsRequest.getPayload().setCardphase("  ");
-		wsRequest.getPayload().setR_system("3");
-		wsRequest.getPayload().setDebitco("0.000000");
-		wsRequest.getPayload().setBonus1("0.000000");
-		wsRequest.getPayload().setBonus2("0.000000");
-		wsRequest.getPayload().setCardfeatures("A B C D");
-
-		// da vedere
-		wsRequest.getPayload().setSubSystem("channel");
-		return wsRequest;
+		strBuf.append(formatter.format(new Date()));
+		// setActivedate setDeactivated setDeactivedate setExpirydate setExpiredreason setInformedmessageid setNumreloads
+		// setNumchangetariff setChangetariffdate setLastcalldate
+		strBuf.append(StringUtils.leftPad("",96));
+		// setTypeofcard
+		strBuf.append(" 0");
+		
+		// setCardphase setAccessorycode setDistrictid setNumdistricts setChangedistrictdate
+		strBuf.append(StringUtils.leftPad("",33));
+		// setR_system
+		strBuf.append("3");
+		// setNumbilledsms setNumfreesms setAccessoryedate
+		strBuf.append(StringUtils.leftPad("",24));
+		// setDebitco
+		strBuf.append(StringUtils.leftPad("0.000000",16));
+		// setBonus1
+		strBuf.append(StringUtils.leftPad("0.000000",16));
+		// setBonus2
+		strBuf.append(StringUtils.leftPad("0.000000",10));
+		// setNumfreeseconds
+		strBuf.append(StringUtils.leftPad("",5));
+		// setCardfeatures
+		strBuf.append(StringUtils.leftPad("A B C D",8));
+		//setServcardedate2 setServices setServcardedate5 setServcardedate1 setServcardedate3	setServcardedate4 setActivetime	setDeactivetime	setRetbonus setTypeofbonus setTypeoflist 
+		//setRetbonusedate setServcard_edate6	setAccessorycode_edate1	setAccessorycode_edate2 setPointsbasket1edate  setPointsbasket2edate setPointsbasket3edate	setPointsbasket1 setPointsbasket2 setPointsbasket3 setPointsbasket4edate setPointsbasket5edate
+		strBuf.append(StringUtils.leftPad("",273));
+	   // String mes=new String("AUTOMATION0  337149571289390100003371495712 222013371495712000000000000000000000000                 25.00  279 1A  TIM2021090605001120211006050011202210060500112022100605001120221105050011o     0    0                             2 2                               3                                                    0.00                P 1 3 3                                                                                365395                                                                                                                                                                        ");
+		message.getIbData().setIbLenData(strBuf.toString().length());
+		message.getIbData().setValue(strBuf.toString());
+			
+		message.setIbData(message.getIbData());
+		it.telecomitalia.soa.trcs.gateway.ObjectFactory obj = new it.telecomitalia.soa.trcs.gateway.ObjectFactory();
+		JAXBElement<InfobusMessage> result = obj.createRestoreSubscriberRequest(message);
+	
+		return result;
 	}
 }
