@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.ChangeCardExecutor;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.ChangeNumberExecutor;
+import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.CreateSubscriberExecutor;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.DeleteSubscriberExecutor;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.SetSubscriberStatusXExecutor;
 import it.telecomitalia.trcs.middleware.kafka.inbound.config.ResponseTargets;
@@ -35,6 +36,9 @@ public class TrcsInboundExecutorFactory {
 				return new DeleteSubscriberExecutor(opscProvisioningClient, responseTargets);
 			case changeCardRequest:
 				return new ChangeCardExecutor(ginoProvisioningClient, responseTargets);
+			case createSubscriberRequest:
+				return new CreateSubscriberExecutor(opscProvisioningClient, responseTargets);	
+				
 			default:
 				throw new RuntimeException("Invalid Event Type [" + eventType.value() + "]");
 		}

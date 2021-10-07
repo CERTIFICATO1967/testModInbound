@@ -3,12 +3,15 @@ kafka:
   auto-reset: earliest
   consumer:
     groupId: test-group
-    topics: test-22,test-23
+    topics: test-33,test-34
   responses:
     lineeMobili.responseCambioNumero.v1: test-response-1
     lineeMobili.responseBloccoSbloccoNumero.v1: test-response-2
     lineeMobili.responseCancellaUtenza.v1: test-response-3
     lineeMobili.responseCambioCarta.v1: test-response-4
+    lineeMobili.responseCreaUtenza.v1: test-response-5
+    lineeMobili.responseAttivazioneUtenza.v1 : test-response-6
+    lineeMobili.responseCambioUtenza.v1: test-response-7
     
 
 

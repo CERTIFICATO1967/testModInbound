@@ -1,6 +1,8 @@
 package it.telecomitalia.trcs.middleware.kafka.inbound.test;
 
 import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -18,6 +20,7 @@ import it.telecomitalia.trcs.middleware.kafka.inbound.KafkaProducer;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.DeleteSubscriberExecutor;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ChangeCardRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ChangeNumberRequestBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.CreateSubscriberRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.DeleteSubscriberRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.SetSubscriberStatusXRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaEventType;
@@ -37,7 +40,7 @@ public class KafkaProducerTest {
     //@Test
     public void sendMessageChangeNumber() throws Exception {
     	logger.debug("sendMessageChangeNumber");
-    	String phoneNumber="3391231232";
+    	String phoneNumber="3399930000";
     	
     	HashMap<String, String> headers = new HashMap<>();
     	
@@ -94,7 +97,7 @@ public class KafkaProducerTest {
         producer.send(topic, out.toString(), phoneNumber, headers);        
     }
     
-    @Test
+   //@Test
     public void sendMessageDeleteSubscriber() throws Exception {
     	logger.debug("sendMessageDeleteSubscriber");
     	String phoneNumber="3391231200";
@@ -192,8 +195,8 @@ public class KafkaProducerTest {
     
     
     // @Test
-    public void sendMessageRestoreSubscriber() throws Exception {
-    	logger.debug("sendMessageRestoreSubscriber");
+    public void sendMessageRestoreDelSubscriber() throws Exception {
+    	logger.debug("sendMessageRestoreDelSubscriber");
     	String phoneNumber="3391231999";
     	
     	HashMap<String, String> headers = new HashMap<>();
@@ -220,6 +223,45 @@ public class KafkaProducerTest {
     	objectMapper.writeValue(out, bean);
         producer.send(topic, out.toString(), phoneNumber, headers);        
     }
+    
+    
+    @Test
+    public void sendMessageRestoreCreateSubscriber() throws Exception {
+    	logger.debug("sendMessageRestoreCreateSubscriber");
+    	String phoneNumber="3391231999";
+    	
+    	HashMap<String, String> headers = new HashMap<>();
+    	
+    	headers.put(TrcsKafkaHeader.eventType.name(), TrcsKafkaEventType.createSubscriberRequest.value());
+    	headers.put(TrcsKafkaHeader.transactionID.name(), UUID.randomUUID().toString());
+    	headers.put(TrcsKafkaHeader.businessID.name(), UUID.randomUUID().toString());
+    	headers.put(TrcsKafkaHeader.sourceSystem.name(), "JunitTest");
+    	
+    	CreateSubscriberRequestBean bean = new CreateSubscriberRequestBean();
+    	bean.setIccid("333333333333");
+    	bean.setImsi("2222222222");
+    	bean.setCreateType("Restore");
+    	bean.setInfo("Normal");
+    	bean.setBaseOffer("OX6665");
+    	bean.setPhoneNumber(phoneNumber);
+    	bean.setLanguageId("1");
+    	SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+    	String dt = "20171222104757";
+    	Date date1=formatter.parse(dt);  
+       	bean.setActivationDate(new Date());
+    	bean.setDeactivationDate(date1);
+
+       	bean.setTypeOfCard("AA");
+       	bean.setFullMnp(true);
+       	bean.setRestoredFromExpired(true);
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	
+    	ByteArrayOutputStream out = new ByteArrayOutputStream();
+    	
+    	objectMapper.writeValue(out, bean);
+        producer.send(topic, out.toString(), phoneNumber, headers);        
+    }
+    
     
     
 }

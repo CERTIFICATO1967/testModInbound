@@ -15,7 +15,9 @@ public enum TrcsKafkaEventType {
 	changeCardRequest("lineeMobili.cambioCarta.v1"),
 	changeCardResponse("lineeMobili.responseCambioCarta.v1"),
 	
-	;
+	createSubscriberRequest("lineeMobili.creaUtenza.v1"),
+	createSubscriberResponse("lineeMobili.responseCreaUtenza.v1");
+	
 	
 	private String eventType;
 	

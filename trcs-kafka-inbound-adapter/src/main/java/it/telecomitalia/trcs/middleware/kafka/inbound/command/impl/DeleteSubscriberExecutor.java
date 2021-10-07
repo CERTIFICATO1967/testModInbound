@@ -432,7 +432,7 @@ public class DeleteSubscriberExecutor extends AbstractExecutor{
 		// setNumfreeseconds
 		strBuf.append(StringUtils.leftPad("",5));
 		// setCardfeatures
-		strBuf.append(StringUtils.leftPad("A B C D",8));
+		strBuf.append("A B C D ");
 		//setServcardedate2 setServices setServcardedate5 setServcardedate1 setServcardedate3	setServcardedate4 setActivetime	setDeactivetime	setRetbonus setTypeofbonus setTypeoflist 
 		//setRetbonusedate setServcard_edate6	setAccessorycode_edate1	setAccessorycode_edate2 setPointsbasket1edate  setPointsbasket2edate setPointsbasket3edate	setPointsbasket1 setPointsbasket2 setPointsbasket3 setPointsbasket4edate setPointsbasket5edate
 		strBuf.append(StringUtils.leftPad("",273));
