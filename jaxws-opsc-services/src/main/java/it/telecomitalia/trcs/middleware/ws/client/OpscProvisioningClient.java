@@ -12,6 +12,8 @@ import it.telecomitalia.soa.trcs.gateway.ChangeNumberRequest;
 import it.telecomitalia.soa.trcs.gateway.ChangeNumberResponse;
 import it.telecomitalia.soa.trcs.gateway.DeleteSubscriberXRequest;
 import it.telecomitalia.soa.trcs.gateway.DeleteSubscriberXResponse;
+import it.telecomitalia.soa.trcs.gateway.RestoreSubscriberXRequest;
+import it.telecomitalia.soa.trcs.gateway.RestoreSubscriberXResponse;
 import it.telecomitalia.soa.trcs.gateway.SetSubscriberStatusXRequest;
 import it.telecomitalia.soa.trcs.gateway.SetSubscriberStatusXResponse;
 import it.telecomitalia.soa.trcs.gateway.infobus.commons.InfobusMessage;
@@ -72,6 +74,19 @@ public class OpscProvisioningClient extends WebServiceGatewaySupport {
 		
 	}
 	
+	
+	public RestoreSubscriberXResponse restoreSubscriberX(HeaderType header, RestoreSubscriberXRequest request) {
+		log.info("Requesting restoreX subscriber  for [{}]", request.getIbData().getRequest().getClientKeys().getMSISDN());
+		RestoreSubscriberXResponse response = (RestoreSubscriberXResponse) getWebServiceTemplate()
+				.marshalSendAndReceive(this.getDefaultUri(), request,
+						new SoapActionAndHeaderCallback(
+								"RestoreSubscriberX", header));
+
+		return response;
+		
+	}
+	
+	
 	public InfobusMessage deleteSubscriber(HeaderType header, JAXBElement<InfobusMessage> request) {
 		log.info("Requesting delete subscriber  for [{}]", request.toString());
 		JAXBElement<InfobusMessage>	 response = (JAXBElement<InfobusMessage>) getWebServiceTemplate()
@@ -93,4 +108,8 @@ public class OpscProvisioningClient extends WebServiceGatewaySupport {
 		return response.getValue();
 		
 	}
+	
+	
+	
+	
 }

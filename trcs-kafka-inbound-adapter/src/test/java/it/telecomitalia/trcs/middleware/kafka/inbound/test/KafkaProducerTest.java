@@ -245,11 +245,11 @@ public class KafkaProducerTest {
     	bean.setBaseOffer("OX6665");
     	bean.setPhoneNumber(phoneNumber);
     	bean.setLanguageId("1");
-    	SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
-    	String dt = "20171222104757";
-    	Date date1=formatter.parse(dt);  
-       	bean.setActivationDate(new Date());
-    	bean.setDeactivationDate(date1);
+//    	SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+//    	String dt = "20171222104757";
+//    	Date date1=formatter.parse(dt);  
+       	bean.setActivationDate("20171222104757");
+    	bean.setDeactivationDate("20181222104749");
 
        	bean.setTypeOfCard("AA");
        	bean.setFullMnp(true);

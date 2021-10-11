@@ -1,10 +1,17 @@
 package it.telecomitalia.trcs.middleware.kafka.inbound.command.impl;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.bind.JAXBElement;
+import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.commons.lang3.StringUtils;
@@ -14,15 +21,27 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import it.telecomitalia.soa.soap.soapheader.HeaderType;
+import it.telecomitalia.soa.trcs.gateway.AccessoryType;
+import it.telecomitalia.soa.trcs.gateway.BasketGroupedType;
+import it.telecomitalia.soa.trcs.gateway.DeleteSubscriberXResponse;
+import it.telecomitalia.soa.trcs.gateway.MandatoryOfferType;
+import it.telecomitalia.soa.trcs.gateway.MandatorySubscriptionType;
+import it.telecomitalia.soa.trcs.gateway.ResourceType;
+import it.telecomitalia.soa.trcs.gateway.RestoreSubscriberXIbData;
+import it.telecomitalia.soa.trcs.gateway.RestoreSubscriberXRequest;
+import it.telecomitalia.soa.trcs.gateway.RestoreSubscriberXResponse;
 import it.telecomitalia.soa.trcs.gateway.infobus.commons.InfobusMessage;
 import it.telecomitalia.trcs.middleware.kafka.inbound.builder.HeaderTypeBuilder;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.ExecutorSynchronousFailed;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.TrcsInboundExecutorException;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.type.CreateType;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.type.InfoType;
+import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.util.UtilModernization;
 import it.telecomitalia.trcs.middleware.kafka.inbound.config.ResponseTargets;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.CreateSubscriberRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.CreateSubscriberResponseBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.DeleteSubscriberRequestBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.DeleteSubscriberResponseBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaEventType;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaHeader;
 import it.telecomitalia.trcs.middleware.kafka.inbound.logging.HydraLogBean;
@@ -70,6 +89,7 @@ public class CreateSubscriberExecutor extends AbstractExecutor{
 					else {
 						logger.info("call RestoreSubscriberX"); 
 						//callRestoreX();
+						callRestoreX(objectMapper,request,headers,headerType);
 
 					}
 					break;
@@ -214,6 +234,7 @@ public class CreateSubscriberExecutor extends AbstractExecutor{
 		strBuf.append(StringUtils.leftPad("",5));
 		// setInstalldate
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+		
 		strBuf.append(StringUtils.leftPad((request.getInstallationDate()!=null ? formatter.format(request.getInstallationDate()) : formatter.format(new Date())),14));
 		//setActivedate
 		strBuf.append(StringUtils.leftPad((request.getActivationDate()!=null ? formatter.format(request.getActivationDate()) : ""),14));
@@ -287,13 +308,164 @@ public class CreateSubscriberExecutor extends AbstractExecutor{
 		return result;
 	}
 	
-	private static String ConvertDateGregToString(XMLGregorianCalendar dateToConvert) {
-		if(dateToConvert==null)
-			return null;
-		String dateConvert=dateToConvert.toString().replace("T", "").replace(":", "").replace("-", "");
 
-		//return dateConvert;
-		return dateConvert.substring(0, 14);
+	
+	
+
+	
+	
+	
+	private void callRestoreX(ObjectMapper objectMapper, CreateSubscriberRequestBean request,Map<String, Object> headers,HeaderType headerType) throws ExecutorSynchronousFailed,Exception {
+
+		RestoreSubscriberXResponse response = callWebServiceRestoreSubscriberX(request, headers, headerType);
+		logger.info("RestoreSubsciberX result=[{}]", response.getIbRetCode());
+
+		if ("1".equals(response.getIbRetCode())) {
+			//TODO: Scrivere Log di Success
+			HydraLogThreadLocal.getLogBean().setResult(HydraLogBean.Result.success);
+
+		} else {
+			//TODO: Gestire Errore di invocazione inviando risposta KO su Kafka
+			//TODO: Inserire Logging
+			CreateSubscriberResponseBean responsePayload = this.createRestoreResponsePayloadX(headers, request, response);
+			
+			throw new ExecutorSynchronousFailed(
+					this.getReponseTargets().getResponseTarget(TrcsKafkaEventType.createSubscriberResponse),
+					TrcsKafkaHeader.createResponseKafkaHeader(headers, TrcsKafkaEventType.createSubscriberResponse),
+					responsePayload,
+					objectMapper.writeValueAsString(responsePayload),
+					request.getPhoneNumber()
+					);
+
+		} 
+
+
 	}
+	
+	
+	
+	private CreateSubscriberResponseBean createRestoreResponsePayloadX(Map<String, Object> headers, CreateSubscriberRequestBean request,  RestoreSubscriberXResponse response) {
+
+	
+		CreateSubscriberResponseBean result = new CreateSubscriberResponseBean(headers.get(TrcsKafkaHeader.sourceSystem.name()).toString(),
+				request.getPhoneNumber(),
+				KafkaErrorCodes.decodeFromOpsc(response.getIbRetCode()),
+				KafkaErrorCodes.messageFromOpsc(response.getIbRetCode()),
+				request.getCreateType(),
+				request.getIccid(),
+				request.getImsi(),
+				null
+				);
+
+		result.setSubsystemErrorCode(response.getIbRetCode());
+     	return result;
+
+
+	}
+	
+	
+	private RestoreSubscriberXResponse callWebServiceRestoreSubscriberX(CreateSubscriberRequestBean request, Map<String, Object> headers,
+			HeaderType headerType) throws ParseException, DatatypeConfigurationException {
+		// Effettua il mapping con il body SOAP
+		RestoreSubscriberXRequest wsRequest = this.createWebServiceRestoreXRequest(request, headers, headerType);
+		// Invoca il servizio di cambio numero di GW
+		RestoreSubscriberXResponse response = this.getOpscClient().restoreSubscriberX(headerType, wsRequest);
+		return response;
+	}
+	
+	
+	private RestoreSubscriberXRequest createWebServiceRestoreXRequest(CreateSubscriberRequestBean request, Map<String, Object> headers,
+			HeaderType headerType) throws ParseException, DatatypeConfigurationException {
+
+		RestoreSubscriberXRequest wsRequest = new RestoreSubscriberXRequest();
+
+		wsRequest.setIbRetCode("1");
+		wsRequest.setIbAppDep1("0");
+		wsRequest.setIbAppDep2("0");
+		wsRequest.setIbIdSrvc("RESTORE");
+		wsRequest.setIbData(new RestoreSubscriberXRequest.IbData());
+		wsRequest.getIbData().setIbLenData(0);
+
+		RestoreSubscriberXIbData payload = new RestoreSubscriberXIbData();
+		wsRequest.getIbData().setRequest(payload);
+
+		payload.setRequestType("TwoStep");
+
+		payload.setTransaction(new RestoreSubscriberXIbData.Transaction());
+
+		payload.getTransaction().setTID(headerType.getTransactionID());
+		payload.getTransaction().setSubsystem(String.valueOf(headers.get(TrcsKafkaHeader.channel.name())));
+		payload.getTransaction().setService(wsRequest.getIbIdSrvc());
+		payload.getTransaction().setIDSystem(headerType.getSourceSystem());
+		payload.getTransaction().setRetCode("1");
+
+		payload.setClientKeys(new RestoreSubscriberXIbData.ClientKeys());
+		payload.getClientKeys().setMSISDN(request.getPhoneNumber());
+
+		payload.setOperation(new RestoreSubscriberXIbData.Operation());
+		payload.getOperation().setOperationType("RestoreSubscriber");
+		payload.getOperation().setInfo(request.getInfo());
+		
+		
+		RestoreSubscriberXIbData.Operation.RestoreSubscriber restoreSubscriber = new RestoreSubscriberXIbData.Operation.RestoreSubscriber();
+		
+		// Client
+		RestoreSubscriberXIbData.Operation.RestoreSubscriber.Client client = new RestoreSubscriberXIbData.Operation.RestoreSubscriber.Client();
+				
+		client.setReason("A");
+		client.setLanguageId(request.getLanguageId());
+		client.setTypeOfCard(request.getTypeOfCard());
+		client.setNumReloads(request.getNumReloads() == null ? "0" : request.getNumReloads());
+		client.setNumTariffs(request.getNumBaseOfferChanges() == null ? "0" : request.getNumBaseOfferChanges());
+		client.setLastChangeTariff(request.getLastBaseOfferChange() == null ? "" : request.getLastBaseOfferChange().toString());
+		client.setInstallationDate(UtilModernization.string2XMLGregorianCalendar(request.getInstallationDate()));
+		if (request.getActivationDate()!=null)
+			client.setActivationDate(UtilModernization.string2XMLGregorianCalendar(request.getActivationDate()));
+		client.setServiceProviderId("WRAPPER");
+		if (request.getLastCreditUpdate()!=null)
+			client.setLastEventDate((UtilModernization.string2XMLGregorianCalendar(request.getLastCreditUpdate())));
+	
+		client.setAccountType(request.isFullMnp() ? new BigInteger("3") : new BigInteger("1"));
+		
+		RestoreSubscriberXIbData.Operation.RestoreSubscriber.Client.GSM gsm = new RestoreSubscriberXIbData.Operation.RestoreSubscriber.Client.GSM(); 
+		gsm.setCardFeature(request.getFeatures());
+		gsm.setCardPhase(request.getPhase());
+		gsm.setICCID(request.getIccid());
+		gsm.setIMSI(request.getImsi());
+		client.setGSM(gsm);
+		
+		restoreSubscriber.setClient(client);
+		
+		// Subscription
+		MandatorySubscriptionType mandatorySubscriptionType = new MandatorySubscriptionType();
+		mandatorySubscriptionType.setName("WRAPPER");
+		restoreSubscriber.getSubscription().add(mandatorySubscriptionType);
+		
+		MandatoryOfferType mandatoryOfferType = new MandatoryOfferType();
+		mandatoryOfferType.setName(request.getBaseOffer());
+		mandatorySubscriptionType.getOffer().add(mandatoryOfferType);
+		
+		AccessoryType accessoryType = new AccessoryType();
+		accessoryType.setName("WRAPPER");
+		mandatorySubscriptionType.getOffer().get(0).getAccessory().add(accessoryType);
+		
+		BasketGroupedType basketGroupedType = new BasketGroupedType();
+		basketGroupedType.setName("DEBIT");
+		basketGroupedType.setValue(request.getCredit() == null ? BigDecimal.ZERO  : request.getCredit());
+		mandatorySubscriptionType.getOffer().get(0).getAccessory().get(0).getBasket().add(basketGroupedType);
+		
+		ResourceType resourceType = new ResourceType();
+		resourceType.setName("RSRIF");
+		resourceType.setState(request.isRifService() ? "1" : "2");
+		mandatorySubscriptionType.getOffer().get(0).getAccessory().get(0).getResource().add(resourceType);
+
+
+		payload.getOperation().setRestoreSubscriber(restoreSubscriber);
+		
+		
+		return wsRequest;
+	}
+	
+	
 
 }
