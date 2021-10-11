@@ -70,7 +70,7 @@ class KafkaAdapterListeners{
 			byte[] value = (byte[])headers.get(TrcsKafkaHeader.eventType.name());
 			bean.setEventType(new String(value));
 			TrcsKafkaEventType eventType = TrcsKafkaEventType.getInstance(new String(value));
-
+			
 			TrcsInboundExecutor executor = factory.createInstance(eventType);
 
 			executor.execute(headers, message);
