@@ -1,8 +1,8 @@
 package it.telecomitalia.trcs.middleware.kafka.inbound.builder;
 
+import java.io.StringWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.Map;
 
 import it.telecomitalia.soa.soap.soapheader.HeaderType;
@@ -28,13 +28,26 @@ public class HeaderTypeBuilder {
 		Object value;
 		
 		value = this.headerParams.get(TrcsKafkaHeader.businessID.name());
-		header.setBusinessID(TrcsKafkaHeader.objectToString(value));
+		header.setBusinessID("KAFKA@" + TrcsKafkaHeader.objectToString(value));
 		
 		value = this.headerParams.get(TrcsKafkaHeader.transactionID.name());
 		header.setTransactionID(TrcsKafkaHeader.objectToString(value));
 		
+		//"<messageID>@<sessionID>@<sourceSystem>@<channel>".
+		StringWriter writer = new StringWriter();
 		value = this.headerParams.get(TrcsKafkaHeader.messageID.name());
-		header.setMessageID(TrcsKafkaHeader.objectToString(value));
+		writer.write(TrcsKafkaHeader.objectToString(value));
+		writer.write("@");
+		value = this.headerParams.get(TrcsKafkaHeader.sessionID.name());
+		writer.write(TrcsKafkaHeader.objectToString(value));
+		writer.write("@");
+		value = this.headerParams.get(TrcsKafkaHeader.sourceSystem.name());
+		writer.write(TrcsKafkaHeader.objectToString(value));
+		writer.write("@");
+		value = this.headerParams.get(TrcsKafkaHeader.channel.name());
+		writer.write(TrcsKafkaHeader.objectToString(value));
+		
+		header.setMessageID(TrcsKafkaHeader.objectToString(writer.toString()));
 
 		value = this.headerParams.get(TrcsKafkaHeader.interactionDate.name());
 		if (value!=null) {
