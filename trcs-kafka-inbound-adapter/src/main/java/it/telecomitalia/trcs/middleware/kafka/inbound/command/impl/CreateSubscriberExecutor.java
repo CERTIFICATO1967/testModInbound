@@ -96,7 +96,7 @@ public class CreateSubscriberExecutor extends AbstractExecutor{
 				}
 			case Migrate:
 				logger.info("call MigrateSubscriber"); 
-				//callMigrate();
+				callMigrate(objectMapper,request,headers,headerType);
 				break;
 			case Install:
 				if(request.isFullMnp()) {
@@ -137,7 +137,7 @@ public class CreateSubscriberExecutor extends AbstractExecutor{
 		} else {
 			//TODO: Gestire Errore di invocazione inviando risposta KO su Kafka
 			//TODO: Inserire Logging
-			CreateSubscriberResponseBean responsePayload = this.createRestoreResponsePayload(headers, request, response);
+			CreateSubscriberResponseBean responsePayload = this.createRestoreMigrateResponsePayload(headers, request, response);
 			
 			throw new ExecutorSynchronousFailed(
 					this.getReponseTargets().getResponseTarget(TrcsKafkaEventType.createSubscriberResponse),
@@ -163,7 +163,7 @@ public class CreateSubscriberExecutor extends AbstractExecutor{
 
 	
 
-	private CreateSubscriberResponseBean createRestoreResponsePayload(Map<String, Object> headers, CreateSubscriberRequestBean request,  InfobusMessage response) {
+	private CreateSubscriberResponseBean createRestoreMigrateResponsePayload(Map<String, Object> headers, CreateSubscriberRequestBean request,  InfobusMessage response) {
 
 		CreateSubscriberResponseBean result = new CreateSubscriberResponseBean(headers.get(TrcsKafkaHeader.sourceSystem.name()).toString(),
 				request.getPhoneNumber(),
@@ -327,7 +327,7 @@ public class CreateSubscriberExecutor extends AbstractExecutor{
 		} else {
 			//TODO: Gestire Errore di invocazione inviando risposta KO su Kafka
 			//TODO: Inserire Logging
-			CreateSubscriberResponseBean responsePayload = this.createRestoreResponsePayloadX(headers, request, response);
+			CreateSubscriberResponseBean responsePayload = this.createResponsePayloadRestoreX(headers, request, response);
 			
 			throw new ExecutorSynchronousFailed(
 					this.getReponseTargets().getResponseTarget(TrcsKafkaEventType.createSubscriberResponse),
@@ -344,7 +344,7 @@ public class CreateSubscriberExecutor extends AbstractExecutor{
 	
 	
 	
-	private CreateSubscriberResponseBean createRestoreResponsePayloadX(Map<String, Object> headers, CreateSubscriberRequestBean request,  RestoreSubscriberXResponse response) {
+	private CreateSubscriberResponseBean createResponsePayloadRestoreX(Map<String, Object> headers, CreateSubscriberRequestBean request,  RestoreSubscriberXResponse response) {
 
 	
 		CreateSubscriberResponseBean result = new CreateSubscriberResponseBean(headers.get(TrcsKafkaHeader.sourceSystem.name()).toString(),
@@ -364,8 +364,9 @@ public class CreateSubscriberExecutor extends AbstractExecutor{
 	}
 	
 	
+	
 	private RestoreSubscriberXResponse callWebServiceRestoreSubscriberX(CreateSubscriberRequestBean request, Map<String, Object> headers,
-			HeaderType headerType) throws ParseException, DatatypeConfigurationException {
+			HeaderType headerType) throws  DatatypeConfigurationException {
 		// Effettua il mapping con il body SOAP
 		RestoreSubscriberXRequest wsRequest = this.createWebServiceRestoreXRequest(request, headers, headerType);
 		// Invoca il servizio di cambio numero di GW
@@ -375,7 +376,7 @@ public class CreateSubscriberExecutor extends AbstractExecutor{
 	
 	
 	private RestoreSubscriberXRequest createWebServiceRestoreXRequest(CreateSubscriberRequestBean request, Map<String, Object> headers,
-			HeaderType headerType) throws ParseException, DatatypeConfigurationException {
+			HeaderType headerType) throws  DatatypeConfigurationException {
 
 		RestoreSubscriberXRequest wsRequest = new RestoreSubscriberXRequest();
 
@@ -418,12 +419,16 @@ public class CreateSubscriberExecutor extends AbstractExecutor{
 		client.setNumReloads(request.getNumReloads() == null ? "0" : request.getNumReloads());
 		client.setNumTariffs(request.getNumBaseOfferChanges() == null ? "0" : request.getNumBaseOfferChanges());
 		client.setLastChangeTariff(request.getLastBaseOfferChange() == null ? "" : request.getLastBaseOfferChange().toString());
-		client.setInstallationDate(UtilModernization.string2XMLGregorianCalendar(request.getInstallationDate()));
+		
+		
+		
+
+		client.setInstallationDate(UtilModernization.locatDate2XMLGregorianCalendar(request.getInstallationDate()));
 		if (request.getActivationDate()!=null)
-			client.setActivationDate(UtilModernization.string2XMLGregorianCalendar(request.getActivationDate()));
+			client.setActivationDate(UtilModernization.locatDate2XMLGregorianCalendar(request.getActivationDate()));
 		client.setServiceProviderId("WRAPPER");
 		if (request.getLastCreditUpdate()!=null)
-			client.setLastEventDate((UtilModernization.string2XMLGregorianCalendar(request.getLastCreditUpdate())));
+			client.setLastEventDate((UtilModernization.locatDate2XMLGregorianCalendar(request.getLastCreditUpdate())));
 	
 		client.setAccountType(request.isFullMnp() ? new BigInteger("3") : new BigInteger("1"));
 		
@@ -466,6 +471,107 @@ public class CreateSubscriberExecutor extends AbstractExecutor{
 		return wsRequest;
 	}
 	
+	
+	
+	private void callMigrate(ObjectMapper objectMapper,CreateSubscriberRequestBean request,Map<String, Object> headers,HeaderType headerType) throws ExecutorSynchronousFailed,Exception {
+
+
+		InfobusMessage response = callWebServiceMigrateSubscriber(request, headers, headerType);
+		logger.info("MigrateSubsciber result=[{}]", response.getIbRetCode());
+
+		if ("1".equals(response.getIbRetCode())) {
+			//TODO: Scrivere Log di Success
+			HydraLogThreadLocal.getLogBean().setResult(HydraLogBean.Result.success);
+
+		} else {
+			//TODO: Gestire Errore di invocazione inviando risposta KO su Kafka
+			//TODO: Inserire Logging
+			CreateSubscriberResponseBean responsePayload = this.createRestoreMigrateResponsePayload(headers, request, response);
+			
+			throw new ExecutorSynchronousFailed(
+					this.getReponseTargets().getResponseTarget(TrcsKafkaEventType.createSubscriberResponse),
+					TrcsKafkaHeader.createResponseKafkaHeader(headers, TrcsKafkaEventType.createSubscriberResponse),
+					responsePayload,
+					objectMapper.writeValueAsString(responsePayload),
+					request.getPhoneNumber()
+					);
+
+		} 
+
+	}
+	
+		private InfobusMessage callWebServiceMigrateSubscriber(CreateSubscriberRequestBean request, Map<String, Object> headers,
+			HeaderType headerType) {
+		// Effettua il mapping con il body SOAP
+	    JAXBElement<InfobusMessage>  wsRequest = this.createWebServiceMigrateRequest(request, headers, headerType);
+		// Invoca il servizio di cambio numero di GW
+		InfobusMessage response = this.getOpscClient().migrateSubscriber(headerType, wsRequest);
+		return response;
+	}
+
+	private JAXBElement<InfobusMessage> createWebServiceMigrateRequest(CreateSubscriberRequestBean request, Map<String, Object> headers,
+			HeaderType headerType) {
+
+		InfobusMessage message =  new InfobusMessage();
+		message.setIbAppDep1("0");
+		message.setIbAppDep2("0");
+		message.setIbRetCode("1");
+		message.setIbIdSrvc("MIGRPREPG");
+		message.setIbData(new InfobusMessage.IbData());
+		
+		// Create buffer flat for ibdata
+		StringBuffer strBuf =  new StringBuffer("   channel");
+		// msisdn
+		strBuf.append(StringUtils.leftPad(request.getPhoneNumber(),20));
+		// iccid
+		strBuf.append(StringUtils.leftPad(request.getIccid(),20));
+		// imsi
+		strBuf.append(StringUtils.leftPad(request.getImsi(),16));
+		//pin puk pin2 puk2
+		strBuf.append(StringUtils.leftPad("",24));
+		// category
+		strBuf.append(request.isRifService() ? "RSRIF" : StringUtils.leftPad("",6));
+		// debit
+		BigDecimal valueDebit = BigDecimal.ZERO;
+		if (request.getBaseOffer()!=null && request.getBaseOffer().trim().length()>0) {
+			if(request.getBaseOffer().equals("OB601") || request.getBaseOffer().equals("OB63"))
+			  valueDebit =  request.getCompanyCredit();
+		    else
+		      valueDebit =  request.getCredit();
+		}
+		strBuf.append(StringUtils.leftPad(valueDebit.toString(),10));
+		strBuf.append(StringUtils.leftPad(request.getBaseOffer() != null ? request.getBaseOffer().substring(2):"",5));
+		// languageid
+		strBuf.append(StringUtils.leftPad(request.getLanguageId(),2));
+		// district
+		strBuf.append(StringUtils.leftPad("",4));
+		// asstate
+		strBuf.append("A");
+		// cardfeatures
+		strBuf.append(StringUtils.leftPad(request.getFeatures(),8));
+		// dn_options
+		strBuf.append("0");
+		// mnpflag
+		strBuf.append(request.isFullMnp()  ? "1" :"0");
+		//SLIDE_FLAG
+		strBuf.append("0");
+		// VirtualMSISDN
+		strBuf.append(StringUtils.leftPad("",20));	
+		// toc
+		strBuf.append(StringUtils.leftPad(request.getTypeOfCard(),2));
+		
+		message.getIbData().setIbLenData(strBuf.toString().length());
+		message.getIbData().setValue(strBuf.toString());
+			
+		message.setIbData(message.getIbData());
+		it.telecomitalia.soa.trcs.gateway.ObjectFactory obj = new it.telecomitalia.soa.trcs.gateway.ObjectFactory();
+		JAXBElement<InfobusMessage> result = obj.createDeleteSubscriberRequest(message);
+	
+		return result;
+		
+	}
+
+
 	
 
 }

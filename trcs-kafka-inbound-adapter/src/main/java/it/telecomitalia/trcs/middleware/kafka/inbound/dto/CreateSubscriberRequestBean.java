@@ -1,6 +1,7 @@
 package it.telecomitalia.trcs.middleware.kafka.inbound.dto;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public class CreateSubscriberRequestBean {
 	private String phoneNumber;
@@ -15,12 +16,12 @@ public class CreateSubscriberRequestBean {
 	private boolean fullMnp;
 	private String numReloads;
 	private String numBaseOfferChanges;
-	private String lastBaseOfferChange;
-	private String lastCreditUpdate;
-	private String installationDate;
-	private String activationDate;
-	private String deactivationDate;
-	private String expirationDate;
+	private LocalDateTime lastBaseOfferChange;
+	private LocalDateTime lastCreditUpdate;
+	private LocalDateTime installationDate;
+	private LocalDateTime activationDate;
+	private LocalDateTime deactivationDate;
+	private LocalDateTime expirationDate;
 	private String activeTime;
 	private String expiredReason;
 	private boolean restoredFromExpired;
@@ -102,40 +103,40 @@ public class CreateSubscriberRequestBean {
 	public void setNumBaseOfferChanges(String numBaseOfferChanges) {
 		this.numBaseOfferChanges = numBaseOfferChanges;
 	}
-	public String getLastBaseOfferChange() {
+	public LocalDateTime getLastBaseOfferChange() {
 		return lastBaseOfferChange;
 	}
-	public void setLastBaseOfferChange(String lastBaseOfferChange) {
+	public void setLastBaseOfferChange(LocalDateTime lastBaseOfferChange) {
 		this.lastBaseOfferChange = lastBaseOfferChange;
 	}
-	public String getLastCreditUpdate() {
+	public LocalDateTime getLastCreditUpdate() {
 		return lastCreditUpdate;
 	}
-	public void setLastCreditUpdate(String lastCreditUpdate) {
+	public void setLastCreditUpdate(LocalDateTime lastCreditUpdate) {
 		this.lastCreditUpdate = lastCreditUpdate;
 	}
-	public String getInstallationDate() {
+	public LocalDateTime getInstallationDate() {
 		return installationDate;
 	}
-	public void setInstallationDate(String installationDate) {
+	public void setInstallationDate(LocalDateTime installationDate) {
 		this.installationDate = installationDate;
 	}
-	public String getActivationDate() {
+	public LocalDateTime getActivationDate() {
 		return activationDate;
 	}
-	public void setActivationDate(String activationDate) {
+	public void setActivationDate(LocalDateTime activationDate) {
 		this.activationDate = activationDate;
 	}
-	public String getDeactivationDate() {
+	public LocalDateTime getDeactivationDate() {
 		return deactivationDate;
 	}
-	public void setDeactivationDate(String deactivationDate) {
+	public void setDeactivationDate(LocalDateTime deactivationDate) {
 		this.deactivationDate = deactivationDate;
 	}
-	public String getExpirationDate() {
+	public LocalDateTime getExpirationDate() {
 		return expirationDate;
 	}
-	public void setExpirationDate(String expirationDate) {
+	public void setExpirationDate(LocalDateTime expirationDate) {
 		this.expirationDate = expirationDate;
 	}
 	public String getActiveTime() {

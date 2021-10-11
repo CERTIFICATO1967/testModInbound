@@ -3,6 +3,7 @@ package it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.util;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -23,14 +24,11 @@ public class UtilModernization {
 		return dateConvert.substring(0, 14);
 	}
 
-
-	public static XMLGregorianCalendar string2XMLGregorianCalendar(String pField) throws ParseException, DatatypeConfigurationException {
-		DateFormat df = new SimpleDateFormat("yyyyMMDDHHmmss");
-		GregorianCalendar lGregorianCalendarObj = new GregorianCalendar();
-		Date lDateObj = df.parse(pField);
-		lGregorianCalendarObj.setTimeInMillis(lDateObj.getTime());
-
-		return DatatypeFactory.newInstance().newXMLGregorianCalendar(lGregorianCalendarObj);
+	public static XMLGregorianCalendar locatDate2XMLGregorianCalendar(LocalDateTime pField) throws DatatypeConfigurationException {
+		return DatatypeFactory.newInstance().newXMLGregorianCalendar(pField.toString());
+		
 	}
+
+	
 }
 

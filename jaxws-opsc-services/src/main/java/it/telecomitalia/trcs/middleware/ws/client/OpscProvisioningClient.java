@@ -110,6 +110,16 @@ public class OpscProvisioningClient extends WebServiceGatewaySupport {
 	}
 	
 	
+	public InfobusMessage migrateSubscriber(HeaderType header, JAXBElement<InfobusMessage> request) {
+		log.info("Requesting Migrate subscriber  for [{}]", request.toString());
+		JAXBElement<InfobusMessage>	 response = (JAXBElement<InfobusMessage>) getWebServiceTemplate()
+				.marshalSendAndReceive(this.getDefaultUri(), request,
+						new SoapActionAndHeaderCallback(
+								"MigrateSubscriber", header));
+
+		return response.getValue();
+		
+	}
 	
 	
 }

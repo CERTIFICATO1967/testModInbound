@@ -2,6 +2,7 @@ package it.telecomitalia.trcs.middleware.kafka.inbound.test;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
@@ -247,9 +248,10 @@ public class KafkaProducerTest {
     	bean.setLanguageId("1");
 //    	SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
 //    	String dt = "20171222104757";
-//    	Date date1=formatter.parse(dt);  
-       	bean.setActivationDate("20171222104757");
-    	bean.setDeactivationDate("20181222104749");
+//    	Date date1=formatter.parse(dt); 
+    	LocalDateTime dt =  LocalDateTime.of(2021,04,14,9,27,26);
+       	bean.setActivationDate(dt);
+       	bean.setDeactivationDate(dt);
 
        	bean.setTypeOfCard("AA");
        	bean.setFullMnp(true);
