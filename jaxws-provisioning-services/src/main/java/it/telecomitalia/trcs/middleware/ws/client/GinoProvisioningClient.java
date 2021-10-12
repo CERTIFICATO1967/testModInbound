@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 
 import it.telecomitalia.soa.soap.soapheader.HeaderType;
+import it.telecomitalia.soa.trcs.gateway.provisioning.AccountMigrationRequest;
 import it.telecomitalia.soa.trcs.gateway.provisioning.ChangeCardRequest;
 import it.telecomitalia.soa.trcs.gateway.provisioning.commons.ResponseMessage;
 
@@ -45,6 +46,19 @@ public class GinoProvisioningClient extends WebServiceGatewaySupport {
 						"ChangeCard", header));
 		
 		
+		
+		return response.getValue();
+		
+	}
+	
+	
+	public ResponseMessage changeSubscriber(HeaderType header, AccountMigrationRequest request) {
+		log.info("Requesting change subscriber for [{}]", request.getPhoneNumber());
+
+		JAXBElement<ResponseMessage> response = (JAXBElement<ResponseMessage>) getWebServiceTemplate()
+		.marshalSendAndReceive(this.getDefaultUri(), request,
+				new SoapActionAndHeaderCallback(
+						"ChangeSubscriber", header));
 		
 		return response.getValue();
 		
