@@ -14,6 +14,8 @@ import it.telecomitalia.soa.trcs.gateway.DeleteSubscriberXRequest;
 import it.telecomitalia.soa.trcs.gateway.DeleteSubscriberXResponse;
 import it.telecomitalia.soa.trcs.gateway.RestoreSubscriberXRequest;
 import it.telecomitalia.soa.trcs.gateway.RestoreSubscriberXResponse;
+import it.telecomitalia.soa.trcs.gateway.SaleOperationXRequest;
+import it.telecomitalia.soa.trcs.gateway.SaleOperationXResponse;
 import it.telecomitalia.soa.trcs.gateway.SetSubscriberStatusXRequest;
 import it.telecomitalia.soa.trcs.gateway.SetSubscriberStatusXResponse;
 import it.telecomitalia.soa.trcs.gateway.infobus.commons.InfobusMessage;
@@ -81,6 +83,17 @@ public class OpscProvisioningClient extends WebServiceGatewaySupport {
 				.marshalSendAndReceive(this.getDefaultUri(), request,
 						new SoapActionAndHeaderCallback(
 								"RestoreSubscriberX", header));
+
+		return response;
+		
+	}
+	
+	public SaleOperationXResponse saleOperationX(HeaderType header, SaleOperationXRequest request) {
+		log.info("Requesting saleOperation subscriber  for [{}]", request.getIbData().getRequest().getClientKeys().getMSISDN());
+		SaleOperationXResponse response = (SaleOperationXResponse) getWebServiceTemplate()
+				.marshalSendAndReceive(this.getDefaultUri(), request,
+						new SoapActionAndHeaderCallback(
+								"SaleOperationX", header));
 
 		return response;
 		
