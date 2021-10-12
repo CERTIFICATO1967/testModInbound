@@ -12,6 +12,8 @@ import it.telecomitalia.soa.trcs.gateway.ChangeNumberRequest;
 import it.telecomitalia.soa.trcs.gateway.ChangeNumberResponse;
 import it.telecomitalia.soa.trcs.gateway.DeleteSubscriberXRequest;
 import it.telecomitalia.soa.trcs.gateway.DeleteSubscriberXResponse;
+import it.telecomitalia.soa.trcs.gateway.InstallSubscriberXRequest;
+import it.telecomitalia.soa.trcs.gateway.InstallSubscriberXResponse;
 import it.telecomitalia.soa.trcs.gateway.RestoreSubscriberXRequest;
 import it.telecomitalia.soa.trcs.gateway.RestoreSubscriberXResponse;
 import it.telecomitalia.soa.trcs.gateway.SaleOperationXRequest;
@@ -88,8 +90,18 @@ public class OpscProvisioningClient extends WebServiceGatewaySupport {
 		
 	}
 	
+	public InstallSubscriberXResponse installSubscriberX(HeaderType header, InstallSubscriberXRequest request) {
+		log.info("Requesting installX subscriber  for [{}]", request.getIbData().getRequest().getClientKeys().getMSISDN());
+		InstallSubscriberXResponse response = (InstallSubscriberXResponse) getWebServiceTemplate()
+				.marshalSendAndReceive(this.getDefaultUri(), request,
+						new SoapActionAndHeaderCallback(
+								"InstallSubscriberX", header));
+
+		return response;
+		
+	}
 	public SaleOperationXResponse saleOperationX(HeaderType header, SaleOperationXRequest request) {
-		log.info("Requesting saleOperation subscriber  for [{}]", request.getIbData().getRequest().getClientKeys().getMSISDN());
+		log.info("Requesting saleOperationX subscriber  for [{}]", request.getIbData().getRequest().getClientKeys().getMSISDN());
 		SaleOperationXResponse response = (SaleOperationXResponse) getWebServiceTemplate()
 				.marshalSendAndReceive(this.getDefaultUri(), request,
 						new SoapActionAndHeaderCallback(
@@ -98,6 +110,7 @@ public class OpscProvisioningClient extends WebServiceGatewaySupport {
 		return response;
 		
 	}
+	
 	
 	
 	public InfobusMessage deleteSubscriber(HeaderType header, JAXBElement<InfobusMessage> request) {
