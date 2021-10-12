@@ -1,8 +1,9 @@
 package it.telecomitalia.trcs.middleware.kafka.inbound.dto;
 
-import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ChangeNumberResponseBean.ChangeNumberDetail;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-
+@JsonInclude(Include.NON_EMPTY)
 public class ChangeCardResponseBean extends GenericResponseBean {
 	
 	private ChangeCardDetail changeCardDetail = null;

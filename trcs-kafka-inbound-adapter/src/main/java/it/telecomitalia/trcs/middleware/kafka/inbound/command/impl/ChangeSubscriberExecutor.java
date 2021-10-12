@@ -92,7 +92,6 @@ public class ChangeSubscriberExecutor extends AbstractExecutor {
 	
 	private ChangeSubscriberResponseBean createResponsePayload(Map<String, Object> headers, ChangeSubscriberRequestBean request,  ResponseMessage response) {
 
-		// String migrationType, BigDecimal credit, BigDecimal companyCredit, BigDecimal oldCredit, BigDecimal oldCompanyCredit)
         
 		ChangeSubscriberResponseBean result = new ChangeSubscriberResponseBean(headers.get(TrcsKafkaHeader.sourceSystem.name()).toString(),
 				                                                       request.getPhoneNumber(),

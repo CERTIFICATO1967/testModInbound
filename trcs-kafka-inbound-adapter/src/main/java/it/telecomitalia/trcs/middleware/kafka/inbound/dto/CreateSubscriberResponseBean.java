@@ -1,10 +1,11 @@
 package it.telecomitalia.trcs.middleware.kafka.inbound.dto;
 
-import java.math.BigDecimal;
+
 import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-
-
+@JsonInclude(Include.NON_EMPTY)
 public class CreateSubscriberResponseBean  extends GenericResponseBean{
 	
 	
