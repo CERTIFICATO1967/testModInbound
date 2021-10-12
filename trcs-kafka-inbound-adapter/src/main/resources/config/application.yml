@@ -19,3 +19,4 @@ trcs:
   gateway:
     services:
       opsc-provisionig: http://localhost:8095/gateway/opsc/provisioning
+      gino-provisioning: http://localhost:8095/gateway/provisioning
