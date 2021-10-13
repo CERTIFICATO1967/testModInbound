@@ -15,13 +15,13 @@ import org.springframework.ws.transport.WebServiceMessageSender;
 public class GinoProvisioningClientConfig {
 
 
-	@Value("${trcs.gateway.services.gino-provisionig:http://localhost:8095/gateway/provisioning}")
+	@Value("${trcs.gateway.services.gino-provisionig.address:http://localhost:8095/gateway/provisioning}")
 	private String defaultUri;
 	
-	@Value("${trcs.gateway.services.timeout.connection:5000}")
+	@Value("${trcs.gateway.services.gino-provisioning.timeout-connection:1000}")
 	private int connectionTimeout;
 	
-	@Value("${trcs.gateway.services.timeout.read:5000}")
+	@Value("${trcs.gateway.services.gino-provisioning.timeout-read:1000}")
 	private int readTimeout;
 
 	/*@Bean(name="gino")
@@ -53,7 +53,7 @@ public class GinoProvisioningClientConfig {
         Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
         String[] packagesToScan= {"it.telecomitalia.soa.soap.soapheader",
         		                  "it.telecomitalia.soa.trcs.gateway.provisioning",
-        		                  "it.telecomitalia.soa.trcs.gateway.commons.provisioning"};
+        		                  "it.telecomitalia.soa.trcs.gateway.provisioning.commons"};
         marshaller.setPackagesToScan(packagesToScan);
         return marshaller;
     }

@@ -9,10 +9,12 @@ import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.ChangeNumberE
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.ChangeSubscriberExecutor;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.CreateSubscriberExecutor;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.DeleteSubscriberExecutor;
+import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.ReloadSubscriberExecutor;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.SetSubscriberStatusXExecutor;
 import it.telecomitalia.trcs.middleware.kafka.inbound.config.ResponseTargets;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaEventType;
 import it.telecomitalia.trcs.middleware.ws.client.GinoProvisioningClient;
+import it.telecomitalia.trcs.middleware.ws.client.GinoRechargeClient;
 import it.telecomitalia.trcs.middleware.ws.client.OpscProvisioningClient;
 
 @Component
@@ -23,6 +25,9 @@ public class TrcsInboundExecutorFactory {
 	
 	@Autowired
 	GinoProvisioningClient ginoProvisioningClient;
+
+	@Autowired
+  	GinoRechargeClient ginoRechargeClient;
 	
 	@Autowired
 	ResponseTargets responseTargets;
@@ -42,6 +47,8 @@ public class TrcsInboundExecutorFactory {
 				return new CreateSubscriberExecutor(opscProvisioningClient, responseTargets);	
 			case changeSubscriberRequest:
 				return new ChangeSubscriberExecutor(ginoProvisioningClient, responseTargets);
+			case reloadSubscriberRequest:
+			    return new ReloadSubscriberExecutor(ginoRechargeClient, responseTargets);
 			case activateSubscriberRequest:
 				return new ActivateSubscriberExecutor(opscProvisioningClient, responseTargets);	
 				

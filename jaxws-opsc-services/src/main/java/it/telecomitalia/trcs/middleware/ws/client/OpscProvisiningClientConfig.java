@@ -14,13 +14,13 @@ import org.springframework.ws.transport.WebServiceMessageSender;
 public class OpscProvisiningClientConfig {
 
 
-	@Value("${trcs.gateway.services.opsc-provisionig:http://localhost:8080/opsc/provisioning}")
+	@Value("${trcs.gateway.services.opsc-provisionig.address:http://localhost:8095/opsc/provisioning}")
 	private String defaultUri;
 	
-	@Value("${trcs.gateway.services.timeout.connection:5000}")
+	@Value("${trcs.gateway.services.gino-provisioning.timeout-connection}")
 	private int connectionTimeout;
 	
-	@Value("${trcs.gateway.services.timeout.read:5000}")
+	@Value("${trcs.gateway.services.gino-provisioning.timeout-read:1000}")
 	private int readTimeout;
 
 	@Bean

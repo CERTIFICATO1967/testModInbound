@@ -17,6 +17,7 @@
 			<jaxb:package name="it.telecomitalia.soa.trcs.gateway.provisioning"/>
 		</jaxb:schemaBindings>
 	</jaxb:bindings>
+	
 
 <jaxb:bindings scd="x-schema::tns" xmlns:tns="http://telecomitalia.it/SOA/TRCS/Gateway/Commons">
 		<jaxb:schemaBindings>

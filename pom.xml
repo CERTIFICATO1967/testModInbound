@@ -43,6 +43,7 @@
 	<modules>
 		<module>jaxws-opsc-services</module>
 		<module>jaxws-provisioning-services</module>
+		<module>jaxws-recharge-services</module>
 		<module>trcs-kafka-inbound-adapter</module>
 	</modules>
 </project>

@@ -1,10 +1,14 @@
 package it.telecomitalia.trcs.middleware.kafka.inbound.test;
 
 import java.io.ByteArrayOutputStream;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
@@ -23,6 +27,7 @@ import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ChangeCardRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ChangeNumberRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.CreateSubscriberRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.DeleteSubscriberRequestBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ReloadSubscriberRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.SetSubscriberStatusXRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaEventType;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaHeader;
@@ -226,7 +231,7 @@ public class KafkaProducerTest {
     }
     
     
-    @Test
+    //@Test
     public void sendMessageRestoreCreateSubscriber() throws Exception {
     	logger.debug("sendMessageRestoreCreateSubscriber");
     	String phoneNumber="3391231999";
@@ -265,5 +270,38 @@ public class KafkaProducerTest {
     }
     
     
-    
+    @Test
+    public void sendMessageCombine() throws Exception {
+    	logger.debug("sendMessageCombine");
+    	String phoneNumber="3391231999";
+    	
+    	HashMap<String, String> headers = new HashMap<>();
+    	
+    	headers.put(TrcsKafkaHeader.eventType.name(), TrcsKafkaEventType.reloadSubscriberRequest.value());
+    	headers.put(TrcsKafkaHeader.transactionID.name(), UUID.randomUUID().toString());
+    	headers.put(TrcsKafkaHeader.businessID.name(), UUID.randomUUID().toString());
+    	headers.put(TrcsKafkaHeader.sourceSystem.name(), "JunitTest");
+    	
+    	ReloadSubscriberRequestBean bean = new ReloadSubscriberRequestBean();
+    	bean.setAbiCode("Abi");
+    	bean.setActiveTime("32");
+    	bean.setCabCode("Cab");
+    	bean.setClientOperationType("A");
+    	bean.setDispatcherOperationType("B");
+    	//LocalDate localDate =  LocalDate.of(2021,10,10);
+    	
+    	//logger.info("localDate " + localDate.toString());
+    	//bean.setPayDate(localDate);
+    	bean.setPayDate("2021-10-12");
+    	bean.setPhoneNumber(phoneNumber);
+    	bean.setReloadServiceId("C");
+    	bean.setReloadValue(BigDecimal.ONE);
+    	
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	
+    	ByteArrayOutputStream out = new ByteArrayOutputStream();
+    	
+    	objectMapper.writeValue(out, bean);
+        producer.send(topic, out.toString(), phoneNumber, headers);        
+    }
 }

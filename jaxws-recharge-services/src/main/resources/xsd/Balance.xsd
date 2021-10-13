@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://telecomitalia.it/SOA/TRCS/Gateway"
+	xmlns:tns="http://telecomitalia.it/SOA/TRCS/Gateway"
+	elementFormDefault="qualified" xmlns:Q1="http://telecomitalia.it/SOA/TRCS/Gateway/Infobus/Commons">
+	
+	<import namespace="http://telecomitalia.it/SOA/TRCS/Gateway/Infobus/Commons"
+		schemaLocation="Gateway-Infobus-Commons_v1.1.xsd" />
+	
+
+
+	<element name="BalanceRequest"
+		type="Q1:InfobusMessage">
+	</element>
+
+	<element name="BalanceResponse"
+		type="Q1:InfobusMessage">
+	</element>
+</schema>

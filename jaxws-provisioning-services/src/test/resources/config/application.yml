@@ -1,8 +1,8 @@
 trcs:
   gateway:
     services:
-      gino-provisionig: http://localhost:8095/gateway/provisioning
-      timeout:
-        connection: 3000
-        read: 2000
+     - gino-provisionig: http://localhost:8095/gateway/provisioning
+       timeout:
+         connection: 30000
+         read: 20000
       

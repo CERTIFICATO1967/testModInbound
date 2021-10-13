@@ -1,8 +1,8 @@
 trcs:
   gateway:
     services:
-      opsc-provisionig: http://localhost:8095/gateway/opsc/provisioning
-      timeout:
-        connection: 3000
-        read: 2000
+      - opsc-provisionig: http://localhost:8095/gateway/opsc/provisioning
+        timeout:
+          connection: 30000
+          read: 20000
       
