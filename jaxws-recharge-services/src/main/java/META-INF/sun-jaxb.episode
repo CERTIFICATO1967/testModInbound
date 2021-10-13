@@ -6,7 +6,7 @@
 Questo file è stato generato dall'architettura JavaTM per XML Binding (JAXB) Reference Implementation, v2.3.0 
 Vedere <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a> 
 Qualsiasi modifica a questo file andrà persa durante la ricompilazione dello schema di origine. 
-Generato il: 2021.10.13 alle 04:12:20 PM CEST 
+Generato il: 2021.10.13 alle 05:08:21 PM CEST 
 
   -->
       
@@ -14,487 +14,487 @@ Generato il: 2021.10.13 alle 04:12:20 PM CEST
             
         <schemaBindings map="false">
                   
-            <package name="it.telecomitalia.soa.trcs.gateway"/>
+            <package name="it.telecomitalia.soa.trcs.gateway.recharge"/>
                 
         </schemaBindings>
             
         <bindings if-exists="true" scd="tns:BalanceXRequest">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.BalanceXRequest"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.BalanceXRequest"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="tns:PERSONALOPTION">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.PERSONALOPTION"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.PERSONALOPTION"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:ACCOUNTType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.ACCOUNTType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.ACCOUNTType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="tns:OFFER">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.OFFER"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.OFFER"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="tns:ReloadXRequest">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.ReloadXRequest"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.ReloadXRequest"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="tns:ReloadXResponse">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.ReloadXResponse"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.ReloadXResponse"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="tns:OpscBalanceXRequest">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.OpscBalanceXRequest"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.OpscBalanceXRequest"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="tns:OpscBalanceXResponse">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.OpscBalanceXResponse"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.OpscBalanceXResponse"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:ResponseClientType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.ResponseClientType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.ResponseClientType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:BaseResponseType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.BaseResponseType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.BaseResponseType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:ChangeExtraDataType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.ChangeExtraDataType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.ChangeExtraDataType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:ExtraDataType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.ExtraDataType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.ExtraDataType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:AnyOfferHasExtDeactive">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.AnyOfferHasExtDeactive"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.AnyOfferHasExtDeactive"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:OfferType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.OfferType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.OfferType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:SubscriptionOptionType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.SubscriptionOptionType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.SubscriptionOptionType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:PostpaidSubscriptionOptionType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.PostpaidSubscriptionOptionType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.PostpaidSubscriptionOptionType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:ActOfferType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.ActOfferType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.ActOfferType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:FamilySubscriptionOptionType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.FamilySubscriptionOptionType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.FamilySubscriptionOptionType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:ClientType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.ClientType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.ClientType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:SubscriptionBookingType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.SubscriptionBookingType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.SubscriptionBookingType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:GroupedSubscriptionBookingType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.GroupedSubscriptionBookingType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.GroupedSubscriptionBookingType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:MigrateOfferType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.MigrateOfferType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.MigrateOfferType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:PostpaidReplaceOfferType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.PostpaidReplaceOfferType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.PostpaidReplaceOfferType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:ReplaceOfferType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.ReplaceOfferType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.ReplaceOfferType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:PostpaidOfferType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.PostpaidOfferType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.PostpaidOfferType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:PersonalOptionType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.PersonalOptionType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.PersonalOptionType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:PersonalOptionRestrictedType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.PersonalOptionRestrictedType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.PersonalOptionRestrictedType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:LifeCycleBookType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.LifeCycleBookType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.LifeCycleBookType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:LifeCycleType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.LifeCycleType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.LifeCycleType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:NetworkReconfigureIbData">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.NetworkReconfigureIbData"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.NetworkReconfigureIbData"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:ChangeNumberIbData">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.ChangeNumberIbData"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.ChangeNumberIbData"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:ReloadXIbData">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.ReloadXIbData"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.ReloadXIbData"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:ChangeTOCIbData">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.ChangeTOCIbData"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.ChangeTOCIbData"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:OpscBalanceXIbData">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.OpscBalanceXIbData"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.OpscBalanceXIbData"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="tns:BalanceXCloseTransactionRequest">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.BalanceXCloseTransactionRequest"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.BalanceXCloseTransactionRequest"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="tns:ACCESSORY">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.ACCESSORY"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.ACCESSORY"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:AccountComponentType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.AccountComponentType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.AccountComponentType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="tns:BASKET">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.BASKET"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.BASKET"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="tns:RESOURCE">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.RESOURCE"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.RESOURCE"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="tns:NTWRESOURCE">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.NTWRESOURCE"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.NTWRESOURCE"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="tns:RELRESOURCE">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.RELRESOURCE"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.RELRESOURCE"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:DISCOUNTType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.DISCOUNTType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.DISCOUNTType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="tns:ACCOUNT">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.ACCOUNT"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.ACCOUNT"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="tns:SUBSCRIBERMAP">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.SUBSCRIBERMAP"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.SUBSCRIBERMAP"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="tns:SIMDEVICE">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.SIMDEVICE"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.SIMDEVICE"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="tns:TACSDEVICE">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.TACSDEVICE"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.TACSDEVICE"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="tns:IPDEVICE">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.IPDEVICE"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.IPDEVICE"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="tns:ACCOUNTGROUP">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.ACCOUNTGROUP"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.ACCOUNTGROUP"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="tns:ACCOUNTGROUPMEMBER">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.ACCOUNTGROUPMEMBER"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.ACCOUNTGROUPMEMBER"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="tns:SUBSCRIPTION">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.SUBSCRIPTION"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.SUBSCRIPTION"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:BasketGroupedType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.BasketGroupedType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.BasketGroupedType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:BasketType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.BasketType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.BasketType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:BasketReloadType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.BasketReloadType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.BasketReloadType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:ResourceType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.ResourceType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.ResourceType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:AccessoryType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.AccessoryType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.AccessoryType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:BaseSubscriptionType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.BaseSubscriptionType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.BaseSubscriptionType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:GrpRplBaseSubscriptionType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.GrpRplBaseSubscriptionType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.GrpRplBaseSubscriptionType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:MigOffBaseSubscriptionType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.MigOffBaseSubscriptionType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.MigOffBaseSubscriptionType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:OptionalSubscriptionType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.OptionalSubscriptionType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.OptionalSubscriptionType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:SubscriptionType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.SubscriptionType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.SubscriptionType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:PostpaidSubscriptionType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.PostpaidSubscriptionType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.PostpaidSubscriptionType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:TransactionType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.TransactionType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.TransactionType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:MandatoryOfferType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.MandatoryOfferType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.MandatoryOfferType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:MandatorySubscriptionType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.MandatorySubscriptionType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.MandatorySubscriptionType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:SubscriberProfile">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.SubscriberProfile"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.SubscriberProfile"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:PostpaidSubscriberProfile">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.PostpaidSubscriberProfile"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.PostpaidSubscriberProfile"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:MandatorySubscriberProfile">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.MandatorySubscriberProfile"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.MandatorySubscriberProfile"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:BaseOfferChangeType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.BaseOfferChangeType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.BaseOfferChangeType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:AnyOfferChangeType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.AnyOfferChangeType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.AnyOfferChangeType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:PostpaidAnyOfferChangeType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.PostpaidAnyOfferChangeType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.PostpaidAnyOfferChangeType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:FamilyOfferType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.FamilyOfferType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.FamilyOfferType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:ActAnyOfferChangeType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.ActAnyOfferChangeType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.ActAnyOfferChangeType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:AnyOfferDeactivateType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.AnyOfferDeactivateType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.AnyOfferDeactivateType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:AnySubscriptionType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.AnySubscriptionType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.AnySubscriptionType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:ZoneType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.ZoneType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.ZoneType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:ADSLType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.ADSLType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.ADSLType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:BookingOfferType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.BookingOfferType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.BookingOfferType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:GroupedBookingOfferType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.GroupedBookingOfferType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.GroupedBookingOfferType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:BOOKOFFERSType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.BOOKOFFERSType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.BOOKOFFERSType"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:ResponseTransactionType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.ResponseTransactionType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.ResponseTransactionType"/>
                 
         </bindings>
           
@@ -532,25 +532,25 @@ Generato il: 2021.10.13 alle 04:12:20 PM CEST
             
         <schemaBindings map="false">
                   
-            <package name="it.telecomitalia.soa.trcs.gateway.infobus.commons"/>
+            <package name="it.telecomitalia.soa.trcs.gateway.recharge.commons"/>
                 
         </schemaBindings>
             
         <bindings if-exists="true" scd="~tns:InfobusMessage">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.infobus.commons.InfobusMessage"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.commons.InfobusMessage"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:InfobusXmlMessage">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.infobus.commons.InfobusXmlMessage"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.commons.InfobusXmlMessage"/>
                 
         </bindings>
             
         <bindings if-exists="true" scd="~tns:IbDataXmlType">
                   
-            <class ref="it.telecomitalia.soa.trcs.gateway.infobus.commons.IbDataXmlType"/>
+            <class ref="it.telecomitalia.soa.trcs.gateway.recharge.commons.IbDataXmlType"/>
                 
         </bindings>
           
