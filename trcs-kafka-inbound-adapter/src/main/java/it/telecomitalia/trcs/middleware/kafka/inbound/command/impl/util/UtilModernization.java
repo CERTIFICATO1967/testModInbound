@@ -4,6 +4,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -24,10 +26,19 @@ public class UtilModernization {
 		return dateConvert.substring(0, 14);
 	}
 
-	public static XMLGregorianCalendar locatDate2XMLGregorianCalendar(LocalDateTime pField) throws DatatypeConfigurationException {
+	public static XMLGregorianCalendar localDateTime2XMLGregorianCalendar(LocalDateTime pField) throws DatatypeConfigurationException {
 		return DatatypeFactory.newInstance().newXMLGregorianCalendar(pField.toString());
 		
 	}
+	
+	 public static LocalDateTime toLocalDateTime(XMLGregorianCalendar calendar) {
+	        if (calendar != null) {
+	            ZonedDateTime zonedDateTime = calendar.toGregorianCalendar()
+	                    .toZonedDateTime();
+	            return ZonedDateTime.ofInstant(zonedDateTime.toInstant(),ZoneId.systemDefault()).toLocalDateTime();
+	        }
+	        return null;
+	    }
 	
 	
 	
