@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @JsonInclude(Include.NON_EMPTY)
-public class SetSubscriberStatusXResponseBean extends GenericResponseBean {
+public class BlockUnblockResponseBean extends GenericResponseBean {
 	
 	private BlockUnblockDetail blockUnblockDetail = null;
 	
@@ -35,7 +35,7 @@ public class SetSubscriberStatusXResponseBean extends GenericResponseBean {
 
 	
 
-	public SetSubscriberStatusXResponseBean(String destinationSystem,
+	public BlockUnblockResponseBean(String destinationSystem,
 			                        String phoneNumber, 
 			                        String code, 
 			                        String message,

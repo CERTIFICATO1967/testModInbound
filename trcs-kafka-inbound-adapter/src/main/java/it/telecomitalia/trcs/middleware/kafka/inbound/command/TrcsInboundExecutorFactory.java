@@ -10,7 +10,7 @@ import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.ChangeSubscri
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.CreateSubscriberExecutor;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.DeleteSubscriberExecutor;
 import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.ReloadSubscriberExecutor;
-import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.SetSubscriberStatusXExecutor;
+import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.BlockUnblockExecutor;
 import it.telecomitalia.trcs.middleware.kafka.inbound.config.ResponseTargets;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaEventType;
 import it.telecomitalia.trcs.middleware.ws.client.GinoProvisioningClient;
@@ -37,8 +37,8 @@ public class TrcsInboundExecutorFactory {
 		switch (eventType) {
 			case changeNumberRequest:
 				return new ChangeNumberExecutor(opscProvisioningClient, responseTargets);
-			case setSubscriberStatusXRequest:
-				return new SetSubscriberStatusXExecutor(opscProvisioningClient, responseTargets);
+			case blockUnblockRequest:
+				return new BlockUnblockExecutor(opscProvisioningClient, responseTargets);
 			case deleteSubscriberRequest:
 				return new DeleteSubscriberExecutor(opscProvisioningClient, responseTargets);
 			case changeCardRequest:

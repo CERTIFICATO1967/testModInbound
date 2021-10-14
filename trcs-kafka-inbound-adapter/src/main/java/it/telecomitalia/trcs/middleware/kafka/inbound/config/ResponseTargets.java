@@ -16,20 +16,30 @@ public class ResponseTargets {
 
 	private Map<String, String> responses = new HashMap<>();
 	
+	
 	public String getResponseTarget(TrcsKafkaEventType eventType) {
 		switch (eventType) {
 			case changeNumberRequest:
 				return this.responses.get(TrcsKafkaEventType.changeNumberResponse.value());
-			case setSubscriberStatusXRequest:
-				return this.responses.get(TrcsKafkaEventType.setSubscriberStatusXResponse.value());
+			case blockUnblockRequest:
+				return this.responses.get(TrcsKafkaEventType.blockUnblockResponse.value());
 			case deleteSubscriberRequest:
 				return this.responses.get(TrcsKafkaEventType.deleteSubscriberResponse.value());
 			case changeCardRequest:
 				return this.responses.get(TrcsKafkaEventType.changeCardResponse.value());
+			case createSubscriberRequest:
+				return this.responses.get(TrcsKafkaEventType.createSubscriberResponse.value());
+			case changeSubscriberRequest:
+				return this.responses.get(TrcsKafkaEventType.changeSubscriberResponse.value());
+			case reloadSubscriberRequest:
+				return this.responses.get(TrcsKafkaEventType.changeCardResponse.value());
+			case activateSubscriberRequest:
+				return this.responses.get(TrcsKafkaEventType.activateSubscriberResponse.value());
 			default:
 				return this.responses.get(eventType.value());
 		}
 	}
+	
 
 	public Map<String, String> getResponses() {
 		return responses;

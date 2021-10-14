@@ -2,13 +2,8 @@ package it.telecomitalia.trcs.middleware.kafka.inbound.test;
 
 import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
@@ -22,13 +17,12 @@ import org.springframework.test.annotation.DirtiesContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import it.telecomitalia.trcs.middleware.kafka.inbound.KafkaProducer;
-import it.telecomitalia.trcs.middleware.kafka.inbound.command.impl.DeleteSubscriberExecutor;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.BlockUnblockRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ChangeCardRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ChangeNumberRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.CreateSubscriberRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.DeleteSubscriberRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ReloadSubscriberRequestBean;
-import it.telecomitalia.trcs.middleware.kafka.inbound.dto.SetSubscriberStatusXRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaEventType;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaHeader;
 
@@ -173,18 +167,18 @@ public class KafkaProducerTest {
     
     
     //@Test
-    public void sendMessageSetSubscriberStatusX() throws Exception {
-    	logger.debug("sendMessageSetSubscriberStatusX");
+    public void sendMessageSetBlockUnblock() throws Exception {
+    	logger.debug("sendMessageSetBlockUnblock");
     	String phoneNumber="3391230000";
     	
     	HashMap<String, String> headers = new HashMap<>();
     	
-    	headers.put(TrcsKafkaHeader.eventType.name(), TrcsKafkaEventType.setSubscriberStatusXRequest.value());
+    	headers.put(TrcsKafkaHeader.eventType.name(), TrcsKafkaEventType.blockUnblockRequest.value());
     	headers.put(TrcsKafkaHeader.transactionID.name(), UUID.randomUUID().toString());
     	headers.put(TrcsKafkaHeader.businessID.name(), UUID.randomUUID().toString());
     	headers.put(TrcsKafkaHeader.sourceSystem.name(), "JunitTest");
     	
-    	SetSubscriberStatusXRequestBean bean = new SetSubscriberStatusXRequestBean();
+    	BlockUnblockRequestBean bean = new BlockUnblockRequestBean();
     	
     	bean.setOldReason("Q");
     	bean.setReason("A");
