@@ -27,19 +27,22 @@ public class UtilModernization {
 	}
 
 	public static XMLGregorianCalendar localDateTime2XMLGregorianCalendar(LocalDateTime pField) throws DatatypeConfigurationException {
-		return DatatypeFactory.newInstance().newXMLGregorianCalendar(pField.toString());
-		
+		if (pField!=null)
+			return DatatypeFactory.newInstance().newXMLGregorianCalendar(pField.toString());
+		else 
+			return null;
+
 	}
 	
-	 public static LocalDateTime toLocalDateTime(XMLGregorianCalendar calendar) {
-	        if (calendar != null) {
-	            ZonedDateTime zonedDateTime = calendar.toGregorianCalendar()
-	                    .toZonedDateTime();
-	            return ZonedDateTime.ofInstant(zonedDateTime.toInstant(),ZoneId.systemDefault()).toLocalDateTime();
-	        }
-	        return null;
-	    }
-	
+	public static LocalDateTime toLocalDateTime(XMLGregorianCalendar calendar) {
+		if (calendar != null) {
+			ZonedDateTime zonedDateTime = calendar.toGregorianCalendar()
+					.toZonedDateTime();
+			return ZonedDateTime.ofInstant(zonedDateTime.toInstant(),ZoneId.systemDefault()).toLocalDateTime();
+		}
+		return null;
+	}
+
 	
 	
 	
