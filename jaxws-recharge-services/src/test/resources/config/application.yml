@@ -1,8 +1,0 @@
-trcs:
-  gateway:
-    services:
-     - gino-recharge: http://localhost:8090/gateway/recharge
-       timeout:
-         connection: 30000
-         read: 20000
-      
