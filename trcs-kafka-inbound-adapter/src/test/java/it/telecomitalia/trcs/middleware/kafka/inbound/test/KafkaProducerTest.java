@@ -17,14 +17,17 @@ import org.springframework.test.annotation.DirtiesContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import it.telecomitalia.trcs.middleware.kafka.inbound.KafkaProducer;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ActivateSubscriberRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.BlockUnblockRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ChangeCardRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ChangeNumberRequestBean;
+import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ChangeSubscriberRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.CreateSubscriberRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.DeleteSubscriberRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.ReloadSubscriberRequestBean;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaEventType;
 import it.telecomitalia.trcs.middleware.kafka.inbound.dto.TrcsKafkaHeader;
+
 
 
 @SpringBootTest
@@ -255,6 +258,69 @@ public class KafkaProducerTest {
        	bean.setTypeOfCard("AA");
        	bean.setFullMnp(true);
        	bean.setRestoredFromExpired(true);
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	
+    	ByteArrayOutputStream out = new ByteArrayOutputStream();
+    	
+    	objectMapper.writeValue(out, bean);
+        producer.send(topic, out.toString(), phoneNumber, headers);        
+    }
+    
+    
+    public void sendMessageRestoreChangeSubscriber() throws Exception {
+    	logger.debug("sendMessageRestoreChangeSubscriber");
+    	String phoneNumber="3391231999";
+    	
+    	HashMap<String, String> headers = new HashMap<>();
+    	
+    	headers.put(TrcsKafkaHeader.eventType.name(), TrcsKafkaEventType.createSubscriberRequest.value());
+    	headers.put(TrcsKafkaHeader.transactionID.name(), UUID.randomUUID().toString());
+    	headers.put(TrcsKafkaHeader.businessID.name(), UUID.randomUUID().toString());
+    	headers.put(TrcsKafkaHeader.sourceSystem.name(), "JunitTest");
+    	
+    	ChangeSubscriberRequestBean bean = new ChangeSubscriberRequestBean();
+    	
+    	bean.setInfo("Normal");
+    	bean.setBaseOffer("OX6665");
+    	bean.setPhoneNumber(phoneNumber);
+    	bean.setMigrationType("PP2PCN");
+       	bean.setTypeOfCard("AA");
+        bean.setRifService(false);
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	
+    	ByteArrayOutputStream out = new ByteArrayOutputStream();
+    	
+    	objectMapper.writeValue(out, bean);
+        producer.send(topic, out.toString(), phoneNumber, headers);        
+    }
+    
+    
+    public void sendMessageRestoreActivateSubscriber() throws Exception {
+    	logger.debug("sendMessageRestoreActivateSubscriber");
+    	String phoneNumber="3391231999";
+    	
+    	HashMap<String, String> headers = new HashMap<>();
+    	
+    	headers.put(TrcsKafkaHeader.eventType.name(), TrcsKafkaEventType.createSubscriberRequest.value());
+    	headers.put(TrcsKafkaHeader.transactionID.name(), UUID.randomUUID().toString());
+    	headers.put(TrcsKafkaHeader.businessID.name(), UUID.randomUUID().toString());
+    	headers.put(TrcsKafkaHeader.sourceSystem.name(), "JunitTest");
+    	
+    	ActivateSubscriberRequestBean bean = new ActivateSubscriberRequestBean();
+    	
+    	bean.setInfo("Normal");
+    	bean.setBaseOffer("OX6665");
+    	bean.setPhoneNumber(phoneNumber);
+    	bean.setLanguageId("1");
+    	bean.setCompanyCredit(BigDecimal.TEN);
+    	bean.setCredit(BigDecimal.ONE);
+    	bean.setRifService(false);
+    	bean.setTypeOfCard("AA");
+    	
+    	LocalDateTime dt =  LocalDateTime.of(2021,04,14,9,27,26);
+       	
+       	bean.setTypeOfCard("AA");
+       
     	ObjectMapper objectMapper = new ObjectMapper();
     	
     	ByteArrayOutputStream out = new ByteArrayOutputStream();
