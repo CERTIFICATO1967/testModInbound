@@ -1,0 +1,12 @@
+/target/
+.project
+.settings/
+pom.xml.versionsBackup
+.gitattributes
+*.log
+generated
+.classpath
+src/main/java/it/telecomitalia/soa/
+src/main/java/META-INF/sun-jaxb.episode
+
+
