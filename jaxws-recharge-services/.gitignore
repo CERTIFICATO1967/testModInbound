@@ -6,5 +6,7 @@ pom.xml.versionsBackup
 *.log
 generated
 .classpath
+src/main/java/it/telecomitalia/soa/
+src/main/java/META-INF/sun-jaxb.episode
 
 
