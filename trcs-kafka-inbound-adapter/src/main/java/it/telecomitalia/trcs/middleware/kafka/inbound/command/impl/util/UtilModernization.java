@@ -25,7 +25,7 @@ public class UtilModernization {
 		//return dateConvert;
 		return dateConvert.substring(0, 14);
 	}
-
+ 
 	public static XMLGregorianCalendar localDateTime2XMLGregorianCalendar(LocalDateTime pField) throws DatatypeConfigurationException {
 		if (pField!=null)
 			return DatatypeFactory.newInstance().newXMLGregorianCalendar(pField.toString());

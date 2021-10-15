@@ -373,7 +373,7 @@ public class CreateSubscriberExecutor extends AbstractExecutor{
 
 		result.setSubsystemErrorCode(response.getIbRetCode());
      	return result;
-
+ 
 
 	}
 	
@@ -423,12 +423,12 @@ public class CreateSubscriberExecutor extends AbstractExecutor{
 		client.setNumTariffs(request.getNumBaseOfferChanges() == null ? "0" : request.getNumBaseOfferChanges());
 		client.setLastChangeTariff(request.getLastBaseOfferChange() == null ? "" : request.getLastBaseOfferChange().toString());
 		
-		client.setInstallationDate(UtilModernization.locatDate2XMLGregorianCalendar(request.getInstallationDate()));
+		client.setInstallationDate(UtilModernization.localDateTime2XMLGregorianCalendar(request.getInstallationDate()));
 		if (request.getActivationDate()!=null)
-			client.setActivationDate(UtilModernization.locatDate2XMLGregorianCalendar(request.getActivationDate()));
+			client.setActivationDate(UtilModernization.localDateTime2XMLGregorianCalendar(request.getActivationDate()));
 		client.setServiceProviderId("WRAPPER");
 		if (request.getLastCreditUpdate()!=null)
-			client.setLastEventDate((UtilModernization.locatDate2XMLGregorianCalendar(request.getLastCreditUpdate())));
+			client.setLastEventDate((UtilModernization.localDateTime2XMLGregorianCalendar(request.getLastCreditUpdate())));
 	
 		client.setAccountType(request.isFullMnp() ? new BigInteger("3") : new BigInteger("1"));
 		
