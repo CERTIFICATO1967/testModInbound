@@ -40,17 +40,17 @@ public class KafkaProducerTest {
     @Value("${test.topic}")
     private String topic;
 
-    //@Test
+    @Test
     public void sendMessageChangeNumber() throws Exception {
     	logger.debug("sendMessageChangeNumber");
-    	String phoneNumber="3399930000";
+    	String phoneNumber="9898989822";
     	
     	HashMap<String, String> headers = new HashMap<>();
     	
     	headers.put(TrcsKafkaHeader.eventType.name(), TrcsKafkaEventType.changeNumberRequest.value());
     	headers.put(TrcsKafkaHeader.transactionID.name(), UUID.randomUUID().toString());
     	headers.put(TrcsKafkaHeader.businessID.name(), UUID.randomUUID().toString());
-    	headers.put(TrcsKafkaHeader.sourceSystem.name(), "JunitTest");
+    	headers.put(TrcsKafkaHeader.sourceSystem.name(), "DBSS-COM");
     	
     	ChangeNumberRequestBean bean = new ChangeNumberRequestBean();
     	
@@ -266,7 +266,7 @@ public class KafkaProducerTest {
         producer.send(topic, out.toString(), phoneNumber, headers);        
     }
     
-    
+  //@Test
     public void sendMessageRestoreChangeSubscriber() throws Exception {
     	logger.debug("sendMessageRestoreChangeSubscriber");
     	String phoneNumber="3391231999";
@@ -294,7 +294,7 @@ public class KafkaProducerTest {
         producer.send(topic, out.toString(), phoneNumber, headers);        
     }
     
-    
+  //@Test
     public void sendMessageRestoreActivateSubscriber() throws Exception {
     	logger.debug("sendMessageRestoreActivateSubscriber");
     	String phoneNumber="3391231999";
@@ -330,7 +330,7 @@ public class KafkaProducerTest {
     }
     
     
-    @Test
+   // @Test
     public void sendMessageCombine() throws Exception {
     	logger.debug("sendMessageCombine");
     	String phoneNumber="3391231999";

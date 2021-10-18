@@ -104,7 +104,7 @@ class KafkaAdapterListeners{
 				logMessage = InboundLogMessages.FAILURE_ON_GATEWAY;
 
 			} catch (Exception ex) {
-				ack.nack(10000); //Imposta il Timeout per le retry
+				ack.nack(100000); //Imposta il Timeout per le retry
 
 				bean.setResult(HydraLogBean.Result.retry);
 
@@ -113,7 +113,7 @@ class KafkaAdapterListeners{
 			}
 
 		} catch (Throwable t) {
-			ack.nack(10000); //Imposta il Timeout per le retry
+			ack.nack(100000); //Imposta il Timeout per le retry
 
 			bean.setResult(HydraLogBean.Result.retry);
 

@@ -3,7 +3,7 @@ kafka:
   auto-reset: earliest
   consumer:
     groupId: test-group
-    topics: test-38,test-39
+    topics: test-42,test-43
   responses:
     lineeMobili.responseCambioNumero.v1: test-response-1
     lineeMobili.responseBloccoSbloccoNumero.v1: test-response-2
@@ -19,15 +19,15 @@ trcs:
     services:
       gino-provisioning: 
          address: http://localhost:8095/gateway/provisioning
-         timeout-connection: 30000
-         timeout-read: 3000
+         timeout-connection: 300000
+         timeout-read: 300000
       gino-recharge:
          address: http://localhost:8090/gateway/recharge
-         timeout-connection: 30000
-         timeout-read: 3000
+         timeout-connection: 300000
+         timeout-read: 300000
       opsc-provisionig: 
          address: http://localhost:8095/gateway/opsc/provisioning
          timeout-connection: 30000
-         timeout-read: 3000
+         timeout-read: 300000
      
       
