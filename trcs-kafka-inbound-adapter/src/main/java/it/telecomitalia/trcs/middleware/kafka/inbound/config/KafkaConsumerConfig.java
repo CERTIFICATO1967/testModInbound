@@ -23,6 +23,24 @@ class KafkaConsumerConfig {
     private String autoResetConfig;  //earliest
     
     
+   /* @Value("${kafka.security.protocol:SASL_SSL}")
+    private String securuty_protocol;
+    @Value("${kafka.sasl.jaas.config:org.apache.kafka.common.security.plain.PlainLoginModule   required username='LTVL5DA226U3NK6L'   password='598mOQXYS9vtO5ZgeXr1uYU19bRpTl4F7xhbnZ3MbpN3+tLnOTAXUwCuXZh5ZIgL';}")
+    private String sasl_jassconfig;
+    @Value("${kafka.sasl.mechanism:PLAIN}")
+    private String sasl_mechanism;
+    @Value("${kafka.client.dns.lookup:use_all_dns_ips}")
+    private String client_dns_lookup;
+    @Value("${kafka.acks:all}")
+    private String acks;*/
+    
+   /* @Value("${kafka.schema.registry.url: https://{{ SR_ENDPOINT }}}")
+    private String schema_registry_url;
+    @Value("${kafka.basic.auth.credentials.source:USER_INFO}")
+    private String basic_auth_credentials_source;
+    @Value("${kafka.basic.auth.user.info:{{ SR_API_KEY }}:{{ SR_API_SECRET }}}")
+    private String basic_auth_user_info;*/
+    
     Map<String, Object> consumerConfigs() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
@@ -30,6 +48,22 @@ class KafkaConsumerConfig {
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, autoResetConfig);
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
+        
+        
+        //
+     /*   props.put("security.protocol",securuty_protocol);
+        props.put("sasl.jaas.config",sasl_jassconfig);
+        props.put("sasl.mechanism",sasl_mechanism);
+        props.put("client.dns.lookup",client_dns_lookup);
+        props.put("acks",acks);*/
+        
+       /*props.put("schema.registry.url",schema_registry_url);
+        props.put("basic.auth.credentials.source",basic_auth_credentials_source);
+        props.put("basic.auth.user.info",basic_auth_user_info);
+        */
+        
+        
+        //
         return props;
     }
 

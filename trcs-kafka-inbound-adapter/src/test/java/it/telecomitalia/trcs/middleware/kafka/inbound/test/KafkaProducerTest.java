@@ -39,18 +39,23 @@ public class KafkaProducerTest {
 
     @Value("${test.topic}")
     private String topic;
-
+    
+   
+    
     @Test
     public void sendMessageChangeNumber() throws Exception {
     	logger.debug("sendMessageChangeNumber");
-    	String phoneNumber="9898989822";
+    	String phoneNumber="9898989980";
     	
     	HashMap<String, String> headers = new HashMap<>();
     	
     	headers.put(TrcsKafkaHeader.eventType.name(), TrcsKafkaEventType.changeNumberRequest.value());
     	headers.put(TrcsKafkaHeader.transactionID.name(), UUID.randomUUID().toString());
+    	//headers.put(TrcsKafkaHeader.transactionID.name(), "CN.16");
     	headers.put(TrcsKafkaHeader.businessID.name(), UUID.randomUUID().toString());
     	headers.put(TrcsKafkaHeader.sourceSystem.name(), "DBSS-COM");
+    	headers.put(TrcsKafkaHeader.messageID.name(),  UUID.randomUUID().toString());
+    	
     	
     	ChangeNumberRequestBean bean = new ChangeNumberRequestBean();
     	
@@ -172,14 +177,14 @@ public class KafkaProducerTest {
     //@Test
     public void sendMessageSetBlockUnblock() throws Exception {
     	logger.debug("sendMessageSetBlockUnblock");
-    	String phoneNumber="3391230000";
+    	String phoneNumber="3391239898";
     	
     	HashMap<String, String> headers = new HashMap<>();
     	
     	headers.put(TrcsKafkaHeader.eventType.name(), TrcsKafkaEventType.blockUnblockRequest.value());
     	headers.put(TrcsKafkaHeader.transactionID.name(), UUID.randomUUID().toString());
     	headers.put(TrcsKafkaHeader.businessID.name(), UUID.randomUUID().toString());
-    	headers.put(TrcsKafkaHeader.sourceSystem.name(), "JunitTest");
+    	headers.put(TrcsKafkaHeader.sourceSystem.name(), "DBSS-COM");
     	
     	BlockUnblockRequestBean bean = new BlockUnblockRequestBean();
     	
@@ -317,7 +322,7 @@ public class KafkaProducerTest {
     	bean.setRifService(false);
     	bean.setTypeOfCard("AA");
     	
-    	LocalDateTime dt =  LocalDateTime.of(2021,04,14,9,27,26);
+    //	LocalDateTime dt =  LocalDateTime.of(2021,04,14,9,27,26);
        	
        	bean.setTypeOfCard("AA");
        
