@@ -23,7 +23,7 @@
 		</encoder>
 	</appender>
 
-    <appender name="FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+  <!--  <appender name="FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${HOME_LOG}</file>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
@@ -39,7 +39,7 @@
         <encoder>
             <pattern>%d %p %c{1.} [%t] %m%n</pattern>
         </encoder>
-    </appender>
+    </appender>-->
 
     <logger name="it.telecomitalia.sparkle.fmws" level="debug" additivity="false">
 <!-- 
