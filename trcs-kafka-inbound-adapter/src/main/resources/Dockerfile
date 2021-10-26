@@ -1,21 +1,21 @@
 # It will be used openjdk 11
 FROM openjdk:11-jdk-slim
 
-USER root
+# USER root
 
-RUN mkdir /etc/pki && \
+# RUN mkdir /etc/pki && \
     mkdir /etc/pki/ca-trust && \
     mkdir /etc/pki/ca-trust/source && \
     mkdir /etc/pki/ca-trust/source/anchors
 
-COPY TI_Trust_Technologies_Private_CA.base64.cer /etc/pki/ca-trust/source/anchors/ 
+# COPY TI_Trust_Technologies_Private_CA.base64.cer /etc/pki/ca-trust/source/anchors/ 
 
-RUN update-ca-certificates
+# RUN update-ca-certificates
 
-RUN adduser --system -q --disabled-password trcs && \
+# RUN adduser --system -q --disabled-password trcs && \
     mkdir /trcs && \
     chown trcs /trcs 
-USER trcs
+# USER trcs
 
 WORKDIR /trcs
 
